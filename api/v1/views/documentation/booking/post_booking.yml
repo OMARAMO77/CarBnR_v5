@@ -1,0 +1,43 @@
+    Posts a new booking
+    ---
+    tags:
+      - Bookings
+    parameters:
+      - name: car_id
+        in: path
+        type: string
+        required: true
+        description: The id of the Car to link to
+
+      - name: location_id
+        in: body
+        type: string
+        required: true
+        description: The location_id of the Car to link to
+      - name: user_id
+        in: body
+        type: string
+        required: true
+        description: The user_id
+      - name: pickup_date
+        in: body
+        type: string
+        required: true
+        description: The pickup_date
+      - name: return_date
+        in: body
+        type: string
+        required: true
+        description: The return_date
+      - name: total_cost
+        in: body
+        type: string
+        required: true
+        description: The total_cost
+    responses:
+      404:
+        description: Car not found!
+      400:
+        description: missing user_id, pickup_date, return_date, total_cost, or Invalid JSON
+      201:
+        description: Booking created successfully
