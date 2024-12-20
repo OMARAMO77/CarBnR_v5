@@ -1,0 +1,76 @@
+# nano /etc/nginx/sites-available/locations_config
+# sudo ln -sf /etc/nginx/sites-available/locations_config /etc/nginx/sites-enabled/
+# sudo service nginx restart
+# Set up NGINX
+server {
+    listen 443 ssl;
+    server_name omar.eromo.tech;
+
+    ssl_certificate /etc/letsencrypt/live/omar.eromo.tech/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/omar.eromo.tech/privkey.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+
+    root /CarBnR_v4/carapp/templates;
+    index landing-page.html;
+
+    error_page 404 /404.html;
+
+    location = /404.html {
+        root /var/www/html/;
+        internal;
+    }
+
+    location /api/ {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5002/api/;
+    }
+
+    location /select_cars {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5000/select_cars/;
+    }
+
+    #location /create_cars {
+    #    include proxy_params;
+    #    proxy_pass http://127.0.0.1:5003/create_cars;
+    #}
+
+    location /upload_page {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5007/upload_page;
+    }
+
+    location /upload {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5007/upload;
+    }
+
+    location /with_rev {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5008/with_rev/;
+    }
+
+    location /carbnr {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5009/carbnr/;
+    }
+
+    location /static {
+        autoindex off;
+        alias /CarBnR_v4/carapp/static;
+    }
+
+    # Deny access to sensitive files
+    location ~ /\.(git|env) {
+        deny all;
+    }
+}
+server {
+    listen 80;
+    server_name omar.eromo.tech;
+
+    # Redirect HTTP to HTTPS
+    return 301 https://$host$request_uri;
+}
