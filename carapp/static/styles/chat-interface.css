@@ -1,0 +1,192 @@
+/* General Body Styling */
+body {
+    background-color: #212529;
+    color: #ffffff;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Chat Container Styling */
+.chat-container {
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    background-color: #343a40;
+    border: 1px solid #495057;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* Message Styles */
+.message {
+    margin-bottom: 15px;
+}
+
+.received {
+    text-align: left;
+}
+
+.received .message-content {
+    background-color: #495057;
+    border-radius: 10px;
+    padding: 10px;
+    display: inline-block;
+}
+
+.sent {
+    text-align: right;
+}
+
+.sent .message-content {
+    background-color: #0d6efd;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    display: inline-block;
+}
+
+/* Timestamp Styling */
+.timestamp {
+    font-size: 0.8rem;
+    color: #adb5bd;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    background-color: #343a40;
+    border-right: 1px solid #495057;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h4 {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.sidebar a {
+    color: #000;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    border-bottom: 1px solid #495057;
+}
+
+.sidebar a:hover {
+    background-color: #e9ecef;
+    color: #343a40;
+}
+
+#contactsList {
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
+/* Loading Placeholder Styling */
+#loadingContacts {
+    text-align: center;
+    margin: 15px 0;
+}
+
+#loadingContacts .spinner-border {
+    color: #adb5bd;
+}
+
+/* Button and Input Styles */
+input#recipient, 
+input#recipientEmail {
+    display: none;
+}
+
+input#recipientEmail {
+    display: block;
+    margin-top: auto;
+    margin-bottom: 15px;
+}
+
+button#addContactBtn {
+    margin-top: auto;
+}
+
+/* Empty Chat State Styling */
+#emptyChatState {
+    text-align: center;
+    margin: 50px 0;
+}
+
+#emptyChatState i {
+    font-size: 3rem;
+    color: #adb5bd;
+}
+
+#emptyChatState p {
+    color: #adb5bd;
+    margin-top: 15px;
+}
+
+/* Load More Button Styling */
+#loadMoreButton {
+    margin: 15px 0;
+    display: none;
+}
+
+/* Refresh Button Styling */
+#refreshBtn {
+    margin-right: 10px;
+}
+.contact-interface {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+}
+/* Sidebar styles */
+.sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px; /* Adjust width as needed */
+    transition: transform 0.3s ease-in-out;
+    z-index: 10;
+    background-color: #343a40;
+    transform: translateX(-100%);
+}
+
+/* Sidebar visible */
+.sidebar.visible {
+    transform: translateX(0);
+}
+
+/* Main content */
+.main-content {
+    transition: margin-left 0.3s ease-in-out;
+    margin-left: 0;
+    width: 100%;
+}
+
+.main-content.shifted {
+    margin-left: 250px; /* Match the sidebar width */
+}
+
+/* Sidebar always visible on larger screens */
+@media (min-width: 768px) {
+    .sidebar {
+        position: static;
+        transform: translateX(0);
+        width: 250px; /* Match the width */
+    }
+
+    .main-content {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+    }
+}
+
+/* Hide the toggle button on larger screens */
+@media (min-width: 768px) {
+    #toggleSidebarBtn {
+        display: none;
+    }
+}
+
