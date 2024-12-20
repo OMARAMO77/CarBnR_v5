@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/styles/login_form.css">
+    <link rel="icon" href="../static/images/thumb.png">
+    <title>Sign In to CarBnR</title>
+  </head>
+  <body class="d-flex justify-content-center align-items-center vh-100">
+    <div id="status" class="justify-content-center w-50 text-center pl-3 bg-light text-dark"></div>
+    <div class="card shadow-lg p-4 bg-dark text-light" style="max-width: 400px;">
+      <div class="card-body">
+        <h2 class="card-title text-center text-primary mb-4">Log in</h2>
+        <p class="card-text text-center mb-4">Log in to be able to book a car.</p>
+        <form id="LogintoAccountForm" onsubmit="LogintoAccount()">
+          <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Email" autocomplete="email" required>
+          </div>
+          <div class="form-group mb-3">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password" autocomplete="new-password" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="LoginButton">Login</button>
+
+        </form>
+        <p class="text-center mt-3">Don't have an account? <a id="signupLink" href="signup.html" class="text-primary">Create one</a></p>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../static/scripts/status-parameters.js"></script>
+    <script src="../static/scripts/login_script.js"></script>
+    <script>
+      // Function to get URL parameters
+      function getURLParameter(name) {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get(name);
+      }
+
+      // Function to append parameters to the signup page URL
+      function updateSignupLink() {
+          const signupLink = document.getElementById("signupLink");
+          const carId = getURLParameter("carId");
+
+          if (carId) {
+              signupLink.href = `signup.html?carId=${carId}`;
+          }
+      }
+
+      // Call the function when the page loads
+      window.onload = updateSignupLink;
+    </script>
+  </body>
+</html>
