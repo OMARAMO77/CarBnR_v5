@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# ANSI color codes
+GREEN='\033[0;32m'  # Green for success messages
+RED='\033[0;31m'    # Red for error messages
+NC='\033[0m'        # No color (reset)
+
+# Function to print messages
+print_message() {
+    local msg="$1"
+    local color="$2"
+    echo -e "${color}${msg}${NC}"
+}
+
+# Get the PID of Gunicorn processes
+PID=$(pgrep gunicorn | tr '\n' ' ')  # Convert newlines to spaces
+
+# Check if any Gunicorn processes were found
+if [[ -n "$PID" ]]; then
+    # Reload Gunicorn gracefully
+    if kill -s HUP $PID; then
+        print_message "Gunicorn processes ($PID) reloaded gracefully." "$GREEN"
+    else
+        print_message "Failed to reload Gunicorn processes." "$RED"
+        exit 1
+    fi
+else
+    print_message "No Gunicorn processes found." "$RED"
+    exit 1
+fi
