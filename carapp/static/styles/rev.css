@@ -1,0 +1,38 @@
+/* General styling for the reviews section */
+.reviews {
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+/* Styling for the review header */
+.reviews h2 {
+  margin-bottom: 5px;
+}
+
+.reviews .treview {
+  margin-right: 10px;
+}
+
+/* Styling for the review list */
+.reviews ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.reviews li {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+/* Styling for the review header within each list item */
+.reviews li h3 {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Styling for the review text */
+.reviews li p {
+  margin: 0;
+}
