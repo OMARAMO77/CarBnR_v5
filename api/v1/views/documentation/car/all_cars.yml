@@ -1,0 +1,46 @@
+gets all cars of a location
+---
+tags:
+  - Cars
+responses:
+  200:
+    description: request executed successfully
+    schema:
+      type: array
+      items:
+        properties:
+          __class__:
+            type: string
+          created_at:
+            type: string
+            description: time of creation of the instance
+          updated_at:
+             type: string
+             description: time of last update of the instance
+          id:
+            type: string
+            description: The uuid of the instance
+          brand:
+             type: string
+             description: car brand
+          model:
+             type: string
+             description: car model
+          year:
+             type: string
+             description: car year
+          price_by_day:
+             type: integer
+             description: car price_by_day
+          registration_number:
+             type: string
+             description: car registration_number
+          image_url:
+             type: string
+             description: car image_url
+          available:
+             type: boolean
+             description: car available
+          location_id:
+             type: string
+             description: car location_id
