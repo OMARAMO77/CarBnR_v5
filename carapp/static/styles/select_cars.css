@@ -1,0 +1,14 @@
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+.dropdown-toggle::after {
+    display: none !important;
+}
+#api_status {
+    height: 20px;
+    background-color: #900;
+}
+
+#api_status.available {
+   height: 0px;
+}
