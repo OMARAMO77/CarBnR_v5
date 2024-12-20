@@ -1,0 +1,28 @@
+    Posts a new review
+    ---
+    tags:
+      - Reviews
+    parameters:
+      - name: car_id
+        in: path
+        type: string
+        required: true
+        description: The id of the Car to link to
+
+      - name: user_id
+        in: body
+        type: string
+        required: true
+        description: The user_id
+      - name: text
+        in: body
+        type: string
+        required: true
+        description: The text
+    responses:
+      404:
+        description: Car not found!
+      400:
+        description: missing user_id, text, or Invalid JSON
+      201:
+        description: Review created successfully
