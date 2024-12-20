@@ -1,0 +1,15 @@
+Deletes a location based on the id provided
+---
+tags:
+  - Locations
+parameters:
+  - name: location_id
+    in: path
+    type: string
+    required: true
+    description: The uuid of the location to delete
+responses:
+  404:
+    description: Location not found!
+  200:
+    description: Deletion request sucessful
