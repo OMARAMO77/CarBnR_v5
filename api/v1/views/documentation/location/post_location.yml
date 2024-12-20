@@ -1,0 +1,34 @@
+    Posts a new location.
+    ---
+    tags:
+      - Locations
+    parameters:
+      - name: city_id
+        in: path
+        type: string
+        required: true
+        description: The id of the City to link to
+
+      - name: address
+        in: body
+        type: string
+        required: true
+        description: The address of the location
+      - name: name
+        in: body
+        type: string
+        required: true
+        description: Name associated with the location
+      - name: phone_number
+        in: body
+        type: string
+        required: true
+        description: phone number associated with the location
+
+    responses:
+      404:
+        description: City not found
+      400:
+        description: Missing address, name, phone_number,or invalid JSON
+      201:
+        description: Location created successfully
