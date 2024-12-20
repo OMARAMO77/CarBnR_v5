@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# ANSI color codes
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No color (reset)
+
+# Navigate to the project directory and set environment variables
+cd /CarBnR_v4
+# Store current directory
+pwd_path=$(pwd)
+
+# Start gunicorn processes in tmux sessions
+tmux new-session -d 'gunicorn --bind 0.0.0.0:5007 carapp.uploads:app'
+
+# Wait for processes to start
+sleep 2
+
+# Check and report the status of the process on port 5007
+pids_5007=$(lsof -t -i :5007 | tr '\n' ' ')  # Capture all PIDs in one line
+if [[ -n "$pids_5007" ]]; then
+  echo -e "\n${YELLOW}========== App on port 5007 ==========${NC}"
+  echo -e "${GREEN}[*] App 'carapp.uploads' started successfully in directory: $pwd_path${NC}"
+  echo -e "${GREEN}[*] Process IDs: (${pids_5007})${NC}"
+else
+  echo -e "${RED}[-] Failed to start app 'carapp.uploads' on port 5007.${NC}"
+fi
+
