@@ -1,0 +1,64 @@
+.custom-navbar {
+  background: linear-gradient(135deg, #007bff, #6610f2);
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-navbar .nav-link {
+  color: #f8f9fa !important;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+
+.custom-navbar .nav-link:hover {
+  color: #ffd700 !important;
+  transform: scale(1.05);
+}
+
+.signup-link {
+  padding: 5px 15px;
+  border-radius: 7px;
+  background-color: #28a745;
+  color: white !important;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.signup-link:hover {
+  background-color: #218838;
+  transform: scale(1.1);
+}
+
+.login-link {
+  padding: 5px 15px;
+  border-radius: 7px;
+  background-color: #17a2b8;
+  color: white !important;
+  margin-left: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.login-link:hover {
+  background-color: #138496;
+  transform: scale(1.1);
+}
+
+.profile-link {
+  padding: 5px 15px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #563d7c, #45276a);
+  color: white !important;
+  margin-left: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.profile-link:hover {
+  background-color: #563d7c;
+  transform: scale(1.1);
+}
+
+.nav-link {
+  width: fit-content;
+}
