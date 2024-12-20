@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Define color variables
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NC='\033[0m' # No Color
+
+# Check if a domain argument is provided
+if [ -z "$1" ]; then
+  echo -e "${RED}Error: No domain provided.${NC}"
+  echo -e "${YELLOW}Usage: $0 <domain>${NC}"
+  exit 1
+fi
+
+DOMAIN="$1"
+
+# Perform the DNS lookup for the provided domain
+echo -e "${GREEN}Running DNS lookup for domain: ${DOMAIN}${NC}"
+dig "$DOMAIN"
