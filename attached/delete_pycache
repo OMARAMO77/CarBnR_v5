@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Script to find and delete multiple __pycache__ directories
+
+# ANSI color codes for output messages
+GREEN='\033[0;32m'  # Green for success
+RED='\033[0;31m'    # Red for errors
+YELLOW='\033[0;33m' # Yellow for warnings
+NC='\033[0m'        # No color
+
+# Function to print colored messages
+print_message() {
+    local msg="$1"
+    local color="$2"
+    echo -e "${color}${msg}${NC}"
+}
+
+# Check if at least one directory is passed as an argument
+if [ "$#" -ge 1 ]; then
+    for file in "$@"; do
+        # Get the directory path from command-line argument
+        directory_path="$file"
+        
+        # Check if the directory exists
+        if [ -d "$directory_path" ]; then
+            # Count the number of __pycache__ directories
+            pycache_count=$(find "$directory_path" -type d -name "__pycache__" | wc -l)
+
+            # Check if any __pycache__ directories exist
+            if [ "$pycache_count" -gt 0 ]; then
+                # Find and delete __pycache__ directories
+                find "$directory_path" -type d -name "__pycache__" -exec rm -r {} +
+                print_message "Deleted $pycache_count __pycache__ directories in $directory_path" "$GREEN"
+            else
+                print_message "No __pycache__ directories found in $directory_path" "$YELLOW"
+            fi
+        else
+            print_message "Directory not found: $directory_path" "$RED"
+        fi
+        sleep 1
+    done
+else
+    # Display usage message if no directory paths are provided
+    print_message "Usage: $0 <dir_path_1> <dir_path_2> <dir_path_3> ..." "$YELLOW"
+fi
