@@ -1,0 +1,50 @@
+    Links an car object to a location
+    ---
+    tags:
+      - Cars
+    parameters:
+      - name: location_id
+        in: body
+        type: string
+        required: true
+        description: The location_id of the Car
+      - name: car_id
+        in: body
+        type: string
+        required: true
+        description: The id of the Car
+      - name: brand
+        in: body
+        type: string
+        required: true
+        description: The brand of the Car
+      - name: model
+        in: body
+        type: string
+        required: true
+        description: The model of the Car
+      - name: year
+        in: body
+        type: string
+        required: true
+        description: The year of the Car
+      - name: price_by_day
+        in: body
+        type: integer
+        required: true
+        description: The price_by_day of the Car
+      - name: registration_number
+        in: body
+        type: integer
+        required: true
+        description: The registration_number of the Car
+      - name: image_url
+        in: body
+        type: integer
+        required: true
+        description: The image_url of the Car
+    responses:
+      400:
+        description: Not a JSON
+      201:
+        description: Car created successfully
