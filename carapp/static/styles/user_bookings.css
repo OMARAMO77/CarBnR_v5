@@ -1,0 +1,114 @@
+.container {
+    text-align: -webkit-center;
+}
+h1 {
+    color: #333;
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.booking-details {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    width: fit-content;
+    border: 2px solid #3498db;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #ecf0f1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.booking-details h2 {
+    color: #3498db;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.booking-details p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.booking-details b {
+    color: #555;
+}
+
+#carImage {
+    display: block;
+    margin-top: 20px;
+    max-width: 500px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.carImageDiv {
+    padding: inherit;
+}
+
+.carInfoDiv {
+    text-align: left;
+    padding: inherit;
+}
+
+/* Responsive styles for smaller screens */
+@media screen and (max-width: 1020px) {
+    h1 {
+        font-size: 28px;
+    }
+
+    .booking-details {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .booking-details h2 {
+        font-size: 20px;
+    }
+
+    .booking-details p {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+
+    #carImage {
+        display: block;
+        margin-top: 20px;
+        max-width: 400px;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .carInfoDiv {
+        text-align: left;
+        padding: inherit;
+        border-bottom: ridge;
+    }
+
+}
+/* Responsive styles for even smaller screens */
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    .booking-details {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .booking-details h2 {
+        font-size: 18px;
+    }
+
+    .booking-details p {
+        font-size: 14px;
+        line-height: 1.3;
+    }
+}
