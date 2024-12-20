@@ -1,0 +1,119 @@
+.cars {
+    column-count: 2;
+    columns: 30em;
+    justify-content: center;
+    padding: 0 20px;
+    margin-top: 1%;
+    margin-bottom: 8%;
+}
+@media only screen and (max-width: 920px)
+{
+    .cars {
+	display: flex;
+	flex-wrap: wrap;
+    }
+}
+
+.carsh1 h1 {
+    width: 100%;
+    margin-right: 400px;
+    text-align: left;
+    font-size: 35px;
+}
+
+.cars article {
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    display: flow-root;
+/*    width: auto;*/
+    height: 100%;
+    padding: 8px 0px 0px;
+    margin: 20px;
+    border: 1px solid #111111;
+    border-radius: 4px;
+    max-width: 555px;
+}
+.cars h2 {
+    font-size: 30px;
+    text-align: center;
+    margin-top: 0;
+}
+.title_box {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -2%;
+}
+
+.title_box h2 {
+    text-align: left;
+    margin: 25px 3% 40px 2%;
+    max-width: 75%;
+    word-wrap: break-word;
+}
+.image-container {
+    max-width: 100%;
+    overflow: hidden;
+    margin-bottom: 4%;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+.car_info {
+  margin-bottom: 1.5%;
+  margin-left: 1.5%;
+}
+.box1 {
+display: flex;
+flex-flow: row wrap;
+align-items: center;
+flex-direction: column;
+}
+
+@media only screen and (max-width: 920px) {
+    .cars {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .carsh1 h1 {
+        margin-right: 0;
+        text-align: center;
+        font-size: 25px;
+    }
+
+    .cars article {
+        width: 100%;
+        margin: 10px 0;
+        box-sizing: border-box;
+    }
+
+    .title_box {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .title_box h2 {
+        text-align: center;
+        margin: 15px 0;
+        max-width: 100%;
+    }
+
+    .image-container {
+        margin-bottom: 4%;
+    }
+
+    .image-container img {
+        border-radius: 4px;
+    }
+
+    .car_info {
+        margin-bottom: 1.5%;
+        margin-left: 0;
+    }
+}
