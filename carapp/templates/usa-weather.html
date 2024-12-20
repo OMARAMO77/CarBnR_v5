@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U.S. Weather Forecast</title>
+    <link rel="stylesheet" href="../static/styles/usa-weather.css">
+    <link rel="icon" href="../static/images/thumb.png">
+</head>
+<body>
+    <header>
+        <h1>U.S. Weather Forecast</h1>
+
+    </header>
+    <main>
+        <section id="form-section">
+            <form id="weather-form">
+                <label for="place"><strong>Enter a Location:</strong></label>
+                <input type="text" id="place" class="input" placeholder="E.g., Central Park, New York, USA">
+                <button type="submit">Get Forecast</button>
+            </form>
+        </section>
+        <section id="weather-results" class="hidden">
+            <h2>7-Day Weather Forecast</h2>
+            <div id="forecast-container"></div>
+        </section>
+    </main>
+    <footer>
+        <p>Powered by <a href="https://www.weather.gov/documentation/services-web-api" target="_blank">National Weather Service API</a></p>
+    </footer>
+    <script src="../static/scripts/usa-weather.js"></script>
+    <script src="../static/scripts/fetchCoordinates.js"></script>
+</body>
+</html>
