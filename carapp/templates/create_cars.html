@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insert Car Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" href="../static/images/thumb.png">
+  <link rel="stylesheet" href="../static/styles/create_cars.css">
+</head>
+<body>
+
+<div id="status"></div>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      
+      <!-- Title Section -->
+      <div class="card mb-4">
+        <div class="card-body text-center">
+          <h2 class="form-title">Register Your Location Details</h2>
+          <p class="text-muted">Provide the necessary details for the location and car registration.</p>
+        </div>
+      </div>
+
+      <!-- Location Section -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 class="form-title mb-3">Location Information</h4>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="state" class="form-label">State</label>
+              <select class="form-select" id="state" required>
+                <option value="" disabled selected>Select a state</option>
+              </select>
+              <a class="add-btn text-primary" data-bs-toggle="modal" data-bs-target="#addStateModal">+ Add new state</a>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="city" class="form-label">City</label>
+              <select class="form-select" id="city" required>
+                <option value="" disabled selected>Select a city</option>
+              </select>
+              <a class="add-btn text-primary" data-bs-toggle="modal" data-bs-target="#addCityModal">+ Add new city</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="location" class="form-label">Location</label>
+              <select class="form-select" id="location" required>
+                <option value="" disabled selected>Select a location</option>
+              </select>
+              <a class="add-btn text-primary" data-bs-toggle="modal" data-bs-target="#addLocationModal">+ Add new location</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Car Details Section -->
+      <form id="carForm" style="display:none;">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h4 class="form-title mb-3">Car Details</h4>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="brand" class="form-label">Brand</label>
+                <input type="text" class="form-control" id="brand" placeholder="Enter car brand" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="model" class="form-label">Model</label>
+                <input type="text" class="form-control" id="model" placeholder="Enter car model" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="year" class="form-label">Year</label>
+                <input type="number" class="form-control" id="year" placeholder="Enter manufacturing year" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="price_by_day" class="form-label">Price per Day ($)</label>
+                <input type="number" class="form-control" id="price_by_day" placeholder="Enter rental price" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="registration_number" class="form-label">Registration Number</label>
+                <input type="text" class="form-control" id="registration_number" placeholder="Enter registration number" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image Upload and Submit Section -->
+        <div class="card">
+          <div class="card-body">
+            <h4 class="form-title mb-3">Car Image</h4>
+            <div class="mb-3">
+              <label for="imageUpload" class="form-label">Upload Image</label>
+              <input type="file" class="form-control" id="imageUpload" accept="image/*" required>
+              <input type="hidden" id="image_url" name="image_url">
+            </div>
+            <div id="imagePreviewContainer" style="display:none;">
+              <img id="imagePreview" class="img-fluid mt-3" style="max-height: 200px;">
+            </div>
+            <div id="progressContainer">
+              <div id="progressBar">0%</div>
+            </div>
+            <div class="form-section text-center mt-3">
+              <button type="submit" class="btn btn-primary submit-btn" id="submitButton">Submit Car Details</button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Add State Modal -->
+<div class="modal fade" id="addStateModal" tabindex="-1" aria-labelledby="addStateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addStateModalLabel">Add New State</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="newState" class="form-label">State name</label>
+        <input type="text" class="form-control" id="newState" placeholder="Enter the state name">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveState">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add City Modal -->
+<div class="modal fade" id="addCityModal" tabindex="-1" aria-labelledby="addCityModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCityModalLabel">Add New City</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="newCity" class="form-label">City name</label>
+        <input type="text" class="form-control" id="newCity" placeholder="Enter the city name">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveCity">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Location Modal -->
+<div class="modal fade" id="addLocationModal" tabindex="-1" aria-labelledby="addLocationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addLocationModalLabel">Add New Location</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="newLocation" class="form-label">Location name</label>
+        <input type="text" class="form-control" id="newLocation" placeholder="Enter the location name">
+      </div>
+      <div class="modal-body">
+        <label for="address" class="form-label">Location address</label>
+        <input type="text" class="form-control" id="address" placeholder="Enter the location address">
+      </div>
+      <div class="modal-body">
+        <label for="phoneNumber" class="form-label">Location phone number</label>
+        <input type="text" class="form-control" id="phoneNumber" placeholder="Enter the location phone number">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveLocation">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="../static/scripts/status-parameters.js"></script>
+  <script src="../static/scripts/create_cars.js"></script>
+</body>
+</html>
