@@ -1,0 +1,15 @@
+Removes a car of the specified location
+---
+tags:
+  - Cars
+parameters:
+  - name: car_id
+    in: path
+    type: string
+    required: true
+    description: the id of the car to remove
+responses:
+  404:
+    description: location not found / car not found
+  200:
+    description: request executed successfully
