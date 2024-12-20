@@ -1,0 +1,49 @@
+body {
+    background: linear-gradient(to bottom, #4c92c3, #d8eaf2);
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+.container {
+    margin-top: 30px;
+}
+#forecast-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+.forecast-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    max-width: 300px;
+}
+.forecast-card h5 {
+    color: #4c92c3;
+}
+.forecast-card p {
+    margin: 5px 0;
+}
+.modal-header {
+    background-color: #4c92c3;
+    color: white;
+}
+.hourly-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.hourly-row:last-child {
+    border-bottom: none;
+}
+.footer {
+    text-align: center;
+    padding: 10px;
+    background: #f1f1f1;
+    color: #555;
+    font-size: 0.9em;
+    margin-top: 20px;
+}
