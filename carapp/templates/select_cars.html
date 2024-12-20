@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarBnR: Book Your Dream Car</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="icon" href="../static/images/thumb.png">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../static/styles/select_cars.css?{{ cache_id }}">
+  <link rel="stylesheet" href="../static/styles/navbar.css?{{ cache_id }}"></head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+      <a class="navbar-brand text-white" href="./#" style="font-family: 'Pacifico', cursive;">CarBnR</a>
+      <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="./#"><i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./#features"><i class="fas fa-star"></i> Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./#about"><i class="fas fa-info-circle"></i> About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./#services"><i class="fas fa-concierge-bell"></i> Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./#contact"><i class="fas fa-envelope"></i> Contact</a>
+          </li>
+        </ul>
+      </div>
+      <div class="navbar-nav ml-auto">
+        <a class="nav-link btn signup-link" id="signup-link" href="./signup.html" style="display: none;"><i class="fas fa-user-plus"></i> Sign up</a>
+      </div>
+      <div class="navbar-nav">
+        <a class="nav-link btn login-link" id="login-link" href="./login.html" style="display: none;"><i class="fas fa-sign-in-alt"></i> Log in</a>
+      </div>
+      <div class="navbar-nav">
+        <a class="nav-link btn profile-link" id="profile-link" href="./profile.html" style="display: none;"><i class="fas fa-user"></i> Profile</a>
+      </div>
+    </nav>
+    <div class="bg-dark text-white text-center py-3">
+      <h1>CarBnR - Where the ease of Car Booking meets the joy of Renting</h1>
+    <div id="api_status" class="available"></div>
+    </div>
+  </header>
+  <div class="container my-5 bg-white">
+    <section class="filters mb-5">
+      <div class="row border p-3 text-center d-flex align-items-center">
+        <div class="col-sm-4">
+          <div class="dropdown">
+            <h3 class="dropdown-toggle" id="statesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">States</h3>
+            <small class="states text-muted">select a state</small>
+            <div class="dropdown-menu col p-3" style="max-height: 200px; overflow-y: auto;" aria-labelledby="statesDropdown">
+              <ul class="list-unstyled ml-2">
+                {% for state in states %}
+                <li>
+                  <h5>
+                    <input type="radio" name="state" data-id="{{ state[0].id }}" data-name="{{ state[0].name }}" class="state_input">
+                    {{ state[0].name }}
+                  </h5>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="dropdown" id="citiesDropdownContainer">
+            <h3 class="dropdown-toggle" id="citiesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cities</h3>
+            <small class="cities text-muted">select a city</small>
+            <div class="dropdown-menu col p-3" style="max-height: 200px; overflow-y: auto;" aria-labelledby="citiesDropdown">
+              <ul class="list-unstyled ml-2" id="citiesList">
+                <!-- Cities will be loaded here -->
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="dropdown">
+            <h3 class="dropdown-toggle" id="locationsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Locations</h3>
+            <small class="companies text-muted">select a location</small>
+            <div class="dropdown-menu col p-3" style="max-height: 200px; overflow-y: auto;" aria-labelledby="locationsDropdown">
+              <ul class="list-unstyled ml-3">
+              <ul class="list-unstyled ml-2" id="locationsList">
+                <!-- Locations will be loaded here -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <button class="btn btn-primary" type="button" onclick="searchCars()">
+           <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+    </section>
+    <div class="text-center mb-4">
+      <h2 class="carHeading">Choose your state, city, and at least one location to explore available cars.</h2>
+    </div>
+    <section class="cars row justify-content-center">
+
+    </section>
+  </div>
+  <footer class="bg-dark text-white py-1">
+    <div class="container text-center">
+      <div class="social_links mb-3">
+        <a href="www.LinkedIn.com" target="_blank" class="btn btn-link text-white"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="https://github.com/OMARAMO77/CarBnR_v3/" target="_blank" class="btn btn-link text-white"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://www.x.com" target="_blank" class="btn btn-link text-white"><i class="fab fa-twitter"></i> Twitter</a>
+      </div>
+      <p style="font-family: 'Pacifico', cursive;">&copy; 2024 CarBnR. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="../static/scripts/status-parameters.js?{{ cache_id }}"></script>
+  <script src="../static/scripts/select_cars.js?{{ cache_id }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
