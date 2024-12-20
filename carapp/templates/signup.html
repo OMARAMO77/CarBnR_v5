@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/styles/signup_form.css">
+    <link rel="icon" href="../static/images/thumb.png">
+    <title>Sign Up for CarBnR</title>
+</head>
+<body>
+    <div id="status" class="alert" role="alert" style="display: none;"></div>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <form class="bg-dark text-light p-4" style="border-radius: 1.3rem!important;" id="createAccountForm">
+            <h2 class="text-primary mb-4">Sign up</h2>
+            <p class="message mb-4">Sign up now to be able to book a car.</p>
+            <div class="form-row mb-3">
+                <div class="form-group col-md-6">
+                    <label for="firstname">First name</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="First name" autocomplete="given-name" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="lastname">Last name</label>
+                    <input type="text" class="form-control" id="lastName" placeholder="Last name" autocomplete="family-name" required>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Email" autocomplete="email" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password" autocomplete="new-password" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="confirmPassword">Confirm password</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" autocomplete="new-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block"id="submitBtn">Submit</button>
+            <p class="text-center mt-3 signin">Already have an account? <a id="loginLink" href="login.html" class="text-primary">Log in</a></p>
+        </form>
+    </div>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="../static/scripts/status-parameters.js"></script>
+  <script src="../static/scripts/signup_script.js"></script>
+  <script>
+      // Function to get URL parameters
+      function getURLParameter(name) {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get(name);
+      }
+
+      // Function to append parameters to the login page URL
+      function updateLoginLink() {
+          const loginLink = document.getElementById("loginLink");
+          const carId = getURLParameter("carId");
+
+          if (carId) {
+              loginLink.href = `login.html?carId=${carId}`;
+          }
+      }
+
+      // Call the function when the page loads
+      window.onload = updateLoginLink;
+  </script>
+</body>
+</html>
