@@ -1,0 +1,15 @@
+Deletes a booking based on the id provided
+---
+tags:
+  - Bookings
+parameters:
+  - name: booking_id
+    in: path
+    type: string
+    required: true
+    description: The uuid of the booking to delete
+responses:
+  404:
+    description: Booking not found!
+  200:
+    description: Deletion request sucessful
