@@ -1,0 +1,129 @@
+body {
+  background-color: #f8f9fa;
+  font-family: 'Roboto', sans-serif;
+}
+.form-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #495057;
+}
+.card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+.add-btn {
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 5px;
+}
+.add-btn:hover {
+  text-decoration: underline;
+}
+#progressContainer {
+  margin-top: 10px;
+}
+#progressBar {
+  height: 20px;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+.form-section {
+  margin-top: 20px;
+}
+.submit-btn {
+  background-color: #007bff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+#imagePreview {
+  border-radius: 8px;
+  object-fit: cover;
+  max-width: 100%;
+}
+label {
+  font-weight: 500;
+}
+
+
+
+
+
+.add-btn {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.add-btn:hover {
+  text-decoration: underline;
+}
+
+.modal-content {
+  border-radius: 15px;
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: white;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.modal-title {
+  font-size: 1.2rem;
+}
+
+.modal-footer .btn-primary {
+  background-color: #007bff;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.row {
+  margin-bottom: 1.5rem;
+}
+
+
+#status {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    width: 80%;
+    height: 2em;
+    max-width: 400px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: x-large;
+    border-radius: 20px;
+}
+.status-success {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.status-error {
+  background-color: #F44336;
+  color: #fff;
+}
