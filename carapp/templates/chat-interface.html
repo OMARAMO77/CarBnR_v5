@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/styles/chat-interface.css">
+    <link rel="icon" href="../static/images/thumb.png">
+    <title>Chat Interface</title>
+</head>
+<body>
+<div class="container-fluid vh-100 d-flex flex-column">
+    <div class="row flex-grow-1">
+        <!-- Sidebar for Contacts -->
+        <div class="col-md-4 col-lg-3 sidebar d-flex flex-column" id="sidebar">
+            <h4>Contacts</h4>
+            <div id="contactsList" class="list-group flex-grow-1">
+                <!-- Placeholder for loading state -->
+                <div id="loadingContacts" class="text-center my-3">
+                    <div class="spinner-border text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-secondary">Loading contacts...</p>
+                </div>
+            </div>
+            <input type="text" id="recipient" class="form-control mt-auto mb-3" style="display:none" placeholder="Recipient ID" readonly>
+            <input type="email" id="recipientEmail" class="form-control mt-auto mb-3" placeholder="Recipient Email" readonly>
+            <button id="addContactBtn" class="btn btn-primary mt-auto" data-bs-toggle="modal" data-bs-target="#addContactModal">
+                Add New Contact
+            </button>
+        </div>
+
+        <!-- Main Chat Section -->
+        <div class=" col-md-8 col-lg-9 d-flex flex-column" id="mainContent">
+            <div class="contact-interface">
+                <!-- Toggle Button -->
+                <button id="toggleSidebarBtn" class="btn btn-secondary d-md-none mb-2">
+                    <i class="bi bi-list"></i> Show Contacts
+                </button>
+                <h2 class="text-center m-3">Chat Interface</h2>
+            </div>
+
+            <div class="chat-container flex-grow-1" id="chatBox">
+                <div id="emptyChatState" class="text-center my-5">
+                   <i class="bi bi-chat-dots" style="font-size: 3rem; color: #adb5bd;"></i>
+                   <p class="text-white mt-3">Your chat is empty. Select a contact to view messages or start a new conversation.</p>
+                </div>
+                <div class="text-center">
+                    <button id="loadMoreButton" class="btn btn-secondary" style="display:none">Load More Messages</button>
+                </div>
+                <div id="messagesList">
+                    <!-- Messages will be dynamically appended here -->
+                </div>
+            </div>
+
+            <!-- Message Input Section -->
+            <div class="m-3">
+                <div class="input-group">
+                    <button id="refreshBtn" class="btn btn-primary">Refresh</button>
+                    <input type="text" id="messageInput" class="form-control" placeholder="Type a message">
+                    <button id="sendButton" class="btn btn-primary">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/scripts/status-parameters.js"></script>
+<script src="../static/scripts/chat-interface.js"></script>
+</body>
+</html>
