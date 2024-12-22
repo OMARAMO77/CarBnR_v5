@@ -12,7 +12,7 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;
 
-    root /CarBnR_v4/carapp/templates;
+    root /CarBnR_v5/carapp/templates;
     index landing-page.html;
 
     error_page 404 /404.html;
@@ -59,7 +59,7 @@ server {
 
     location /static {
         autoindex off;
-        alias /CarBnR_v4/carapp/static;
+        alias /CarBnR_v5/carapp/static;
     }
 
     # Deny access to sensitive files
