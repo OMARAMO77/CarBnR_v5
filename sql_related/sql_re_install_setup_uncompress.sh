@@ -14,7 +14,7 @@ if [ -z "$1" ]; then
 fi
 
 # Navigate to the SQL-related folder
-cd /CarBnR_v4/sql_related || { echo -e "${RED}Failed to navigate to directory!${NC}"; exit 1; }
+cd /CarBnR_v5/sql_related || { echo -e "${RED}Failed to navigate to directory!${NC}"; exit 1; }
 
 # Reinstall MySQL
 echo -e "${GREEN}Reinstalling MySQL...${NC}"
