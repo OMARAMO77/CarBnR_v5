@@ -27,4 +27,4 @@ terminate_process 5002
 terminate_process 5003
 terminate_process 5007
 
-/CarBnR_v4/attached/delete_pycache /CarBnR_v4
+/CarBnR_v5/attached/delete_pycache /CarBnR_v5
