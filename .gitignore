@@ -1,0 +1,40 @@
+# Byte-compiled Python files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment folders
+env/
+venv/
+
+# Environment variables file
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+
+# Database and migrations
+alembic/versions/*.pyc
+
+# Temporary files
+*.tmp
+*.swp
+
+# Ignore secrets or credentials (if named differently)
+secrets.json
+config.yaml
