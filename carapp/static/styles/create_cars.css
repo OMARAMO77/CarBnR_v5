@@ -98,32 +98,3 @@ label {
 .row {
   margin-bottom: 1.5rem;
 }
-
-
-#status {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    font-size: 16px;
-    color: #333;
-    width: 80%;
-    height: 2em;
-    max-width: 400px;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: x-large;
-    border-radius: 20px;
-}
-.status-success {
-  background-color: #4CAF50;
-  color: #fff;
-}
-
-.status-error {
-  background-color: #F44336;
-  color: #fff;
-}
