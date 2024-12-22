@@ -1,14 +1,2 @@
-#status {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    font-size: 16px;
-    color: #333;
-    width: 80%;
-    max-width: 400px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-    z-index: 9999;
-}
+/* We don't need a css code for sign up page */
+
