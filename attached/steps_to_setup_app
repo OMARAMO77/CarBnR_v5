@@ -1,33 +1,33 @@
 # Navigate to the root directory
 cd /
 # Clone the repository
-git clone https://github.com/OMARAMO77/CarBnR_v4.git
+git clone https://github.com/OMARAMO77/CarBnR_v5.git
 
 # Re_install MySQL, Set up MySQL, Uncompress and load backup file
-/CarBnR_v4/sql_related/sql_re_install_setup_uncompress.sh <backup.sql.gz>
+/CarBnR_v5/sql_related/sql_re_install_setup_uncompress.sh <backup.sql.gz>
 # test: make sure it shows the databases at the end
 
 # Install NGINX, Create basic index.html and 404.html files, 
-/CarBnR_v4/attached/ngx_install_redirect_404
+/CarBnR_v5/attached/ngx_install_redirect_404
 # test: (curl 0.0.0.0)  (curl 0.0.0.0/123)  (curl 0.0.0.0/redirect_me)
 
 # Log in to your domain registrar and configure an A record that points to your server’s public IP address
 # test 1: check DNS propagation
-/CarBnR_v4/attached/check_dns <domain>
+/CarBnR_v5/attached/check_dns <domain>
 # test 2: (curl  http://domain)  (curl  http://domain/123)  (curl  http://domain/redirect_me)
 
 # Install Certbot, NGINX plugin, Obtain SSL certificate using Certbot with NGINX
 # you should provide your email during the process among other things
-/CarBnR_v4/attached/ssl_setup.sh <domain>
+/CarBnR_v5/attached/ssl_setup.sh <domain>
 # test 2: (curl https://domain)  (curl https://domain/123)  (curl https://domain/redirect_me)
 
 # substitute the old domain with the new one
-/CarBnR_v4/attached/replace_any_ip_or_domain /CarBnR_v4/carapp/templates/* <old_domain> <new_domain>
-/CarBnR_v4/attached/replace_any_ip_or_domain /CarBnR_v4/attached/locations_config <old_domain> <new_domain>
-/CarBnR_v4/attached/substituteIPnDomainInJS <js_directory> <new_ip_or_domain> # should contain https
+/CarBnR_v5/attached/replace_any_ip_or_domain /CarBnR_v5/carapp/templates/* <old_domain> <new_domain>
+/CarBnR_v5/attached/replace_any_ip_or_domain /CarBnR_v5/attached/locations_config <old_domain> <new_domain>
+/CarBnR_v5/attached/substituteIPnDomainInJS <js_directory> <new_ip_or_domain> # should contain https
 
 # Copy configuration and HTML files # Create a symbolic link for the new configuration
-/CarBnR_v4/attached/config_ngx_create_symlink
+/CarBnR_v5/attached/config_ngx_create_symlink
 # test: (https://domain) in the browser 
 
 # Install development tools and libraries for managing compilation and linking (pkg-config), 
@@ -35,7 +35,7 @@ git clone https://github.com/OMARAMO77/CarBnR_v4.git
 sudo apt-get install pkg-config libmysqlclient-dev libcairo2-dev
 
 # Install all Python dependencies listed in the requirements.txt file.
-/CarBnR_v4/attached/freeze 2
+/CarBnR_v5/attached/freeze 2
 
-/CarBnR_v4/attached/set_app
+/CarBnR_v5/attached/set_app
 # test: (curl -sI https://domain/select_cars) or in the browser 
