@@ -7,7 +7,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No color (reset)
 
 # Navigate to the project directory and set environment variables
-cd /CarBnR_v4
+cd /CarBnR_v5
 # Store current directory
 pwd_path=$(pwd)
 
