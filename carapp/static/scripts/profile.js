@@ -1,6 +1,6 @@
 let userId = getParameterByName('userId');
 const limit = 10; // Number of bookings per chunk
-
+//ajax
 // Offsets for pagination in each booking type
 let upcomingOffset = 0;
 let ongoingOffset = 0;
@@ -68,9 +68,12 @@ async function fetchUserBookings(type, offset) {
     const placeholder = document.querySelector('#booking-details-placeholder');
     toggleLoading(true, spinnerContainer);
     try {
-        const response = await $.ajax({ url, method: 'GET' });
-
-        if (response.length === 0) {
+        //const response = await $.ajax({ url, method: 'GET' });
+        // Fetch total bookings count
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to fetch user bookings');
+        const data = await response.json();
+        if (data.length === 0) {
             toggleLoading(false, spinnerContainer);
             loadMoreButton.toggle(false);
             if (placeholder) placeholder.remove();
@@ -80,12 +83,12 @@ async function fetchUserBookings(type, offset) {
             return;
         }
 
-        for (const booking of response) {
+        for (const booking of data) {
             getBookingDetails(booking.id, container, 'append');
         }
 
         toggleLoading(false, spinnerContainer);
-        loadMoreButton.toggle(response.length === limit); // Show 'Load More' only if more bookings are available
+        loadMoreButton.toggle(data.length === limit); // Show 'Load More' only if more bookings are available
     } catch (error) {
         console.error(`Error fetching ${type} bookings:`, error);
         toggleLoading(false, spinnerContainer);
@@ -141,8 +144,12 @@ async function fetchUserLocationsBookings(type, offset) {
             console.log(`You have no locations yet.`);
             return;
         }
-        const response = await $.ajax({ url, method: 'GET' });
-        if (response.length === 0) {
+        //const response = await $.ajax({ url, method: 'GET' });
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to fetch user bookings');
+        const data = await response.json();
+
+        if (data.length === 0) {
             toggleLoading(false, spinnerContainer);
             loadMoreButton.toggle(false);
             if (placeholder) placeholder.remove();
@@ -153,12 +160,12 @@ async function fetchUserLocationsBookings(type, offset) {
         }
 
         // Display booking details
-        for (const booking of response) {
+        for (const booking of data) {
             getBookingDetails(booking.id, container, 'append');
         }
 
         toggleLoading(false, spinnerContainer);
-        loadMoreButton.toggle(response.length === limit); // Show 'Load More' only if more bookings are available
+        loadMoreButton.toggle(data.length === limit); // Show 'Load More' only if more bookings are available
     } catch (error) {
         console.error(`Error fetching ${type} bookings:`, error);
         toggleLoading(false, spinnerContainer);
