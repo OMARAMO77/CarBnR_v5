@@ -1,239 +1,216 @@
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", () => {
   const HOST = 'https://omar.eromo.tech';
   const userId = getParameterByName('userId');
+  
+  const profileLink = document.querySelector(".profile-link");
+  const loginLink = document.querySelector(".login-link");
+  const signupLink = document.querySelector(".signup-link");
+  const citiesDropdownContainer = document.getElementById('citiesDropdownContainer');
+  const citiesList = document.getElementById('citiesList');
+  const locationsList = document.getElementById('locationsList');
+  const statesText = document.querySelector('.states');
+  const citiesText = document.querySelector('.cities');
+  const locationsText = document.querySelector('.companies');
+  const carHeadingText = document.getElementById('carHeadingText');
+  const carsSection = document.querySelector('SECTION.cars');
+
   if (userId) {
-    $(".profile-link").show();
-    //const profileLink = document.getElementById("profile-link");
-    //profileLink.style.display = "block";
+    profileLink.style.display = "block";
+    profileLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.location.href = `/profile.html?userId=${userId}`;
+    });
   } else {
-    $(".login-link").show();
-    $(".signup-link").show();
-    //const loginLink = document.getElementById("login-link");
-    //const signupLink = document.getElementById("signup-link");
-    //loginLink.style.display = "block";
-    //signupLink.style.display = "block";
+    loginLink.style.display = "block";
+    signupLink.style.display = "block";
   }
 
-  const $citiesDropdownContainer = $('#citiesDropdownContainer');
-  const $citiesList = $('#citiesList');
-  const $locationsDropdownContainer = $('#locationsDropdownContainer');
-  const $locationsList = $('#locationsList');
-  const $statesText = $('.states');
-  const $citiesText = $('.cities');
-  const $locationsText = $('.companies');
-  const $carHeadingText = $('.carHeading');
+  document.querySelectorAll('.state_input').forEach((stateInput) => {
+    stateInput.addEventListener('change', async function () {
+      if (this.checked) {
+        const stateId = this.dataset.id;
+        const stateName = this.dataset.name;        
 
-  // Redirect to signup if the user isn't signed in
-  //profileLink.onclick = function(event) {
-  $(".profile-link").on('click', function (event) {
-    event.preventDefault();
-    window.location.href = `/profile.html?userId=${userId}`;
-  });
+        if (window.locationObj) window.locationObj = {};
+        carHeadingText.textContent = 'Choose your state, city, and at least one location to explore available cars.';
+        carsSection.innerHTML = '';
+        statesText.textContent = stateName;
+        citiesText.textContent = 'select a city';
+        locationsText.textContent = 'select a location';
 
-  // Event listener for states
-  $('.state_input').on('change', function () {
-    if (this.checked) {
-      const stateId = $(this).data('id');
-      const stateName = $(this).data('name');
-      $statesText.text('');
-      $statesText.text(stateName);
-      $citiesText.text('select a city');
-      $locationsText.text('select a location');
-      // Clear existing cities and locations
-      $citiesList.empty();
-      $locationsList.empty();
-      $citiesDropdownContainer.show();
-      $locationsDropdownContainer.hide();
+        citiesList.innerHTML = '';
+        locationsList.innerHTML = '';
+        citiesDropdownContainer.style.display = 'block';
 
-      // Load cities for the selected state
-      $.ajax({
-        url: `${HOST}/api/v1/states/${stateId}/cities`,
-        method: 'GET',
-        dataType: 'json',
-        success: function (cities) {
+        try {
+          const response = await fetch(`${HOST}/api/v1/states/${stateId}/cities`);
+          const cities = await response.json();
+
+          if (cities.length === 0) citiesList.innerHTML = 'No cities available';
           cities.forEach(city => {
-            const $li = $('<li>');
-            const $radio = $('<input>', {
-              type: 'radio',
-              name: 'city',
-              'data-id': city.id,
-              'data-name': city.name,
-              class: 'city_input'
-            });
-            $li.append($radio).append(` ${city.name}`);
-            $citiesList.append($li);
+            const li = document.createElement('li');
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'city';
+            radio.dataset.id = city.id;
+            radio.dataset.name = city.name;
+            radio.classList.add('city_input');
 
-            // Event listener for cities
-            $radio.on('change', function () {
-              const locationObj = {};
-              $locationsText.text('select a location');
-              $locationsList.empty();
+            li.appendChild(radio);
+            li.append(` ${city.name}`);
+            citiesList.appendChild(li);
+
+            radio.addEventListener('change', async function () {
+              locationsText.textContent = 'select a location';
+              locationsList.innerHTML = '';
+
               if (this.checked) {
-                const cityName = $(this).data('name');
-                $citiesText.text('');
-                $citiesText.text(cityName);
+                citiesText.textContent = city.name;
 
-                const cityId = $(this).data('id');
+                //locationsDropdownContainer.style.display = 'block';
+                const cityId = this.dataset.id;
 
-                // Clear existing locations
-                $locationsList.empty();
-                $locationsDropdownContainer.show();
+                try {
+                  const response = await fetch(`${HOST}/api/v1/cities/${cityId}/locations`);
+                  const locations = await response.json();
 
-                // Load locations for the selected city
-                $.ajax({
-                  url: `${HOST}/api/v1/cities/${cityId}/locations`,
-                  method: 'GET',
-                  dataType: 'json',
-                  success: function (locations) {
-                    locations.forEach(location => {
-                      const $li = $('<li>');
-                      const $checkbox = $('<input>', {
-                        type: 'checkbox',
-                        'data-id': location.id,
-                        'data-name': location.name,
-                        class: 'location_input'
-                      });
-                      $li.append($checkbox).append(` ${location.name}`);
-                      $locationsList.append($li);
+                  if (locations.length === 0) locationsList.innerHTML = 'No locations available';
+                  locations.forEach(location => {
+                    const li = document.createElement('li');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.dataset.id = location.id;
+                    checkbox.dataset.name = location.name;
+                    checkbox.classList.add('location_input');
 
-                      // Event listener for locations
-                      $checkbox.on('change', function () {
-                        if ($(this).is(':checked')) {
-                          locationObj[$(this).attr('data-name')] = $(this).attr('data-id');
-                        } else {
-                          delete locationObj[$(this).attr('data-name')];
-                        }
-                        const selectedLocations = Object.keys(locationObj).sort();
-                        window.locationObj = locationObj;
-                        $locationsText.text('');
-                        $locationsText.text(selectedLocations.join(', '));
-                      });
+                    li.appendChild(checkbox);
+                    li.append(` ${location.name}`);
+                    locationsList.appendChild(li);
+
+                    checkbox.addEventListener('change', () => {
+                      if (!window.locationObj) window.locationObj = {};
+                      if (checkbox.checked) {
+                        window.locationObj[checkbox.dataset.name] = checkbox.dataset.id;
+                      } else {
+                        delete window.locationObj[checkbox.dataset.name];
+                      }
+                      const selectedLocations = Object.keys(window.locationObj).sort();
+                      locationsText.textContent = selectedLocations.join(', ');
+                      if (selectedLocations.length === 0) locationsText.textContent = 'select a location';
                     });
-                  },
-                  error: function () {
-                    alert('Failed to load locations.');
-                  }
-                });
+                  });
+                } catch (error) {
+                  alert('Failed to load locations.');
+                  console.error(error);
+                }
               }
             });
           });
-        },
-        error: function () {
+        } catch (error) {
           alert('Failed to load cities.');
-        }
-      });
-    }
-  });
-
-  // Search cars when the "Search" button is clicked
-  window.searchCars = async function() {
-      if (typeof locationObj === "undefined" || Object.values(locationObj).length === 0) {
-          alert('Please select at least one location before searching.');
-          return;
-      }
-      const locations = Object.values(locationObj);
-      const CARS_URL = `${HOST}/api/v1/cars_search/`;
-      try {
-          const response = await $.ajax({
-              url: CARS_URL,
-              type: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              data: JSON.stringify({ locations })
-          });
-
-          $('SECTION.cars').empty();
-
-          // Add the sentence "Here are the cars available for your selection:"
-          const carHeading = 'Here are the cars available for your selection:';
-          $('#carHeadingText').text(carHeading);
-
-          response.forEach(car => {
-              const availabilityText = car.available ? `<strong>Available:</strong> $${car.price_by_day} a day` : `<strong>Not Available</strong>`;
-              const image_url = car.image_url  || "../static/images/car_image.jpg"
-              const article = `
-                  <article class="col-sm-12 col-md-6 col-lg-4 mb-4" data-car-id="${car.id}">
-                      <div class="card h-100 shadow-lg" style="max-width: 322px; margin: 0 auto;">
-                          <div class="position-relative border h-40">
-                              <img src="${image_url.replace(/ /g, '_')}" loading="lazy" class="card-img-top" style="height: 180px;" alt="${car.brand} ${car.model} ${car.year}">
-                              <div class="badge bg-danger position-absolute top-0 start-0" style="margin-left: -2em; margin-top: 1em;">New</div>
-                          </div>
-                          <div class="card-body">
-                              <h5 class="card-title">${car.brand} ${car.model} ${car.year}</h5>
-                              <p class="card-text text-muted">Experience luxury and performance with the ${car.brand} ${car.model} ${car.year}.</p>
-                              <div class="d-flex justify-content-between align-items-center">
-                                  <p class="card-text mt-2">${availabilityText}</p>
-                                  <a href="#" class="btn btn-primary btn-sm book-now-btn">Book Now</a>
-                              </div>
-                          </div>
-                          <div class="card-footer text-muted">
-                              <small>Last updated 3 mins ago</small>
-                          </div>
-                      </div>
-                  </article>`;
-              $('SECTION.cars').append(article);
-          });
-      } catch (error) {
           console.error(error);
-          alert('Failed to search for cars.');
-      }
-
-      // Event listener for the "Book Now" button with async/await
-      $('SECTION.cars').on('click', '.book-now-btn', async function(event) {
-          event.preventDefault();
-
-          const carId = $(this).closest('article').data('car-id');
-
-          // Function to check ownership
-          async function fetchOwnerId(carId) {
-              try {
-                  // Fetch car details
-                  const responseCar = await fetch(`${HOST}/api/v1/cars/${carId}`);
-                  if (!responseCar.ok) throw new Error('Failed to fetch car details');
-                  const carData = await responseCar.json();
-                  const locationId = carData.location_id;
-
-                  // Fetch location details
-                  const responseLocation = await fetch(`${HOST}/api/v1/locations/${locationId}`);
-                  if (!responseLocation.ok) throw new Error('Failed to fetch location details');
-                  const locationData = await responseLocation.json();
-                  return locationData.user_id;
-              } catch (error) {
-                  console.error('Error fetching car ownerId:', error);
-                  throw error;
-              }
-          }
-
-          try {
-              const ownerId = await fetchOwnerId(carId);
-              if (userId === ownerId) {
-                  alert("You can't book cars from your locations. Try another account.");
-                  return;
-              }
-          } catch (error) {
-              console.error('Error during booking process:', error);
-          }
-          if (carId) {
-            if (userId) {
-              window.location.href = `/booking-page.html?carId=${carId}&userId=${userId}`;
-            } else {
-               window.location.href = `/signup.html?carId=${carId}`;
-            }
-          } else {
-            window.location.href = `/signup.html`;;
-          }
-      });
-  };
-  // Initialize API status check
-  apiStatus();
-
-  function apiStatus() {
-    const API_URL = `${HOST}/api/v1/status/`;
-    $.get(API_URL, (data, textStatus) => {
-      if (textStatus === 'success' && data.status === 'OK') {
-        $('#api_status').addClass('available');
-      } else {
-        $('#api_status').removeClass('available');
+        }
       }
     });
+  });
+
+  window.searchCars = async function () {
+    if (!window.locationObj || Object.keys(window.locationObj).length === 0) {
+      alert('Please select at least one location before searching.');
+      return;
+    }
+
+    const locations = Object.values(window.locationObj);
+    try {
+      const response = await fetch(`${HOST}/api/v1/cars_search/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ locations })
+      });
+      const cars = await response.json();
+      if (cars.length === 0) {
+        carHeadingText.textContent = 'No cars available';
+        return;
+      }
+      carsSection.innerHTML = '';
+      carHeadingText.textContent = 'Here are the cars available for your selection:';
+
+      cars.forEach(car => {
+        const availabilityText = car.available
+          ? `<strong>Available:</strong> $${car.price_by_day} a day`
+          : `<strong>Not Available</strong>`;
+        const imageUrl = car.image_url || "../static/images/car_image.jpg";
+
+        const article = `
+          <article class="col-sm-12 col-md-6 col-lg-4 mb-4" data-car-id="${car.id}">
+            <div class="card h-100 shadow-lg" style="max-width: 322px; margin: 0 auto;">
+              <div class="position-relative border h-40">
+                <img src="${imageUrl.replace(/ /g, '_')}" loading="lazy" class="card-img-top" style="height: 180px;" alt="${car.brand} ${car.model} ${car.year}">
+                <div class="badge bg-danger position-absolute top-0 start-0" style="margin-left: -2em; margin-top: 1em;">New</div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">${car.brand} ${car.model} ${car.year}</h5>
+                <p class="card-text text-muted">Experience luxury and performance with the ${car.brand} ${car.model} ${car.year}.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <p class="card-text mt-2">${availabilityText}</p>
+                  <a href="#" class="btn btn-primary btn-sm book-now-btn">Book Now</a>
+                </div>
+              </div>
+              <div class="card-footer text-muted">
+                <small>Last updated 3 mins ago</small>
+              </div>
+            </div>
+          </article>`;
+        carsSection.insertAdjacentHTML('beforeend', article);
+      });
+
+      document.querySelectorAll('.book-now-btn').forEach(button => {
+        button.addEventListener('click', async (event) => {
+          event.preventDefault();
+          const carId = button.closest('article').dataset.carId;
+
+          try {
+            const carResponse = await fetch(`${HOST}/api/v1/cars/${carId}`);
+            const car = await carResponse.json();
+            const locationResponse = await fetch(`${HOST}/api/v1/locations/${car.location_id}`);
+            const location = await locationResponse.json();
+
+            if (userId === location.user_id) {
+              alert("You can't book cars from your locations. Try another account.");
+              return;
+            }
+
+            const redirectUrl = userId
+              ? `/booking-page.html?carId=${carId}&userId=${userId}`
+              : `/signup.html?carId=${carId}`;
+            window.location.href = redirectUrl;
+          } catch (error) {
+            console.error(error);
+            alert('Failed to complete the booking process.');
+          }
+        });
+      });
+    } catch (error) {
+      alert('Failed to search for cars.');
+      console.error(error);
+    }
+  };
+
+  async function apiStatus() {
+    try {
+      const response = await fetch(`${HOST}/api/v1/status/`);
+      const data = await response.json();
+
+      const apiStatusElement = document.getElementById('api_status');
+      if (data.status === 'OK') {
+        apiStatusElement.classList.add('available');
+      } else {
+        apiStatusElement.classList.remove('available');
+      }
+    } catch (error) {
+      console.error('Failed to check API status:', error);
+    }
   }
+
+  apiStatus();
 });
