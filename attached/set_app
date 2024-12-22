@@ -7,9 +7,9 @@ RED='\033[0;31m'
 NC='\033[0m' # No color (reset)
 
 # Navigate to the project directory and set environment variables
-cd /CarBnR_v4
+cd /CarBnR_v5
 # Specify the location of the .env file
-ENV_FILE="/CarBnR_v4/.env"
+ENV_FILE="/CarBnR_v5/.env"
 
 # Check if the .env file exists
 if [ -f "$ENV_FILE" ]; then
