@@ -6,9 +6,9 @@ RED='\033[0;31m'    # Red for error messages
 NC='\033[0m'        # No color (reset)
 
 # Paths
-CONFIG_SOURCE="/CarBnR_v4/attached/locations_config"
+CONFIG_SOURCE="/CarBnR_v5/attached/locations_config"
 CONFIG_DEST="/etc/nginx/sites-available/locations_config"
-ERROR_PAGE_SOURCE="/CarBnR_v4/attached/404.html"
+ERROR_PAGE_SOURCE="/CarBnR_v5/attached/404.html"
 ERROR_PAGE_DEST="/var/www/html/404.html"
 NGINX_ENABLED="/etc/nginx/sites-enabled/"
 NGINX_AVAILABLE="/etc/nginx/sites-available/locations_config"
