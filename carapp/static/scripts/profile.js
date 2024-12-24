@@ -8,7 +8,7 @@ let pastOffset = 0;
 let locationUpcomingOffset = 0;
 let locationOngoingOffset = 0;
 let locationPastOffset = 0;
-
+//locations/bookings/
 const bookingDetailsPlaceholder = `
     <div class="booking-details0 card mb-4 shadow-lg" id="booking-details-placeholder">
         <div class="card-header bg-primary text-white">
@@ -18,15 +18,15 @@ const bookingDetailsPlaceholder = `
           <div class="row d-flex align-items-stretch">
             <div class="col-lg-6 d-flex flex-column">
               <ul class="list-group flex-grow-1">
-                <li class="list-group-item"><strong>Booking ID:</strong> <span class="b-skeleton-text">Loading...</span></li>
-                <li class="list-group-item"><strong>Booking Date:</strong> <span class="b-skeleton-text">Loading...</span></li>
-                <li class="list-group-item"><strong>Customer Name:</strong> <span class="b-skeleton-text">Loading...</span></li>
                 <li class="list-group-item"><strong>Pickup Date:</strong> <span class="b-skeleton-text">Loading...</span></li>
                 <li class="list-group-item"><strong>Return Date:</strong> <span class="b-skeleton-text">Loading...</span></li>
                 <li class="list-group-item"><strong>Total Rental Cost:</strong> <span class="b-skeleton-text">Loading...</span></li>
                 <li class="list-group-item"><strong>Booking Status:</strong> <span class="b-skeleton-text">Loading...</span></li>
                 <li class="list-group-item"><strong>Payment Method:</strong> <span class="b-skeleton-text">Loading...</span></li>
+                <li class="list-group-item"><strong>Customer Name:</strong> <span class="b-skeleton-text">Loading...</span></li>
                 <li class="list-group-item"><strong>Customer Contact:</strong> <span class="b-skeleton-text">Loading...</span></li>
+                <li class="list-group-item"><strong>Booking ID:</strong> <span class="b-skeleton-text">Loading...</span></li>
+                <li class="list-group-item"><strong>Booking Date:</strong> <span class="b-skeleton-text">Loading...</span></li>
               </ul>
             </div>
             <div class="col-lg-6 d-flex flex-column">
@@ -73,6 +73,7 @@ async function fetchUserBookings(type, offset) {
         const response = await fetch(url);
         if (!response.ok) throw new Error('Failed to fetch user bookings');
         const data = await response.json();
+        console.log(data);
         if (data.length === 0) {
             toggleLoading(false, spinnerContainer);
             loadMoreButton.toggle(false);
@@ -148,6 +149,7 @@ async function fetchUserLocationsBookings(type, offset) {
         const response = await fetch(url);
         if (!response.ok) throw new Error('Failed to fetch user bookings');
         const data = await response.json();
+        console.log(data);
 
         if (data.length === 0) {
             toggleLoading(false, spinnerContainer);
@@ -174,7 +176,7 @@ async function fetchUserLocationsBookings(type, offset) {
 async function fetchUserDetails(userId) {
     try {
         // Fetch user details
-        const responseDetails = await fetch(`${HOST}/api/v1/users/${userId}`);
+        const responseDetails = await fetch(`${HOST}/api/v1/format_user_details/${userId}`);
 
         if (responseDetails.status === 404) {
             alert("User not found...");
@@ -185,23 +187,21 @@ async function fetchUserDetails(userId) {
             throw new Error(`Failed to fetch user details: ${responseDetails.status}`);
         }
         const userDetails = await responseDetails.json();
-
-        // Fetch total bookings count
-        const responseCount1 = await fetch(`${HOST}/api/v1/users/${userId}/bookings/count`);
-        if (!responseCount1.ok) throw new Error('Failed to fetch total bookings count');
-        const countData1 = await responseCount1.json();
-
-        // Fetch locations' bookings count
-        const responseCount2 = await fetch(`${HOST}/api/v1/users/${userId}/locations/bookings/count`);
-        if (!responseCount2.ok) throw new Error('Failed to fetch total bookings count');
-        const countData2 = await responseCount2.json();
-
-        // Extract necessary data
-        const userName = `${userDetails.first_name} ${userDetails.last_name}`;
-        const region = userDetails.region || "Region not set";
-        const totalBookings = countData1.total_bookings || 0;
-        const user_total_location_bookings = countData2.user_total_location_bookings || 0;
-        const formattedDate = new Date(userDetails.created_at).toLocaleDateString('en-US', {
+        // Destructure booking details
+        const { 
+            user: {
+                first_name: firstName,
+                last_name: lastName,
+                phone_number: phoneNumber,
+                email,
+                region,
+                created_at: createdAt
+            },
+            user_total_location_bookings,
+            total_bookings
+        } = userDetails;
+        const userName = `${firstName} ${lastName}`;
+        const formattedDate = new Date(createdAt).toLocaleDateString('en-US', {
             year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'
         });
         // Populate the profile fields with fetched data
@@ -218,10 +218,10 @@ async function fetchUserDetails(userId) {
             <div class="col-md-9">
                 <div class="account-details-card shadow" id="account-details">
                     <h4 class="account-title">Account Details</h4>
-                    <div class="detail-item"><strong>Email:</strong> ${userDetails.email}</div>
-                    <div class="phone_number detail-item"><strong>Phone:</strong> ${userDetails.phone_number}</div>
+                    <div class="detail-item"><strong>Email:</strong> ${email}</div>
+                    <div class="phone_number detail-item"><strong>Phone:</strong> ${phoneNumber}</div>
                     <div class="detail-item"><strong>Member Since:</strong> ${formattedDate}</div>
-                    <div class="detail-item"><strong>Your Total Bookings:</strong> ${totalBookings}</div>
+                    <div class="detail-item"><strong>Your Total Bookings:</strong> ${total_bookings}</div>
                     <div class="detail-item"><strong>Bookings at Your Locations:</strong> ${user_total_location_bookings}</div>
 
                     <div class="action-buttons mt-4">
