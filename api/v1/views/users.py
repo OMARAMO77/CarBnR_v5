@@ -164,3 +164,41 @@ def login():
     else:
         return jsonify({"error": "Invalid credentials"}), 401
 
+@app_views.route('/format_user_details/<user_id>/', methods=['GET'], strict_slashes=False)
+@swag_from('documentation/users/format_user_details.yml', methods=['GET'])
+def format_user_details(user_id):
+    """
+    Retrieves formatted user details based on the given user ID.
+    """
+    # Retrieve the user object
+    user = storage.get(User, user_id)
+    if not user:
+        abort(404, description="User not found")
+
+    # Aggregate all bookings from user's locations
+    try:
+        location_bookings = [
+            booking.to_dict()
+            for location in user.locations
+            for booking in location.bookings
+        ]
+    except AttributeError:
+        location_bookings = []
+
+    total_bookings = len(user.bookings) if user.bookings else 0  # Handle None case
+
+    # Prepare formatted response
+    user_details_formatted = {
+        "user": {
+            "first_name": user.first_name or "",
+            "last_name": user.last_name or "",
+            "phone_number": user.phone_number or "",
+            "email": user.email or "",
+            "created_at": user.created_at if user.created_at else None,
+            "region": user.region or "Region not set",
+        },
+        "user_total_location_bookings": len(location_bookings),
+        "total_bookings": total_bookings,
+    }
+
+    return jsonify(user_details_formatted), 200
