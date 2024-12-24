@@ -2,24 +2,37 @@ const HOST = 'https://omar.eromo.tech';
 const bookingId = getParameterByName('bookingId');
 
 
-
 async function getBookingDetails(bookingId, renderTarget, renderMethod) {
     try {
         // Fetch booking details
-        const bookingResponse = await fetch(`${HOST}/api/v1/bookings/${bookingId}`);
-        if (!bookingResponse.ok) throw new Error("Error fetching booking details");
-        const bookingData = await bookingResponse.json();
-        if (bookingData.length === 0) {
-            renderTarget.innerHTML = "<p>No bookings available</p>";
+        const response = await fetch(`${HOST}/api/v1/format_bookings/${bookingId}`);
+        if (!response.ok) throw new Error("Error fetching formatted booking details");
+
+        const bookingData = await response.json();
+
+        // Check if booking data is empty
+        if (!bookingData || Object.keys(bookingData).length === 0) {
+            renderTarget.innerHTML = "<p>No booking details available</p>";
             return;
         }
-        const { 
-            id, status, car_id: carId, location_id: locationId, 
-            created_at: bookingDate0, pickup_date: pickupDate0, 
-            return_date: returnDate0, total_cost: totalCostRaw, 
-            payment_method: paymentMethod, user_id: customerId 
-        } = bookingData;
 
+        // Destructure booking details
+        const { 
+            booking: {
+                pickup_date: pickupDate0,
+                return_date: returnDate0,
+                total_cost: totalCostRaw,
+                status,
+                payment_method: paymentMethod,
+                customer_id: customerId,
+                created_at: bookingDate0
+            },
+            customer: { first_name: firstName, last_name: lastName, email },
+            car: { brand, model, year, image_url: imageUrlRaw },
+            location: { owner_id: ownerId, name: locationName, address, city, state },
+            validity
+        } = bookingData;
+        console.log(bookingData);
         const formatDate = date => new Date(date).toLocaleDateString('en-US', {
             year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'
         });
@@ -31,53 +44,12 @@ async function getBookingDetails(bookingId, renderTarget, renderMethod) {
         const totalCost = totalCostRaw.toFixed(2);
         const daysBetween = calculateDaysBetween(pickupDate1, returnDate1);
         const priceByDay = (totalCostRaw / daysBetween).toFixed(2);
+        const userName = `${firstName} ${lastName}`;
+        const carType = `${brand} ${model} ${year}`;
+        const imageUrl = imageUrlRaw.replace(/ /g, '_');
 
-        // Fetch user information
-        const userResponse = await fetch(`${HOST}/api/v1/users/${customerId}`);
-        let userName, userEmail;
-        if (userResponse.status === 404) {
-            userName = "Unknown";
-            userEmail = null;
-        } else if (userResponse.ok) {
-            const userData = await userResponse.json();
-            userName = `${userData.first_name} ${userData.last_name}`;
-            userEmail = userData.email;
-        } else {
-            throw new Error(`Error fetching user info: ${userResponse.statusText}`);
-        }
-
-        // Fetch car details
-        const carResponse = await fetch(`${HOST}/api/v1/cars/${carId}`);
-        let imageUrl = "../static/images/car_image.png", carType = "Unknown";
-
-        if (carResponse.ok) {
-            const carData = await carResponse.json();
-            imageUrl = carData.image_url.replace(/ /g, '_');
-            carType = `${carData.brand} ${carData.model} ${carData.year}`;
-        } else if (carResponse.status !== 404) {
-            throw new Error(`Error fetching car details: ${carResponse.statusText}`);
-        }
-
-        // Fetch location details
-        const locationResponse = await fetch(`${HOST}/api/v1/locations/${locationId}`);
-        if (!locationResponse.ok) throw new Error("Error fetching location details");
-        const locationData = await locationResponse.json();
-        const { name: locationName, address: locationAddressRaw, city_id: cityId, user_id: ownerId } = locationData;
-
-        // Fetch city details
-        const cityResponse = await fetch(`${HOST}/api/v1/cities/${cityId}`);
-        if (!cityResponse.ok) throw new Error('Failed to fetch city details');
-        const cityData = await cityResponse.json();
-        const { name: cityName, state_id: stateId } = cityData;
-
-        // Fetch state details
-        const stateResponse = await fetch(`${HOST}/api/v1/states/${stateId}`);
-        if (!stateResponse.ok) throw new Error('Failed to fetch city details');
-        const stateData = await stateResponse.json();
-        const { name: stateName } = stateData;
-
-        const stateAbbreviation = getStateAbbreviation(stateName);
-        const locationAddress = [locationAddressRaw, cityName, stateAbbreviation].filter(Boolean).join(', ');
+        const stateAbbreviation = getStateAbbreviation(state);
+        const locationAddress = [address, city, stateAbbreviation].filter(Boolean).join(', ');
         // Construct booking details HTML
 
 
@@ -87,11 +59,12 @@ async function getBookingDetails(bookingId, renderTarget, renderMethod) {
         const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
 
         // Check if modification is allowed
-        let validity = await isValidBooking(bookingId);
         let buttonsHtml;
+        const isConfirmed = status.toLowerCase() === "confirmed";
+        const statusClass = isConfirmed ? "text-success" : "text-danger";
+        const buttonStyle = validity && !isConfirmed? '' : 'display: none;';
         const modifyButtonClass = `btn ${validity ? 'btn-warning' : 'btn-danger'} mr-2`;
         const confirmButtonClass = `btn ${validity ? 'btn-success' : 'btn-danger'} mr-2`;
-        const buttonStyle = validity ? '' : 'display: none;';
         if (daysDifference > 2) {
             if (userId === customerId) {
                 buttonsHtml = `
@@ -138,15 +111,15 @@ async function getBookingDetails(bookingId, renderTarget, renderMethod) {
                 <div class="row d-flex align-items-stretch">
                     <div class="col-lg-6 d-flex flex-column">
                         <ul class="list-group flex-grow-1">
-                            <li class="list-group-item"><strong>Booking ID:</strong> ${bookingId}</li>
-                            <li class="list-group-item"><strong>Booking Date:</strong> ${bookingDate}</li>
-                            <li class="list-group-item"><strong>Customer Name:</strong> ${userName}</li>
                             <li class="list-group-item" id="pickupDate-${bookingId}"><strong>Pickup Date:</strong> ${pickupDate}</li>
                             <li class="list-group-item" id="returnDate-${bookingId}"><strong>Return Date:</strong> ${returnDate}</li>
                             <li class="list-group-item" id="totalCost-${bookingId}"><strong>Total Rental Cost:</strong> $${totalCost}</li>
-                            <li class="list-group-item" id="status-${bookingId}"><strong>Booking Status:</strong> ${status}</li>
+                            <li class="list-group-item" id="status-${bookingId}"><strong>Booking Status: <span class="${statusClass}">${status}</span></strong></li>
                             <li class="list-group-item"><strong>Payment Method:</strong> ${paymentMethod}</li>
-                            <li class="list-group-item"><strong>Customer Contact:</strong> ${userEmail}</li>
+                            <li class="list-group-item"><strong>Customer Name:</strong> ${userName}</li>
+                            <li class="list-group-item"><strong>Customer Contact:</strong> ${email}</li>
+                            <li class="list-group-item"><strong>Booking ID:</strong> ${bookingId}</li>
+                            <li class="list-group-item"><strong>Booking Date:</strong> ${bookingDate}</li>
                         </ul>
                     </div>
                     <div class="col-lg-6 d-flex flex-column">
