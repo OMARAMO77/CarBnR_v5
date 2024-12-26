@@ -322,32 +322,35 @@ async function modifyBooking(bookingId) {
         const booking = await response.json();
         const { status, pickup_date, return_date, price_by_day } = booking;
 
-        // Calculate if pickup date is within 2 day from today
+        // Calculate if pickup date is within 2 days from today
         const today = new Date();
         const pickupDate = new Date(pickup_date);
         const daysBetween = calculateDaysBetween(pickupDate, today);
 
-        // Set minimum for pickupDate to be at least 2 day from today
+        // Set minimum for pickupDate to be at least 2 days from today
         const minPickupDate = new Date();
         minPickupDate.setDate(today.getDate() + 2);
         document.getElementById("pickupDate").setAttribute("min", minPickupDate.toISOString().slice(0, 10));
 
         // Set min attribute for return date to be 1 day after pickup date
-        document.getElementById("pickupDate").onchange = function() {
+        document.getElementById("pickupDate").onchange = function () {
             const selectedPickupDate = new Date(this.value);
             const minReturnDate = new Date(selectedPickupDate);
             minReturnDate.setDate(selectedPickupDate.getDate() + 1);
             document.getElementById("returnDate").setAttribute("min", minReturnDate.toISOString().slice(0, 10));
         };
 
-        // Show modal
-        $('#modifyBookingModal').modal('show');
+        // Show modal using Bootstrap's JavaScript API
+        const modalElement = document.getElementById('modifyBookingModal');
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
 
         // Handle saving changes
-        document.getElementById("saveBookingChanges").onclick = async function() {
+        document.getElementById("saveBookingChanges").onclick = async function () {
             const newPickupDate = document.getElementById("pickupDate").value;
             const newReturnDate = document.getElementById("returnDate").value;
             const newDateTime = document.getElementById("dateTime").value;
+
             if (!newPickupDate) {
                 alert('Please select pickup date.');
                 return;
@@ -358,6 +361,7 @@ async function modifyBooking(bookingId) {
                 alert('Please select pickup time.');
                 return;
             }
+
             const dateTime1 = new Date(newPickupDate + "T" + newDateTime + ":00").toISOString().split(".000Z")[0];
             const dateTime2 = new Date(newReturnDate + "T" + newDateTime + ":00").toISOString().split(".000Z")[0];
 
@@ -365,6 +369,7 @@ async function modifyBooking(bookingId) {
             const newPickup = new Date(newPickupDate);
             const newReturn = new Date(newReturnDate);
             const rentalDays = Math.ceil((newReturn - newPickup) / (1000 * 60 * 60 * 24));
+
             // Calculate the new total cost
             const totalCost = rentalDays * price_by_day;
 
@@ -395,9 +400,10 @@ async function modifyBooking(bookingId) {
             console.log("Booking updated successfully:", updatedBooking);
             alert("Booking updated successfully!");
 
-            // Close modal and refresh data or update UI
-            $('#modifyBookingModal').modal('hide');
+            // Close modal
+            modal.hide();
 
+            // Update UI
             const newPickupDate0 = new Date(dateTime1).toLocaleDateString('en-US', {
                 year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'
             });
@@ -411,7 +417,6 @@ async function modifyBooking(bookingId) {
             pickupDateText.innerHTML = `<strong>Pickup Date:</strong> ${newPickupDate0}`;
             returnDateText.innerHTML = `<strong>Return Date:</strong> ${newReturnDate0}`;
             totalCostText.innerHTML = `<strong>Total Rental Cost:</strong> $${totalCost}`;
-
         };
     } catch (error) {
         console.error("Error modifying booking:", error);
@@ -450,8 +455,10 @@ async function openUpdateCarModal(carId) {
 
         console.log("Car details loaded:", { brand, model, year, price_by_day });
 
-        // Show the modal
-        $('#updateCarModal').modal('show');
+        // Show modal using Bootstrap's JavaScript API
+        const modalElement = document.getElementById('updateCarModal');
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
 
         // Set up the save button action
         const saveButton = document.getElementById("saveCarChanges");
@@ -481,7 +488,8 @@ async function openUpdateCarModal(carId) {
 
                 if (!updateCarResponse.ok) throw new Error('Failed to update car');
 
-                $('#updateCarModal').modal('hide');
+                // Close modal
+                modal.hide();
                 alert("Car updated successfully!");
 
                 const updatedCarType = `${updatedBrand} ${updatedModel} ${updatedYear}`;
@@ -509,13 +517,15 @@ async function openUpdateUserModal(userId) {
         const UserData = await UserResponse.json();
         const { first_name, last_name, region, phone_number } = UserData;
 
-        $('#first_name').val(`${first_name}`);
-        $('#last_name').val(`${last_name}`);
-        $('#region').val(`${region}`);
-        $('#phone_number').val(`${phone_number}`);
+        document.getElementById("first_name").value = first_name;
+        document.getElementById("last_name").value = last_name;
+        document.getElementById("region").value = region;
+        document.getElementById("phone_number").value = phone_number;
 
-        // Show the modal
-        $('#updateUserModal').modal('show');
+        // Show modal using Bootstrap's JavaScript API
+        const modalElement = document.getElementById('updateUserModal');
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
 
         // Set up the save button action
         const saveButton = document.getElementById("saveUserChanges");
@@ -547,7 +557,8 @@ async function openUpdateUserModal(userId) {
             });
             if (!updateResponse.ok) throw new Error('Failed to update user');
 
-            $('#updateUserModal').modal('hide');
+            // Close modal
+            modal.hide();
             await fetchUserDetails(userId);
             alert("User updated successfully!");
         };
@@ -569,8 +580,10 @@ async function openUpdateLocationModal(locationId) {
         document.getElementById('locationAddress').value = address;
         document.getElementById('locationPhone').value = phone_number;
 
-        // Show the modal
-        $('#updateLocationModal').modal('show');
+        // Show modal using Bootstrap's JavaScript API
+        const modalElement = document.getElementById('updateLocationModal');
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
 
         // Set up the save button action
         const saveButton = document.getElementById("saveLocationChanges");
@@ -598,7 +611,8 @@ async function openUpdateLocationModal(locationId) {
 
                 if (!updateLocationResponse.ok) throw new Error('Failed to update location');
 
-                $('#updateLocationModal').modal('hide');
+                // Close modal
+                modal.hide();
                 alert("Location updated successfully!");
                 const selectElement = document.getElementById('location');
                 const optionElement = selectElement.querySelector(`option[value="${locationId}"]`);
