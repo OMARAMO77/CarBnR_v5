@@ -511,8 +511,11 @@ async function openUpdateCarModal(carId) {
 
 async function openUpdateUserModal(userId) {
     try {
-        // Fetch user details and populate the form
-        const UserResponse = await fetch(`${HOST}/api/v1/users/${userId}`);
+        // Send PUT request
+        const UserResponse = await fetch(`${HOST}/api/v1/users/${userId}`, {
+            method: 'GET',
+            credentials: 'include', // Include cookies
+        });
         if (!UserResponse.ok) throw new Error('Failed to fetch user details');
         const UserData = await UserResponse.json();
         const { first_name, last_name, region, phone_number } = UserData;
@@ -547,14 +550,30 @@ async function openUpdateUserModal(userId) {
                 alert("Please fill at least one field to update.");
                 return;
             }
+            // Extract CSRF token from cookies
+            const csrfToken = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('csrf_access_token='))
+                ?.split('=')[1];
+
+            if (!csrfToken) throw new Error("CSRF token is missing");
 
             const updateResponse = await fetch(`${HOST}/api/v1/users/${userId}`, {
                 method: 'PUT',
+                credentials: 'include', // Include cookies
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken, // Include CSRF token
                 },
                 body: JSON.stringify(payload),
             });
+
+            // Handle unauthorized response
+            if (updateResponse.status === 401) {
+                alert("Unauthorized. Please log in again.");
+                throw new Error("Unauthorized");
+            }
+
             if (!updateResponse.ok) throw new Error('Failed to update user');
 
             // Close modal
@@ -567,6 +586,7 @@ async function openUpdateUserModal(userId) {
         alert("An error occurred while updating the user.");
     }
 }
+
 async function openUpdateLocationModal(locationId) {
     try {
         // Fetch location details and populate the form
