@@ -20,6 +20,9 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.register_blueprint(app_views)
 cors = CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 app.config['JWT_SECRET_KEY'] = getenv('JWT_SECRET_KEY')
+app.config["JWT_COOKIE_CSRF_PROTECT"] = True  # Ensures CSRF tokens are issued and validated
+app.config["JWT_TOKEN_LOCATION"] = ["cookies"]  # Use cookies for tokens
+app.config["JWT_ACCESS_CSRF_HEADER_NAME"] = "X-CSRF-TOKEN"  # CSRF header name
 jwt = JWTManager(app)
 
 @app.teardown_appcontext
