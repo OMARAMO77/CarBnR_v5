@@ -3,11 +3,12 @@
 from models import storage
 from models.state import State
 from flask import Flask, render_template
+# from flask_jwt_extended import jwt_required, get_jwt_identity
+
 import uuid
 app = Flask(__name__)
 # app.jinja_env.trim_blocks = True
 # app.jinja_env.lstrip_blocks = True
-
 
 @app.teardown_appcontext
 def close_db(error):
@@ -18,15 +19,12 @@ def close_db(error):
 @app.route('/select_cars', strict_slashes=False)
 def carbnr():
     """ CARBNR is alive! """
-    states = storage.all(State).values()
-    states = sorted(states, key=lambda k: k.name)
-    st_ct = []
+    # Fetch and sort states by name
+    states = sorted(storage.all(State).values(), key=lambda state: state.name)
 
-    for state in states:
-        st_ct.append([state, sorted(state.cities, key=lambda k: k.name)])
-
+    # Render the template with sorted states
     return render_template('select_cars.html',
-                           states=st_ct,
+                           states=states,
                            cache_id=uuid.uuid4())
 
 
