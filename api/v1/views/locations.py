@@ -23,8 +23,9 @@ def get_locations(city_id):
 
     if not city:
         abort(404)
+    sorted_locations = sorted(city.locations, key=lambda location: location.name)
 
-    locations = [location.to_dict() for location in city.locations]
+    locations = [location.to_dict() for location in sorted_locations]
 
     return jsonify(locations)
 
@@ -132,8 +133,9 @@ def get_user_locations():
 
     if not user:
         abort(404)
+    sorted_locations = sorted(user.locations, key=lambda location: location.name)
 
-    locations = [location.to_dict() for location in user.locations]
+    locations = [location.to_dict() for location in sorted_locations]
 
     return jsonify(locations)
 
