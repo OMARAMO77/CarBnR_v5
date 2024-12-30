@@ -1,3 +1,4 @@
+let userId;
 document.addEventListener("DOMContentLoaded", async () => {
   const profileLink = document.querySelector(".profile-link");
   const loginLink = document.querySelector(".login-link");
@@ -11,20 +12,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const carHeadingText = document.getElementById('carHeading');
   const carsSection = document.querySelector('SECTION.cars');
   const searchBtn = document.getElementById('searchBtn');
+  userId = await fetchUser();
 
-  const response = await fetch('/api/v1/is-valid-user', {
-    method: 'GET',
-    credentials: 'include',
-  });
-  if (response.ok) {
+  if (userId) {
     profileLink.style.display = "block";
   } else {
     loginLink.style.display = "block";
     signupLink.style.display = "block";
   }
-  if (!response.ok) throw new Error('Failed to fetch user details');
-  const userData = await response.json();
-  const userId = userData.userId;
 
   document.querySelectorAll('.state_input').forEach((stateInput) => {
     stateInput.addEventListener('change', async function () {
