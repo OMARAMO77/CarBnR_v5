@@ -20,7 +20,8 @@ def get_cities(state_id):
     state = storage.get(State, state_id)
     if not state:
         abort(404)
-    for city in state.cities:
+    sorted_cities = sorted(state.cities, key=lambda city: city.name)
+    for city in sorted_cities:
         list_cities.append(city.to_dict())
 
     return jsonify(list_cities)
