@@ -1,14 +1,15 @@
+
 #!/usr/bin/python3
 """ Flask Application """
 from models import storage
 from api.v1.views import app_views
 from api.v1.views.extensions import limiter
 from os import getenv
-from flask import Flask, render_template, make_response, jsonify
+from flask import Flask, render_template, make_response, jsonify, request
 from flask_cors import CORS
 from flasgger import Swagger
 from flasgger.utils import swag_from
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, verify_jwt_in_request
 from dotenv import load_dotenv
 from pathlib import Path
 env_path = Path('/CarBnR_v4/.env')  # Update the path accordingly
@@ -24,6 +25,17 @@ app.config["JWT_COOKIE_CSRF_PROTECT"] = True  # Ensures CSRF tokens are issued a
 app.config["JWT_TOKEN_LOCATION"] = ["cookies"]  # Use cookies for tokens
 app.config["JWT_ACCESS_CSRF_HEADER_NAME"] = "X-CSRF-TOKEN"  # CSRF header name
 jwt = JWTManager(app)
+
+
+@app.before_request
+def authenticate_all_requests():
+    if request.endpoint in ['app_views.login', 'app_views.post_user']:
+        return
+    try:
+        verify_jwt_in_request(locations=["cookies"])
+    except Exception as e:
+        return jsonify({'error': 'Unauthorized access', 'message': str(e)}), 401
+
 
 @app.teardown_appcontext
 def close_db(error):
