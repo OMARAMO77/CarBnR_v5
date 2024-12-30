@@ -30,21 +30,13 @@
         <p class="text-center mt-3">Don't have an account? <a id="signupLink" href="signup.html" class="text-primary">Create one</a></p>
       </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="../static/scripts/status-parameters.js"></script>
     <script src="../static/scripts/login_script.js"></script>
     <script>
-      // Function to get URL parameters
-      function getURLParameter(name) {
-          const urlParams = new URLSearchParams(window.location.search);
-          return urlParams.get(name);
-      }
-
       // Function to append parameters to the signup page URL
       function updateSignupLink() {
           const signupLink = document.getElementById("signupLink");
-          const carId = getURLParameter("carId");
+          const carId = getParameterByName("carId");
 
           if (carId) {
               signupLink.href = `signup.html?carId=${carId}`;
