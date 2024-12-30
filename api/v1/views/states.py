@@ -14,8 +14,9 @@ def get_states():
     Retrieves the list of all State objects
     """
     all_states = storage.all(State).values()
+    sorted_states = sorted(all_states, key=lambda state: state.name)
     list_states = []
-    for state in all_states:
+    for state in sorted_states:
         list_states.append(state.to_dict())
     return jsonify(list_states)
 
