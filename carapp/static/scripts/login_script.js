@@ -1,3 +1,10 @@
+function isValidEmail(email) {
+    // Define a regular expression for validating email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Test the email against the regex
+    return emailRegex.test(email);
+}
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('LogintoAccountForm');
     const loginButton = document.getElementById('LoginButton');
@@ -7,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        loginButton.disabled = true;
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
         const carId = getParameterByName('carId');
@@ -15,10 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Basic form validation
         if (!email || !password) {
             updateStatus('Please fill in all fields.', 'danger');
-            loginButton.disabled = false;
             return;
         }
-
+        if (!isValidEmail(email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+        loginButton.disabled = true;
         const USERS_URL = '/api/v1/login';
 
         try {
