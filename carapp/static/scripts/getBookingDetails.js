@@ -1,11 +1,12 @@
-const HOST = 'https://omar.eromo.tech';
 const bookingId = getParameterByName('bookingId');
 
 
 async function getBookingDetails(bookingId, renderTarget, renderMethod) {
     try {
-        // Fetch booking details
-        const response = await fetch(`${HOST}/api/v1/format_bookings/${bookingId}`);
+        const response = await fetch(`/api/v1/format_bookings/${bookingId}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!response.ok) throw new Error("Error fetching formatted booking details");
 
         const bookingData = await response.json();
@@ -30,9 +31,9 @@ async function getBookingDetails(bookingId, renderTarget, renderMethod) {
             customer: { first_name: firstName, last_name: lastName, email },
             car: { brand, model, year, image_url: imageUrlRaw },
             location: { owner_id: ownerId, name: locationName, address, city, state },
+            current_user_id: userId,
             validity
         } = bookingData;
-        console.log(bookingData);
         const formatDate = date => new Date(date).toLocaleDateString('en-US', {
             year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'
         });
