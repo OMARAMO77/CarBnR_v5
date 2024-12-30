@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CarBnR: Book Your Dream Car</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="icon" href="../static/images/thumb.png">
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../static/styles/select_cars.css?{{ cache_id }}">
@@ -62,10 +61,8 @@
               <ul class="list-unstyled ml-2">
                 {% for state in states %}
                 <li>
-                  <h5>
-                    <input type="radio" name="state" data-id="{{ state.id }}" data-name="{{ state.name }}" class="state_input">
-                    {{ state.name }}
-                  </h5>
+                  <input type="radio" name="state" data-id="{{ state.id }}" data-name="{{ state.name }}" class="state_input">
+                  {{ state.name }}
                 </li>
                 {% endfor %}
               </ul>
@@ -97,7 +94,7 @@
         </div>
       </div>
       <div class="text-center mt-4">
-        <button class="btn btn-primary" type="button" onclick="searchCars()">
+        <button class="btn btn-primary" id="searchBtn" type="button" onclick="searchCars()">
            <i class="fas fa-search"></i> Search
         </button>
       </div>
@@ -113,8 +110,8 @@
     <div class="container text-center">
       <div class="social_links mb-3">
         <a href="www.LinkedIn.com" target="_blank" class="btn btn-link text-white"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        <a href="https://github.com/OMARAMO77/CarBnR_v3/" target="_blank" class="btn btn-link text-white"><i class="fab fa-github"></i> GitHub</a>
-        <a href="https://www.x.com" target="_blank" class="btn btn-link text-white"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="https://github.com/OMARAMO77/CarBnR_v5/" target="_blank" class="btn btn-link text-white"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://x.com/OmarKnight123" target="_blank" class="btn btn-link text-white"><i class="fab fa-twitter"></i> Twitter</a>
       </div>
       <p style="font-family: 'Pacifico', cursive;">&copy; 2024 CarBnR. All rights reserved.</p>
     </div>
