@@ -18,21 +18,24 @@ from flask_jwt_extended import (
 )
 
 
-@app_views.route('/is-valid/<user_id>', methods=['GET'], strict_slashes=False)
-def is_valid(user_id):
+@app_views.route('/is-valid-user', methods=['GET'], strict_slashes=False)
+def is_valid_user():
     """
     Check if a user is valid by their user ID.
     """
-    user = storage.get(User, user_id)
-    if not user:
-        return jsonify({'isValid': 'no'}), 404
+    try:
+        current_user_id = get_jwt_identity()
+        user = storage.get(User, current_user_id)
+        if not user:
+            return jsonify({'isValidUser': False, 'message': 'User not found'}), 404
 
-    return jsonify({'isValid': 'yes'}), 200
+        return jsonify({'isValidUser': True, 'userId': current_user_id}), 200
 
+    except Exception as e:
+        return jsonify({'isValidUser': False, 'error': str(e)}), 500
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/user/all_users.yml')
-@jwt_required(locations=["cookies"])
 def get_users():
     """
     Retrieves the list of all user objects
@@ -45,11 +48,11 @@ def get_users():
     return jsonify(list_users)
 
 
-@app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/user', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/user/get_user.yml', methods=['GET'])
-@jwt_required(locations=["cookies"])
-def get_user(user_id):
+def get_user():
     """ Retrieves an user """
+    user_id = get_jwt_identity()
     user = storage.get(User, user_id)
     if not user:
         abort(404)
@@ -57,12 +60,13 @@ def get_user(user_id):
     return jsonify(user.to_dict())
 
 
-@app_views.route('/users/<user_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/user', methods=['DELETE'], strict_slashes=False)
 @swag_from('documentation/user/delete_user.yml', methods=['DELETE'])
-def delete_user(user_id):
+def delete_user():
     """
     Deletes a User object by user_id
     """
+    user_id = get_jwt_identity()
     user = storage.get(User, user_id)
     if not user:
         return abort(404, description="User not found")
@@ -78,7 +82,6 @@ def delete_user(user_id):
 
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 @swag_from('documentation/user/post_user.yml', methods=['POST'])
-@jwt_required(locations=["cookies"])
 def post_user():
     """
     Creates a user
@@ -105,13 +108,13 @@ def post_user():
     return make_response(jsonify(instance.to_dict()), 201)
 
 
-@app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
+@app_views.route('/user', methods=['PUT'], strict_slashes=False)
 @swag_from('documentation/user/put_user.yml', methods=['PUT'])
-@jwt_required(locations=["cookies"])
-def put_user(user_id):
+def put_user():
     """
     Updates a user
     """
+    user_id = get_jwt_identity()
     user = storage.get(User, user_id)
     if not user:
         abort(404, description="User not found")
@@ -149,8 +152,7 @@ def c_protected():
     user_id = get_jwt_identity()
     return jsonify({"message": f"Hello, user {user_id}!"}), 200
 
-@app_views.route('/logout', methods=['POST'])
-@jwt_required(locations=["cookies"])
+@app_views.route('/logout', methods=['GET'])
 def logout():
     response = jsonify({"message": "Logged out successfully"})
     response.delete_cookie('access_token_cookie')  # Clear JWT cookie
@@ -190,17 +192,17 @@ def login():
     return jsonify({"error": "Invalid credentials"}), 401
 
 
-@app_views.route('/format_user_details/<user_id>/', methods=['GET'], strict_slashes=False)
+@app_views.route('/format_user_details/', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/users/format_user_details.yml', methods=['GET'])
-def format_user_details(user_id):
+def format_user_details():
     """
     Retrieves formatted user details based on the given user ID.
     """
     # Retrieve the user object
+    user_id = get_jwt_identity()
     user = storage.get(User, user_id)
     if not user:
         abort(404, description="User not found")
-
     # Aggregate all bookings from user's locations
     try:
         location_bookings = [
