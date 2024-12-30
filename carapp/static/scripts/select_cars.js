@@ -1,7 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const HOST = 'https://omar.eromo.tech';
-  const userId = getParameterByName('userId');
-  
+document.addEventListener("DOMContentLoaded", async () => {
   const profileLink = document.querySelector(".profile-link");
   const loginLink = document.querySelector(".login-link");
   const signupLink = document.querySelector(".signup-link");
@@ -11,19 +8,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const statesText = document.querySelector('.states');
   const citiesText = document.querySelector('.cities');
   const locationsText = document.querySelector('.companies');
-  const carHeadingText = document.getElementById('carHeadingText');
+  const carHeadingText = document.getElementById('carHeading');
   const carsSection = document.querySelector('SECTION.cars');
 
-  if (userId) {
+  const response = await fetch('/api/v1/is-valid-user', {
+    method: 'GET',
+    credentials: 'include',
+  });
+  if (response.ok) {
     profileLink.style.display = "block";
-    profileLink.addEventListener("click", (event) => {
-      event.preventDefault();
-      window.location.href = `/profile.html?userId=${userId}`;
-    });
   } else {
     loginLink.style.display = "block";
     signupLink.style.display = "block";
   }
+  if (!response.ok) throw new Error('Failed to fetch user details');
+  const userData = await response.json();
+  const userId = userData.userId;
 
   document.querySelectorAll('.state_input').forEach((stateInput) => {
     stateInput.addEventListener('change', async function () {
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const stateName = this.dataset.name;        
 
         if (window.locationObj) window.locationObj = {};
-        carHeadingText.textContent = 'Choose your state, city, and at least one location to explore available cars.';
+        if (carHeadingText) carHeadingText.textContent = 'Choose your state, city, and at least one location to explore available cars.';
         carsSection.innerHTML = '';
         statesText.textContent = stateName;
         citiesText.textContent = 'select a city';
@@ -43,7 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
         citiesDropdownContainer.style.display = 'block';
 
         try {
-          const response = await fetch(`${HOST}/api/v1/states/${stateId}/cities`);
+          const response = await fetch(`/api/v1/states/${stateId}/cities`, {
+            method: 'GET',
+            credentials: 'include',
+          });
           const cities = await response.json();
 
           if (cities.length === 0) citiesList.innerHTML = 'No cities available';
@@ -71,7 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 const cityId = this.dataset.id;
 
                 try {
-                  const response = await fetch(`${HOST}/api/v1/cities/${cityId}/locations`);
+                  const response = await fetch(`/api/v1/cities/${cityId}/locations`, {
+                    method: 'GET',
+                    credentials: 'include',
+                  });
                   const locations = await response.json();
 
                   if (locations.length === 0) locationsList.innerHTML = 'No locations available';
@@ -122,18 +128,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const locations = Object.values(window.locationObj);
     try {
-      const response = await fetch(`${HOST}/api/v1/cars_search/`, {
+      // Extract CSRF token from cookies
+      const csrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrf_access_token='))
+        ?.split('=')[1];
+
+      if (!csrfToken) throw new Error("CSRF token is missing");
+
+      const response = await fetch('/api/v1/cars_search/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken,
+        },
         body: JSON.stringify({ locations })
       });
       const cars = await response.json();
       if (cars.length === 0) {
-        carHeadingText.textContent = 'No cars available';
+        if (carHeadingText) carHeadingText.textContent = 'No cars available';
+        carsSection.innerHTML = '';
         return;
       }
       carsSection.innerHTML = '';
-      carHeadingText.textContent = 'Here are the cars available for your selection:';
+      if (carHeadingText) carHeadingText.textContent = 'Here are the cars available for your selection:';
 
       cars.forEach(car => {
         const availabilityText = car.available
@@ -170,9 +189,15 @@ document.addEventListener("DOMContentLoaded", () => {
           const carId = button.closest('article').dataset.carId;
 
           try {
-            const carResponse = await fetch(`${HOST}/api/v1/cars/${carId}`);
+            const carResponse = await fetch(`/api/v1/cars/${carId}`, {
+              method: 'GET',
+              credentials: 'include', // Include cookies
+            });
             const car = await carResponse.json();
-            const locationResponse = await fetch(`${HOST}/api/v1/locations/${car.location_id}`);
+            const locationResponse = await fetch(`/api/v1/locations/${car.location_id}`, {
+              method: 'GET',
+              credentials: 'include', // Include cookies
+            });
             const location = await locationResponse.json();
 
             if (userId === location.user_id) {
@@ -181,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const redirectUrl = userId
-              ? `/booking-page.html?carId=${carId}&userId=${userId}`
+              ? `/booking-page.html?carId=${carId}`
               : `/signup.html?carId=${carId}`;
             window.location.href = redirectUrl;
           } catch (error) {
@@ -198,7 +223,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function apiStatus() {
     try {
-      const response = await fetch(`${HOST}/api/v1/status/`);
+      const response = await fetch('/api/v1/status/', {
+        method: 'GET',
+        credentials: 'include', // Include cookies
+      });
       const data = await response.json();
 
       const apiStatusElement = document.getElementById('api_status');
