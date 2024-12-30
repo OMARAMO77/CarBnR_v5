@@ -11,6 +11,8 @@ from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 from datetime import datetime
+from flask_jwt_extended import get_jwt_identity
+
 
 @app_views.route('/cars/<car_id>/bookings', methods=['GET'],
                  strict_slashes=False)
@@ -56,7 +58,7 @@ def format_booking(booking_id):
     state = storage.get(State, city.state_id)
     if not state:
         abort(404, description="State not found")
-
+    current_user_id = get_jwt_identity()
     # Calculate validity
     validity = bool(customer and car)
 
@@ -89,6 +91,7 @@ def format_booking(booking_id):
             "city": city.name if city else None,
             "state": state.name if state else None,
         },
+        "current_user_id": current_user_id,
         "validity": validity,
     }
 
@@ -119,11 +122,12 @@ def get_all_location_bookings(location_id):
     return jsonify(list_bookings)
 
 
-@app_views.route('/users/<user_id>/locations/bookings', methods=['GET'], strict_slashes=False)
-def get_all_user_location_bookings(user_id):
+@app_views.route('/user/locations/bookings', methods=['GET'], strict_slashes=False)
+def get_all_user_location_bookings():
     """
     Retrieves a paginated list of all booking objects for a user's locations.
     """
+    user_id = get_jwt_identity()
     user = storage.get(User, user_id)
     if not user:
         abort(404)
@@ -144,11 +148,12 @@ def get_all_user_location_bookings(user_id):
     return jsonify(paginated_bookings), 200
 
 
-@app_views.route('/users/<user_id>/locations/bookings/<booking_type>', methods=['GET'], strict_slashes=False)
-def get_user_locations_bookings(user_id, booking_type):
+@app_views.route('/user/locations/bookings/<booking_type>', methods=['GET'], strict_slashes=False)
+def get_user_locations_bookings(booking_type):
     """
     Retrieves a paginated list of booking objects for a user's locations based on the booking type.
     """
+    user_id = get_jwt_identity()
     user = storage.get(User, user_id)
     if not user:
         abort(404, description="User not found")
@@ -243,13 +248,14 @@ def get_location_bookings(location_id, booking_type):
     return jsonify(list_bookings), 200
 
 
-@app_views.route('/users/<user_id>/bookings', methods=['GET'],
+@app_views.route('/user/bookings', methods=['GET'],
                  strict_slashes=False)
 @swag_from('documentation/booking/bookings_by_user.yml', methods=['GET'])
-def get_all_user_bookings(user_id):
+def get_all_user_bookings():
     """
     Retrieves a paginated list of all booking objects of a specific User.
     """
+    user_id = get_jwt_identity()
     user = storage.get(User, user_id)
     if not user:
         abort(404)
@@ -267,13 +273,9 @@ def get_all_user_bookings(user_id):
     return jsonify(list_bookings)
 
 
-
-
-
-
-@app_views.route('/users/<user_id>/bookings/<booking_type>',
+@app_views.route('/user/bookings/<booking_type>',
                  methods=['GET'], strict_slashes=False)
-def get_user_bookings(user_id, booking_type):
+def get_user_bookings(booking_type):
     """
     Retrieves a paginated list of booking objects of a specific User based on the booking type:
     - `upcoming`: Bookings with a pickup date in the future.
@@ -281,6 +283,7 @@ def get_user_bookings(user_id, booking_type):
     - `past`: Bookings with a return date in the past.
     - `count`: Returns the total count of all user bookings.
     """
+    user_id = get_jwt_identity()
     user = storage.get(User, user_id)
     if not user:
         abort(404)
