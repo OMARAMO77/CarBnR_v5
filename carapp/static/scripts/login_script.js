@@ -1,70 +1,49 @@
-$(document).ready(init);
-const HOST = 'https://omar.eromo.tech';
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('LogintoAccountForm');
+    const loginButton = document.getElementById('LoginButton');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
 
-function init() {
-    // Add event listener to the form submission
-    $('#LogintoAccountForm').submit(async function (event) {
-        // Prevent the default form submission behavior
+    loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        // Disable the login button to prevent multiple submissions
-        $('#LoginButton').prop('disabled', true);
+        loginButton.disabled = true;
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        const carId = getParameterByName('carId');
 
-        // Call the LogintoAccount function
-        await LogintoAccount();
-    });
-}
-
-async function LogintoAccount() {
-    const email = $('#email').val();
-    const password = $('#password').val();
-    const carId = getParameterByName('carId');
-
-    // Basic form validation
-    if (!email || !password) {
-        updateStatus('Please fill in all fields.', 'error');
-        $('#LoginButton').prop('disabled', false);
-        return; // Stop execution if validation fails
-    }
-
-    const USERS_URL = `${HOST}/api/v1/login`;
-
-    try {
-        // Inform the user about progress
-        updateStatus('In progress...', 'info');
-
-        // Send the POST request using fetch
-        const response = await fetch(USERS_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error('Invalid credentials. Please try again.');
+        // Basic form validation
+        if (!email || !password) {
+            updateStatus('Please fill in all fields.', 'danger');
+            loginButton.disabled = false;
+            return;
         }
 
-        const data = await response.json();
-        const userId = data.userId;
+        const USERS_URL = '/api/v1/login';
 
-        updateStatus('Logged in successfully!...', 'success');
+        try {
+            updateStatus('In progress...', 'info');
 
-        // Hide status message and redirect after 3 seconds
-        setTimeout(() => {
-            hideStatus();
-            if (carId) {
-                window.location.href = `/booking-page.html?carId=${carId}&userId=${userId}`;
-            } else {
-                window.location.href = `/select_cars?userId=${userId}`;
+            const response = await fetch(USERS_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Invalid credentials. Please try again.');
             }
-        }, 3000);
-    } catch (error) {
-        // Handle error and re-enable the login button
-        updateStatus(error.message, 'error');
-        setTimeout(hideStatus, 5000);
-        $('#LoginButton').prop('disabled', false);
-    }
-}
+
+            updateStatus('Logged in successfully!', 'success');
+            const redirectUrl = carId
+                ? `/booking-page.html?carId=${carId}`
+                : `/select_cars`;
+            window.location.href = redirectUrl;
+
+        } catch (error) {
+            updateStatus(error.message, 'danger');
+            setTimeout(hideStatus, 5000);
+            loginButton.disabled = false;
+        }
+    });
+});
