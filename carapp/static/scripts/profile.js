@@ -1,6 +1,4 @@
-let userId = getParameterByName('userId');
-const limit = 10; // Number of bookings per chunk
-//ajax
+const limit = 10;
 // Offsets for pagination in each booking type
 let upcomingOffset = 0;
 let ongoingOffset = 0;
@@ -8,7 +6,6 @@ let pastOffset = 0;
 let locationUpcomingOffset = 0;
 let locationOngoingOffset = 0;
 let locationPastOffset = 0;
-//locations/bookings/
 const bookingDetailsPlaceholder = `
     <div class="booking-details0 card mb-4 shadow-lg" id="booking-details-placeholder">
         <div class="card-header bg-primary text-white">
@@ -59,7 +56,7 @@ function toggleLoading(isLoading, selector) {
 }
 // Helper function to fetch user bookings for each tab
 async function fetchUserBookings(type, offset) {
-    const baseApiUrl = `${HOST}/api/v1/users/${userId}/bookings`;
+    const baseApiUrl = '/api/v1/user/bookings';
     const url = `${baseApiUrl}/${type}?limit=${limit}&offset=${offset}`;
     const container = $(`.${type}-bookings`);
     const spinnerContainer = $(`.${type}-bookings-spinner`);
@@ -68,9 +65,10 @@ async function fetchUserBookings(type, offset) {
     const placeholder = document.querySelector('#booking-details-placeholder');
     toggleLoading(true, spinnerContainer);
     try {
-        //const response = await $.ajax({ url, method: 'GET' });
-        // Fetch total bookings count
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!response.ok) throw new Error('Failed to fetch user bookings');
         const data = await response.json();
         console.log(data);
@@ -89,17 +87,19 @@ async function fetchUserBookings(type, offset) {
         }
 
         toggleLoading(false, spinnerContainer);
-        loadMoreButton.toggle(data.length === limit); // Show 'Load More' only if more bookings are available
+        loadMoreButton.toggle(data.length === limit);
     } catch (error) {
         console.error(`Error fetching ${type} bookings:`, error);
         toggleLoading(false, spinnerContainer);
     }
 }
 
-async function fetchLocationId(userId) {
+async function fetchLocationId() {
     try {
-        // Fetch user's locations
-        const responseLocations = await fetch(`${HOST}/api/v1/users/${userId}/locations`);
+        const responseLocations = await fetch('/api/v1/user/locations', {
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!responseLocations.ok) {
             throw new Error(`Failed to fetch user locations: ${responseLocations.status} ${responseLocations.statusText}`);
         }
@@ -119,14 +119,14 @@ async function fetchLocationId(userId) {
         }
     } catch (error) {
         console.error('Error fetching user locations:', error);
-        throw error; // Re-throw the error for further handling if needed
+        throw error;
     }
 }
 
 
 // Helper function to fetch location bookings for each tab
 async function fetchUserLocationsBookings(type, offset) {
-    const baseApiUrl = `${HOST}/api/v1/users/${userId}/locations/bookings`;
+    const baseApiUrl = '/api/v1/user/locations/bookings';
     const url = `${baseApiUrl}/${type}?limit=${limit}&offset=${offset}`;
     const container = $(`.location-${type}-bookings`);
     const spinnerContainer = $(`.location-${type}-bookings-spinner`);
@@ -135,7 +135,7 @@ async function fetchUserLocationsBookings(type, offset) {
     const bookingMessage = $(`.location-${type}-bookingMessage`);
     const placeholder = document.querySelector('#booking-details-placeholder');
     try {
-        const locationIds = await fetchLocationId(userId);
+        const locationIds = await fetchLocationId();
         if (locationIds.length === 0) {
             toggleLoading(false, spinnerContainer);
             loadMoreButton.toggle(false);
@@ -145,7 +145,6 @@ async function fetchUserLocationsBookings(type, offset) {
             console.log(`You have no locations yet.`);
             return;
         }
-        //const response = await $.ajax({ url, method: 'GET' });
         const response = await fetch(url);
         if (!response.ok) throw new Error('Failed to fetch user bookings');
         const data = await response.json();
@@ -173,14 +172,17 @@ async function fetchUserLocationsBookings(type, offset) {
         toggleLoading(false, spinnerContainer);
     }
 }
-async function fetchUserDetails(userId) {
+async function fetchUserDetails() {
     try {
         // Fetch user details
-        const responseDetails = await fetch(`${HOST}/api/v1/format_user_details/${userId}`);
+        const responseDetails = await fetch('/api/v1/format_user_details', {
+          method: 'GET',
+          credentials: 'include',
+        });
 
-        if (responseDetails.status === 404) {
+        if (responseDetails.status === 401) {
             alert("User not found...");
-            window.location.href = "/select_cars";
+            window.location.href = "/login.html";
             return;
         }
         if (!responseDetails.ok) {
@@ -226,8 +228,13 @@ async function fetchUserDetails(userId) {
 
                     <div class="action-buttons mt-4">
                         <button class="btn btn-danger btn-custom" id="log-out"><i class="fas fa-sign-out-alt"></i> Log Out</button>
-                        <button class="btn btn-success btn-custom" id="add-location"><i class="fas fa-map-marker-alt"></i> Add Location</button>
-                        <button class="btn btn-warning btn-custom" id="book-new-car"><i class="fas fa-car"></i> Book New Car</button>
+                        <button class="btn btn-success btn-custom" onclick="window.location.href='./add-location-and-cars.html'">
+                            <i class="fas fa-map-marker-alt"></i> Add Location
+                        </button>
+                        <button class="btn btn-warning btn-custom" onclick="window.location.href='./select_cars.html'">
+                            <i class="fas fa-car"></i> Book New Car
+                        </button>
+
                         <button class="btn btn-primary btn-custom" id="switchButton" >Switch</button>
                     </div>
                 </div>
@@ -273,10 +280,20 @@ async function confirmBooking(bookingId) {
     }
 
     try {
-        const response = await fetch(`${HOST}/api/v1/bookings/${bookingId}`, {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) {
+            throw new Error("CSRF token is missing.");
+        }
+        const response = await fetch(`/api/v1/bookings/${bookingId}`, {
             method: 'PUT',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
             },
             body: JSON.stringify({ status: "Confirmed" })
         });
@@ -298,15 +315,28 @@ async function confirmBooking(bookingId) {
 // Function to handle booking removal
 async function removeBooking(bookingId) {
     try {
-        const response = await fetch(`${HOST}/api/v1/bookings/${bookingId}`, {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) {
+            throw new Error("CSRF token is missing.");
+        }
+        const response = await fetch(`/api/v1/bookings/${bookingId}`, {
             method: "DELETE",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            }
         });
         if (!response.ok) throw new Error("Failed to delete booking.");
         console.log(`Booking with ID ${bookingId} has been removed.`);
         const bookingCard = document.querySelector(`#bookingCard-${bookingId}`);
         if (bookingCard) bookingCard.remove();
         alert("Booking removed successfully");
-        await fetchUserDetails(userId);
+        await fetchUserDetails();
     } catch (error) {
         console.error("Error removing booking:", error);
     }
@@ -315,8 +345,11 @@ async function removeBooking(bookingId) {
 
 async function modifyBooking(bookingId) {
     try {
-        // Fetch booking details to check status, dates, and price per day
-        const response = await fetch(`${HOST}/api/v1/bookings/${bookingId}`);
+        const response = await fetch(`/api/v1/bookings/${bookingId}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
         if (!response.ok) throw new Error('Failed to fetch booking details');
 
         const booking = await response.json();
@@ -386,10 +419,20 @@ async function modifyBooking(bookingId) {
             }
 
             // Send PUT request to update booking
-            const updateResponse = await fetch(`${HOST}/api/v1/bookings/${bookingId}`, {
+            const csrfToken = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('csrf_access_token='))
+                ?.split('=')[1];
+
+            if (!csrfToken) {
+                throw new Error("CSRF token is missing.");
+            }
+            const updateResponse = await fetch(`/api/v1/bookings/${bookingId}`, {
                 method: 'PUT',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify(updatedData),
             });
@@ -426,8 +469,21 @@ async function modifyBooking(bookingId) {
 // Function to handle booking removal
 async function removeCar(carId) {
     try {
-        const response = await fetch(`${HOST}/api/v1/cars/${carId}`, {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) {
+            throw new Error("CSRF token is missing.");
+        }
+        const response = await fetch(`/api/v1/cars/${carId}`, {
             method: "DELETE",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            }
         });
         if (!response.ok) throw new Error("Failed to delete car.");
         console.log(`Car with ID ${carId} has been removed.`);
@@ -442,7 +498,11 @@ async function removeCar(carId) {
 async function openUpdateCarModal(carId) {
     try {
         // Fetch car details and populate the form
-        const carResponse = await fetch(`${HOST}/api/v1/cars/${carId}`);
+        const carResponse = await fetch(`/api/v1/cars/${carId}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
         if (!carResponse.ok) throw new Error('Failed to fetch car details');
         const carData = await carResponse.json();
         const { brand, model, year, price_by_day } = carData;
@@ -452,8 +512,6 @@ async function openUpdateCarModal(carId) {
         document.getElementById('model').value = model;
         document.getElementById('year').value = year;
         document.getElementById('price_by_day').value = price_by_day;
-
-        console.log("Car details loaded:", { brand, model, year, price_by_day });
 
         // Show modal using Bootstrap's JavaScript API
         const modalElement = document.getElementById('updateCarModal');
@@ -478,10 +536,20 @@ async function openUpdateCarModal(carId) {
                 };
 
                 // Update car details
-                const updateCarResponse = await fetch(`${HOST}/api/v1/cars/${carId}`, {
+                const csrfToken = document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('csrf_access_token='))
+                    ?.split('=')[1];
+
+                if (!csrfToken) {
+                    throw new Error("CSRF token is missing.");
+                }
+                const updateCarResponse = await fetch(`/api/v1/cars/${carId}`, {
                     method: 'PUT',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
                     },
                     body: JSON.stringify(payload),
                 });
@@ -509,10 +577,9 @@ async function openUpdateCarModal(carId) {
     }
 }
 
-async function openUpdateUserModal(userId) {
+async function openUpdateUserModal() {
     try {
-        // Send PUT request
-        const UserResponse = await fetch(`${HOST}/api/v1/users/${userId}`, {
+        const UserResponse = await fetch(`/api/v1/user`, {
             method: 'GET',
             credentials: 'include', // Include cookies
         });
@@ -558,12 +625,12 @@ async function openUpdateUserModal(userId) {
 
             if (!csrfToken) throw new Error("CSRF token is missing");
 
-            const updateResponse = await fetch(`${HOST}/api/v1/users/${userId}`, {
+            const updateResponse = await fetch(`/api/v1/user`, {
                 method: 'PUT',
-                credentials: 'include', // Include cookies
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken, // Include CSRF token
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify(payload),
             });
@@ -578,7 +645,7 @@ async function openUpdateUserModal(userId) {
 
             // Close modal
             modal.hide();
-            await fetchUserDetails(userId);
+            await fetchUserDetails();
             alert("User updated successfully!");
         };
     } catch (error) {
@@ -589,8 +656,10 @@ async function openUpdateUserModal(userId) {
 
 async function openUpdateLocationModal(locationId) {
     try {
-        // Fetch location details and populate the form
-        const locationResponse = await fetch(`${HOST}/api/v1/locations/${locationId}`);
+        const locationResponse = await fetch(`/api/v1/locations/${locationId}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!locationResponse.ok) throw new Error('Failed to fetch location details');
         const locationData = await locationResponse.json();
         const { name, address, phone_number } = locationData;
@@ -621,10 +690,18 @@ async function openUpdateLocationModal(locationId) {
                 };
 
                 // Update location details
-                const updateLocationResponse = await fetch(`${HOST}/api/v1/locations/${locationId}`, {
+                const csrfToken = document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('csrf_access_token='))
+                    ?.split('=')[1];
+
+                if (!csrfToken) throw new Error("CSRF token is missing");
+                const updateLocationResponse = await fetch(`/api/v1/locations/${locationId}`, {
                     method: 'PUT',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
                     },
                     body: JSON.stringify(payload),
                 });
@@ -648,37 +725,63 @@ async function openUpdateLocationModal(locationId) {
     }
 }
 
-function deleteUser(userId) {
-    const apiUrl = `${HOST}/api/v1/users/${userId}`;
 
-    fetch(apiUrl, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
+
+
+async function deleteUser() {
+    try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) {
+            throw new Error("CSRF token is missing.");
         }
-    })
-    .then(response => {
-        if (response.ok) {
-            alert("Account deleted successfully.");
-            window.location.href = `/select_cars`;
-        } else if (response.status === 404) {
-            throw new Error("User not found.");
-        } else {
-            throw new Error("Failed to delete user.");
+
+        const response = await fetch('/api/v1/user', {
+            method: "DELETE",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            }
+        });
+
+        // Check response status
+        if (!response.ok) {
+            const errorData = await response.json();
+            const errorMessage = errorData.error || "Failed to delete user.";
+            throw new Error(errorMessage);
         }
-    })
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => {
-        console.error("Error:", error.message);
-    });
+
+        // Notify user and redirect
+        alert("Account deleted successfully.");
+        window.location.href = "/login.html";
+    } catch (error) {
+        // Log and display the error
+        console.error("Error removing user:", error);
+        alert(error.message || "An error occurred while trying to remove the user. Please try again.");
+    }
 }
 
 async function removeLocation(locationId) {
     try {
-        const response = await fetch(`${HOST}/api/v1/locations/${locationId}`, {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) {
+            throw new Error("CSRF token is missing.");
+        }
+        const response = await fetch(`/api/v1/locations/${locationId}`, {
             method: "DELETE",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+                //'X-CSRF-TOKEN': csrfToken,
+            }
         });
         if (!response.ok) throw new Error("Failed to delete location.");
 
@@ -698,7 +801,10 @@ async function removeLocation(locationId) {
 
 async function fetchLocationCars(locationId) {
     try {
-        const carResponse = await fetch(`${HOST}/api/v1/locations/${locationId}/cars`);
+        const carResponse = await fetch(`/api/v1/locations/${locationId}/cars`, {
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!carResponse.ok) throw new Error('Failed to fetch cars');
         const cars = await carResponse.json();
 
@@ -738,11 +844,15 @@ async function fetchLocationCars(locationId) {
     }
 }
 
-async function fetchLocations(userId) {
+async function fetchLocations() {
   try {
     // Fetch locations
     const carMessage = $(".manage-cars-message");
-    const response = await fetch(`${HOST}/api/v1/users/${userId}/locations`);
+    const response = await fetch(`/api/v1/user/locations`, {
+        method: 'GET',
+        credentials: 'include',
+    });
+
     if (!response.ok) throw new Error('Failed to fetch locations');
     const locations = await response.json();
 
@@ -809,14 +919,32 @@ async function fetchLocations(userId) {
     alert('Error fetching locations. Please try again later.');
   }
 }
+
+async function logout() {
+    try {
+        const response = await fetch('/api/v1/logout', {
+            method: 'GET',
+            credentials: 'include',
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            const errorMessage = errorData.error || "Failed to log out. Please try again.";
+            throw new Error(errorMessage);
+        }
+
+        alert("Logged out successfully.");
+        window.location.href = "/login.html";
+    } catch (error) {
+        console.error("Error during logout:", error);
+        alert(error.message || "An error occurred while trying to log out. Please try again.");
+    }
+}
+
+
 // Event listeners for each tab
 $(document).ready(async function() {
-    if (!userId) {
-        console.error('User not found!');
-        window.location.href = `/select_cars`;
-        return;
-    }
-    fetchUserDetails(userId);
+    fetchUserDetails();
 
     window.addEventListener('online', updateStatusDot);
     window.addEventListener('offline', updateStatusDot);
@@ -900,32 +1028,23 @@ $(document).ready(async function() {
 
     $(document).on("click", "#edit-profile", function() {
         if (confirm("Are you sure you want to edit your profile?")) {
-            openUpdateUserModal(userId);
+            openUpdateUserModal();
         }
     });
 
     $(document).on("click", "#delete-account", function() {
         if (confirm("Are you sure you want to remove your account?\n\nAll your locations will be removed as well!!")) {
             //alert("not removed yet");
-            deleteUser(userId);
+            deleteUser();
         }
     });
 
     $(document).on("click", "#log-out", function() {
-        console.log("Log Out button clicked");
-        userId = null;
-        // Redirect to "/select_cars" without adding a new entry to history
-        location.replace("/select_cars");
-        // Clear userId from history after redirecting
-        history.replaceState(null, "", "/select_cars");
+        if (confirm("Are you sure you want to log out?")) {
+            logout();
+        }
     });
 
-    $(document).on("click", "#add-location", function() {
-        window.location.href = `/create_cars.html?userId=${userId}`;
-    });
-    $(document).on("click", "#book-new-car", function() {
-        window.location.href = `/select_cars?userId=${userId}`;
-    });
     // Function to load more user bookings based on the booking type and offset
     function loadMore(type) {
         let offset;
@@ -1047,7 +1166,7 @@ $(document).ready(async function() {
                 $("a[data-toggle='tab']").css("pointer-events", "auto");
             });
         } else if (target === "#manage-cars") {
-            fetchLocations(userId).finally(() => {
+            fetchLocations().finally(() => {
                 $("a[data-toggle='tab']").css("pointer-events", "auto");
             });
         } else {
