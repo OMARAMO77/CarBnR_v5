@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const locationsText = document.querySelector('.companies');
   const carHeadingText = document.getElementById('carHeading');
   const carsSection = document.querySelector('SECTION.cars');
+  const searchBtn = document.getElementById('searchBtn');
 
   const response = await fetch('/api/v1/is-valid-user', {
     method: 'GET',
@@ -72,6 +73,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 //locationsDropdownContainer.style.display = 'block';
                 const cityId = this.dataset.id;
+                if (carHeadingText) carHeadingText.textContent = 'Choose your state, city, and at least one location to explore available cars.';
+                carsSection.innerHTML = '';
+                if (window.locationObj) window.locationObj = {};
 
                 try {
                   const response = await fetch(`/api/v1/cities/${cityId}/locations`, {
@@ -94,6 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     locationsList.appendChild(li);
 
                     checkbox.addEventListener('change', () => {
+                      searchBtn.disabled = false;
                       if (!window.locationObj) window.locationObj = {};
                       if (checkbox.checked) {
                         window.locationObj[checkbox.dataset.name] = checkbox.dataset.id;
@@ -125,7 +130,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert('Please select at least one location before searching.');
       return;
     }
-
+    searchBtn.disabled = true;
     const locations = Object.values(window.locationObj);
     try {
       // Extract CSRF token from cookies
@@ -149,6 +154,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (cars.length === 0) {
         if (carHeadingText) carHeadingText.textContent = 'No cars available';
         carsSection.innerHTML = '';
+        searchBtn.disabled = false;
         return;
       }
       carsSection.innerHTML = '';
@@ -188,6 +194,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           event.preventDefault();
           const carId = button.closest('article').dataset.carId;
 
+          button.disabled = true;
           try {
             const carResponse = await fetch(`/api/v1/cars/${carId}`, {
               method: 'GET',
@@ -211,6 +218,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.location.href = redirectUrl;
           } catch (error) {
             console.error(error);
+            searchBtn.disabled = false;
+            button.disabled = false;
             alert('Failed to complete the booking process.');
           }
         });
@@ -218,6 +227,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (error) {
       alert('Failed to search for cars.');
       console.error(error);
+      searchBtn.disabled = false;
     }
   };
 
