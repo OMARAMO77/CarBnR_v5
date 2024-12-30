@@ -305,13 +305,6 @@ async function getUserId(email) {
         return error.message
     }
 }
-function isValidEmail(email) {
-    // Define a regular expression for validating email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // Test the email against the regex
-    return emailRegex.test(email);
-}
 
 window.onload = async () => {
     const sendButton = document.getElementById('sendButton');
