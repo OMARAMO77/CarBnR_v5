@@ -9,6 +9,7 @@ from models import storage
 from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
+from flask_jwt_extended import get_jwt_identity
 
 
 @app_views.route('/cities/<city_id>/locations', methods=['GET'],
@@ -119,13 +120,14 @@ def put_location(location_id):
     return make_response(jsonify(location.to_dict()), 200)
 
 
-@app_views.route('/users/<user_id>/locations', methods=['GET'],
+@app_views.route('/user/locations', methods=['GET'],
                  strict_slashes=False)
 @swag_from('documentation/location/get_locations.yml', methods=['GET'])
-def get_user_locations(user_id):
+def get_user_locations():
     """
     Retrieves the list of all Location objects of a User
     """
+    user_id = get_jwt_identity()
     user = storage.get(User, user_id)
 
     if not user:
