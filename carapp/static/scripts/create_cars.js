@@ -193,7 +193,10 @@ async function loadStates() {
 // Fetch and populate cities based on state
 async function loadCities(stateId) {
     try {
-        const response = await fetch(`/api/v1/states/${stateId}/cities`);
+        const response = await fetch(`/api/v1/states/${stateId}/cities`, {
+            method: 'GET',
+            credentials: 'include',
+        });
         const data = await response.json();
 
         const citySelect = document.getElementById('city');
@@ -212,7 +215,10 @@ async function loadCities(stateId) {
 // Fetch and populate locations based on city
 async function loadLocations(cityId) {
     try {
-        const response = await fetch(`/api/v1/cities/${cityId}/locations`);
+        const response = await fetch(`/api/v1/cities/${cityId}/locations`, {
+            method: 'GET',
+            credentials: 'include',
+        });
         const data = await response.json();
 
         const locationSelect = document.getElementById('location');
