@@ -8,19 +8,6 @@ from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 
 
-@app_views.route('/cars', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/car/all_cars.yml')
-def get_cars():
-    """
-    Retrieves a list of all cars
-    """
-    all_cars = storage.all(Car).values()
-    list_cars = []
-    for car in all_cars:
-        list_cars.append(car.to_dict())
-    return jsonify(list_cars)
-
-
 @app_views.route('/locations/<location_id>/cars', methods=['GET'],
                  strict_slashes=False)
 @swag_from('documentation/car/cars_by_location.yml', methods=['GET'])
@@ -33,7 +20,9 @@ def get_location_cars(location_id):
     location = storage.get(Location, location_id)
     if not location:
         abort(404)
-    for car in location.cars:
+    sorted_cars = sorted(location.cars, key=lambda car: car.brand)
+
+    for car in sorted_cars:
         list_cars.append(car.to_dict())
 
     return jsonify(list_cars)
