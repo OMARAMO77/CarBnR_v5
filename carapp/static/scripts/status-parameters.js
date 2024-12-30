@@ -32,6 +32,20 @@ function isValidEmail(email) {
     // Test the email against the regex
     return emailRegex.test(email);
 }
+async function fetchUser() {
+    try {
+        const response = await fetch('/api/v1/is-valid-user', {
+            method: 'GET',
+            credentials: 'include',
+        });
+        if (!response.ok) throw new Error('Failed to fetch user');
+        const { userId } = await response.json();
+        return userId;
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        alert('Unable to fetch user details. Please try again.');
+    }
+}
 
 async function isValidBooking(bookingId) {
     try {
@@ -75,3 +89,4 @@ async function getImageUrl(transformedUrl) {
 
   return fallbackImageUrl;
 }
+
