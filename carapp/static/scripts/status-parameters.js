@@ -25,6 +25,13 @@ function getStateAbbreviation(stateName) {
     return stateAbbreviations[stateName] || stateName;
 }
 
+function isValidEmail(email) {
+    // Define a regular expression for validating email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Test the email against the regex
+    return emailRegex.test(email);
+}
 
 async function isValidBooking(bookingId) {
     try {
@@ -68,4 +75,3 @@ async function getImageUrl(transformedUrl) {
 
   return fallbackImageUrl;
 }
-
