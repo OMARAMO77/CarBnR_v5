@@ -3,7 +3,7 @@
 from models.user import User
 from models import storage
 from api.v1.views import app_views
-from flask import abort, jsonify, make_response, request
+from flask import abort, jsonify, make_response, request, render_template
 from flasgger.utils import swag_from
 from bcrypt import checkpw
 from datetime import timedelta
@@ -157,6 +157,14 @@ def logout():
     response = jsonify({"message": "Logged out successfully"})
     response.delete_cookie('access_token_cookie')  # Clear JWT cookie
     return response
+
+@app_views.route('/profile', methods=['GET'])
+def profile():
+    user_id = get_jwt_identity()
+    if not user_id:
+        return abort(404, description="User not found")
+    
+    return render_template('profile.html')
 
 
 @app_views.route('/login', methods=['POST'], strict_slashes=False)
