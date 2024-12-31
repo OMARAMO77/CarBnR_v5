@@ -1,6 +1,11 @@
 const carId = getParameterByName('carId');
-const userId = getParameterByName('userId');
-const HOST = 'https://omar.eromo.tech';
+const csrfToken = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('csrf_access_token='))
+    ?.split('=')[1];
+
+if (!csrfToken) throw new Error("CSRF token is missing");
+let userId;
 
 function isValidDate(dateString) {
     const date = new Date(dateString);
@@ -9,7 +14,10 @@ function isValidDate(dateString) {
 
 async function fetchCarDetails() {
     try {
-        const carResponse = await fetch(`${HOST}/api/v1/cars/${carId}`);
+        const carResponse = await fetch(`/api/v1/cars/${carId}`, {
+            method: 'GET',
+            credentials: 'include',
+        });
         if (!carResponse.ok) throw new Error("Error fetching car details");
         const carData = await carResponse.json();
 
@@ -40,20 +48,23 @@ async function fetchCarDetails() {
         });
         return locationId;
     } catch (error) {
-        updateStatus(error.message, 'error');
+        updateStatus(error.message, 'danger');
         setTimeout(hideStatus, 3000);
     }
 }
 
 async function fetchLocationDetails(locationId) {
     try {
-        const locationResponse = await fetch(`${HOST}/api/v1/locations/${locationId}`);
+        const locationResponse = await fetch(`/api/v1/locations/${locationId}`, {
+            method: 'GET',
+            credentials: 'include',
+        });
         if (!locationResponse.ok) throw new Error("Error fetching location details");
         const { name, address } = await locationResponse.json();
         $("#locationName").val(name);
         $("#locationAddress").val(address);
     } catch (error) {
-        updateStatus(error.message, 'error');
+        updateStatus(error.message, 'danger');
         setTimeout(hideStatus, 3000);
     }
 }
@@ -64,7 +75,7 @@ async function bookCar(locationId) {
     const dateTime = $("#dateTime").val();
 
     if (!pickupDate || !returnDate || !dateTime) {
-        updateStatus('Please complete all booking details.', 'error');
+        updateStatus('Please complete all booking details.', 'danger');
         setTimeout(hideStatus, 3000);
         return;
     }
@@ -72,12 +83,12 @@ async function bookCar(locationId) {
     const formattedReturnDate = new Date(`${returnDate}T${dateTime}:00`).toISOString().slice(0, 19).replace("T", " ");
 
     if (!isValidDate(formattedPickupDate) || !isValidDate(formattedReturnDate)) {
-        updateStatus('Invalid date or time format.', 'error');
+        updateStatus('Invalid date or time format.', 'danger');
         setTimeout(hideStatus, 3000);
         return;
     }
     if (formattedPickupDate >= formattedReturnDate) {
-        updateStatus("Return date must be after pickup date.", 'error');
+        updateStatus("Return date must be after pickup date.", 'danger');
         $("#total_cost").val("$0.00");
         $("#daysNumber").val("-");
         return;
@@ -95,29 +106,31 @@ async function bookCar(locationId) {
         user_id: userId,
         location_id: locationId
     };
-    console.log(locationId);
+    updateStatus('Booking car in progress...', 'info');
+
     try {
-        const bookingResponse = await fetch(`${HOST}/api/v1/cars/${carId}/bookings`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+        const bookingResponse = await fetch(`/api/v1/cars/${carId}/bookings`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
             body: JSON.stringify(bookingData)
         });
         if (!bookingResponse.ok) throw new Error("Error booking the car");
 
         updateStatus('Booking confirmed!', 'success');
-        setTimeout(() => {
-            hideStatus();
-            window.location.href = `/profile.html?userId=${userId}`;
-        }, 3000);
+        window.location.href = `/profile.html`;
     } catch (error) {
-        updateStatus(error.message, 'error');
+        updateStatus(error.message, 'danger');
         setTimeout(hideStatus, 3000);
     }
 }
 
 $(document).ready(async function () {
     locationId = await fetchCarDetails();
-    console.log(locationId);
+    userId = await fetchUser();
     $("#confirmBookingBtn").on("click", function () {
         if (confirm("Do you want to confirm this booking?")) {
             bookCar(locationId);
