@@ -49,7 +49,10 @@ async function fetchUser() {
 
 async function isValidBooking(bookingId) {
     try {
-        const bookingResponse = await fetch(`${HOST}/api/v1/bookings/${bookingId}`);
+        const bookingResponse = await fetch(`/api/v1/bookings/${bookingId}`, {
+            method: 'GET',
+            credentials: 'include',
+        });
         if (!bookingResponse.ok) throw new Error("Error fetching booking details");
         const bookingData = await bookingResponse.json();
         const { 
