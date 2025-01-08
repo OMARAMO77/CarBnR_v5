@@ -1,0 +1,17 @@
+backup_20241108203335.sql.gz
+backup_20241118180253.sql.gz
+backup_20241119225556.sql.gz
+backup_20241124211116.sql.gz
+backup_20241130190603.sql.gz
+backup_20241214200559.sql.gz
+backup_20241214222431.sql.gz
+backup_20241216225327.sql.gz
+backup_20241218222855.sql.gz
+backup_script.sh
+omar
+re_install_MySQL.sh
+setup_mysql_dev.sql
+setup_mysql.sh
+setup_mysql_test.sql
+sql_re_install_setup_uncompress.sh
+uncompressAndLoad.sh

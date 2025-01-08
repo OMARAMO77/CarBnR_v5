@@ -163,7 +163,7 @@ def profile():
     user_id = get_jwt_identity()
     if not user_id:
         return abort(404, description="User not found")
-    
+
     return render_template('profile.html')
 
 
