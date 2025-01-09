@@ -3,7 +3,7 @@
 from models.user import User
 from models import storage
 from api.v1.views import app_views
-from flask import abort, jsonify, make_response, request, render_template
+from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 from bcrypt import checkpw
 from datetime import timedelta
@@ -11,9 +11,11 @@ from flask import request, jsonify, make_response
 from flask_jwt_extended import (
     create_access_token,
     set_access_cookies,
+    create_refresh_token,
     set_refresh_cookies,
     jwt_required,
     get_jwt_identity,
+    unset_jwt_cookies,
     verify_jwt_in_request,
 )
 
@@ -152,20 +154,21 @@ def c_protected():
     user_id = get_jwt_identity()
     return jsonify({"message": f"Hello, user {user_id}!"}), 200
 
-@app_views.route('/logout', methods=['GET'])
+
+@app_views.route('/logout', methods=['POST'])
 def logout():
-    response = jsonify({"message": "Logged out successfully"})
-    response.delete_cookie('access_token_cookie')  # Clear JWT cookie
+    response = jsonify({"message": "Logout successful"})
+    unset_jwt_cookies(response)
     return response
 
-@app_views.route('/profile', methods=['GET'])
-def profile():
+@app_views.route('/refresh', methods=['POST'], strict_slashes=False)
+@jwt_required(refresh=True)  # Require a valid refresh token
+def refresh():
     user_id = get_jwt_identity()
-    if not user_id:
-        return abort(404, description="User not found")
-
-    return render_template('profile.html')
-
+    new_access_token = create_access_token(identity=user_id, expires_delta=timedelta(minutes=15))
+    response = jsonify({"message": "Token refreshed"})
+    set_access_cookies(response, new_access_token)
+    return response
 
 @app_views.route('/login', methods=['POST'], strict_slashes=False)
 def login():
@@ -182,19 +185,12 @@ def login():
 
     user = storage.get_user_by_email(User, email)
     if user and check_password(user.password, password):
-        # Create an access token
-        access_token = create_access_token(identity=user.id, expires_delta=timedelta(hours=1))
-
-        # Create a response object
+        access_token = create_access_token(identity=user.id, expires_delta=timedelta(minutes=15))
+        refresh_token = create_refresh_token(identity=user.id)
         response = make_response(jsonify({"message": "Login successful"}))
-
-        # Set cookies for access token and CSRF token
+        # Set cookies for access token, CSRF token and refresh token
         set_access_cookies(response, access_token)
-
-        # Optional: Add a refresh token if desired
-        # refresh_token = create_refresh_token(identity=user.id)
-        # set_refresh_cookies(response, refresh_token)
-
+        set_refresh_cookies(response, refresh_token)
         return response
 
     return jsonify({"error": "Invalid credentials"}), 401
