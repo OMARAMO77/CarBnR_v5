@@ -5,6 +5,7 @@ from models.state import State
 from flask import Flask, render_template
 from flask_jwt_extended import get_jwt_identity, jwt_required, JWTManager
 from os import getenv
+from datetime import timedelta
 
 import uuid
 app = Flask(__name__)
@@ -14,6 +15,8 @@ app.config['JWT_SECRET_KEY'] = getenv('JWT_SECRET_KEY')
 app.config["JWT_COOKIE_CSRF_PROTECT"] = True  # Ensures CSRF tokens are issued and validated
 app.config["JWT_TOKEN_LOCATION"] = ["cookies"]  # Use cookies for tokens
 app.config["JWT_ACCESS_CSRF_HEADER_NAME"] = "X-CSRF-TOKEN"  # CSRF header name
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=3)  # 30 days
+
 jwt = JWTManager(app)
 
 @app.teardown_appcontext
