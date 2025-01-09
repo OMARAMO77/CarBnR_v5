@@ -1,3 +1,10 @@
+// Extract CSRF token from cookies
+const csrfToken = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('csrf_access_token='))
+    ?.split('=')[1];
+
+if (!csrfToken) throw new Error("CSRF token is missing");
 const limit = 10;
 // Offsets for pagination in each booking type
 let upcomingOffset = 0;
@@ -280,14 +287,6 @@ async function confirmBooking(bookingId) {
     }
 
     try {
-        const csrfToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrf_access_token='))
-            ?.split('=')[1];
-
-        if (!csrfToken) {
-            throw new Error("CSRF token is missing.");
-        }
         const response = await fetch(`/api/v1/bookings/${bookingId}`, {
             method: 'PUT',
             credentials: 'include',
@@ -315,14 +314,6 @@ async function confirmBooking(bookingId) {
 // Function to handle booking removal
 async function removeBooking(bookingId) {
     try {
-        const csrfToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrf_access_token='))
-            ?.split('=')[1];
-
-        if (!csrfToken) {
-            throw new Error("CSRF token is missing.");
-        }
         const response = await fetch(`/api/v1/bookings/${bookingId}`, {
             method: "DELETE",
             credentials: 'include',
@@ -419,14 +410,6 @@ async function modifyBooking(bookingId) {
             }
 
             // Send PUT request to update booking
-            const csrfToken = document.cookie
-                .split('; ')
-                .find(row => row.startsWith('csrf_access_token='))
-                ?.split('=')[1];
-
-            if (!csrfToken) {
-                throw new Error("CSRF token is missing.");
-            }
             const updateResponse = await fetch(`/api/v1/bookings/${bookingId}`, {
                 method: 'PUT',
                 credentials: 'include',
@@ -469,14 +452,6 @@ async function modifyBooking(bookingId) {
 // Function to handle booking removal
 async function removeCar(carId) {
     try {
-        const csrfToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrf_access_token='))
-            ?.split('=')[1];
-
-        if (!csrfToken) {
-            throw new Error("CSRF token is missing.");
-        }
         const response = await fetch(`/api/v1/cars/${carId}`, {
             method: "DELETE",
             credentials: 'include',
@@ -536,14 +511,6 @@ async function openUpdateCarModal(carId) {
                 };
 
                 // Update car details
-                const csrfToken = document.cookie
-                    .split('; ')
-                    .find(row => row.startsWith('csrf_access_token='))
-                    ?.split('=')[1];
-
-                if (!csrfToken) {
-                    throw new Error("CSRF token is missing.");
-                }
                 const updateCarResponse = await fetch(`/api/v1/cars/${carId}`, {
                     method: 'PUT',
                     credentials: 'include',
@@ -617,13 +584,6 @@ async function openUpdateUserModal() {
                 alert("Please fill at least one field to update.");
                 return;
             }
-            // Extract CSRF token from cookies
-            const csrfToken = document.cookie
-                .split('; ')
-                .find(row => row.startsWith('csrf_access_token='))
-                ?.split('=')[1];
-
-            if (!csrfToken) throw new Error("CSRF token is missing");
 
             const updateResponse = await fetch(`/api/v1/user`, {
                 method: 'PUT',
@@ -690,12 +650,6 @@ async function openUpdateLocationModal(locationId) {
                 };
 
                 // Update location details
-                const csrfToken = document.cookie
-                    .split('; ')
-                    .find(row => row.startsWith('csrf_access_token='))
-                    ?.split('=')[1];
-
-                if (!csrfToken) throw new Error("CSRF token is missing");
                 const updateLocationResponse = await fetch(`/api/v1/locations/${locationId}`, {
                     method: 'PUT',
                     credentials: 'include',
@@ -730,15 +684,6 @@ async function openUpdateLocationModal(locationId) {
 
 async function deleteUser() {
     try {
-        const csrfToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrf_access_token='))
-            ?.split('=')[1];
-
-        if (!csrfToken) {
-            throw new Error("CSRF token is missing.");
-        }
-
         const response = await fetch('/api/v1/user', {
             method: "DELETE",
             credentials: 'include',
@@ -767,14 +712,6 @@ async function deleteUser() {
 
 async function removeLocation(locationId) {
     try {
-        const csrfToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrf_access_token='))
-            ?.split('=')[1];
-
-        if (!csrfToken) {
-            throw new Error("CSRF token is missing.");
-        }
         const response = await fetch(`/api/v1/locations/${locationId}`, {
             method: "DELETE",
             credentials: 'include',
@@ -923,16 +860,21 @@ async function fetchLocations() {
 async function logout() {
     try {
         const response = await fetch('/api/v1/logout', {
-            method: 'GET',
-            credentials: 'include',
+            method: 'POST',
+            credentials: 'include', // Ensures cookies are sent with the request
+            headers: {
+                'Content-Type': 'application/json',
+                ...(csrfToken && { 'X-CSRF-TOKEN': csrfToken }) // Add CSRF header only if csrfToken exists
+            }
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
+            const errorData = await response.json().catch(() => ({})); // Handle non-JSON errors gracefully
             const errorMessage = errorData.error || "Failed to log out. Please try again.";
             throw new Error(errorMessage);
         }
 
+        // Show success message and redirect
         alert("Logged out successfully.");
         window.location.href = "/login.html";
     } catch (error) {
@@ -940,7 +882,6 @@ async function logout() {
         alert(error.message || "An error occurred while trying to log out. Please try again.");
     }
 }
-
 
 // Event listeners for each tab
 $(document).ready(async function() {
