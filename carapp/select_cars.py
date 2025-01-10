@@ -2,8 +2,8 @@
 """ Starts a Flash Web Application """
 from models import storage
 from models.state import State
-from flask import Flask, render_template
-from flask_jwt_extended import get_jwt_identity, jwt_required, JWTManager
+from flask import Flask, render_template, redirect, request, make_response
+from flask_jwt_extended import get_jwt_identity, jwt_required, JWTManager, verify_jwt_in_request
 from os import getenv
 from datetime import timedelta
 
@@ -23,6 +23,17 @@ jwt = JWTManager(app)
 def close_db(error):
     """ Remove the current SQLAlchemy Session """
     storage.close()
+
+@app.route('/profile', methods=['GET'])
+def profile():
+    try:
+        verify_jwt_in_request(optional=False, locations=["cookies"])
+        return render_template('profile.html'), 200
+    except Exception as e:
+        response = redirect("/login.html")
+        response.set_cookie('next', request.url, httponly=True, samesite='Strict')
+        return response
+
 
 @app.route('/select_cars', strict_slashes=False)
 @jwt_required(locations=["cookies"])
