@@ -187,7 +187,7 @@ def login():
     if user and check_password(user.password, password):
         access_token = create_access_token(identity=user.id, expires_delta=timedelta(minutes=15))
         refresh_token = create_refresh_token(identity=user.id)
-        next_page = request.cookies.get('next', '/default_page')
+        next_page = request.cookies.get('next', '/')
         response = make_response(jsonify({"message": "Login successful", "next": next_page}))
         # Set cookies for access token, CSRF token and refresh token
         set_access_cookies(response, access_token)
