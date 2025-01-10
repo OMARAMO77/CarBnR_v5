@@ -39,21 +39,25 @@ def authenticated_view(template_name):
 def profile():
     return authenticated_view('profile.html')
 
-
 @app.route('/chat-interface', methods=['GET'])
 def chat_interface():
     return authenticated_view('chat-interface.html')
-
 
 @app.route('/global-weather', methods=['GET'])
 def global_weather():
     return authenticated_view('global-weather.html')
 
-
 @app.route('/usa-weather', methods=['GET'])
 def usa_weather():
     return authenticated_view('usa-weather.html')
 
+@app.route('/add-location-and-cars', methods=['GET'])
+def add_location_and_cars():
+    return authenticated_view('add-location-and-cars.html')
+
+@app.route('/booking-page', methods=['GET'])
+def booking_page():
+    return authenticated_view('booking-page.html')
 
 @app.route('/select_cars', methods=['GET'], strict_slashes=False)
 def carbnr():
