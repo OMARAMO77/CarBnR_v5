@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (userId) {
     profileLink.style.display = "block";
+    profileLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.location.href = `/profile`;
+    });
   } else {
     loginLink.style.display = "block";
     signupLink.style.display = "block";
