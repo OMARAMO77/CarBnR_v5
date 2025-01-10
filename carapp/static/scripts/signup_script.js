@@ -64,12 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             updateStatus('Account created successfully!', 'success');
-            setTimeout(() => {
-                const redirectUrl = carId
-                    ? `/login.html?carId=${carId}`
-                    : `/login.html`;
-                window.location.href = redirectUrl;
-            }, 2000);
+            const redirectUrl = carId
+                ? `/login.html?carId=${carId}`
+                : `/login.html`;
+            window.location.href = redirectUrl;
         } catch (error) {
             updateStatus('An unexpected error occurred. Please try again.', 'danger');
             setTimeout(hideStatus, 5000);
