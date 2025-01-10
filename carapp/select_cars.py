@@ -24,30 +24,40 @@ def close_db(error):
     """ Remove the current SQLAlchemy Session """
     storage.close()
 
-@app.route('/profile', methods=['GET'])
-def profile():
+
+# Helper function to handle JWT verification and redirection
+def authenticated_view(template_name):
     try:
         verify_jwt_in_request(optional=False, locations=["cookies"])
-        return render_template('profile.html'), 200
-    except Exception as e:
+        return render_template(template_name), 200
+    except Exception:
         response = redirect("/login.html")
         response.set_cookie('next', request.url, httponly=True, samesite='Strict')
         return response
 
+@app.route('/profile', methods=['GET'])
+def profile():
+    return authenticated_view('profile.html')
 
-@app.route('/select_cars', strict_slashes=False)
+
+@app.route('/chat-interface', methods=['GET'])
+def chat_interface():
+    return authenticated_view('chat-interface.html')
+
+
+@app.route('/select_cars', methods=['GET'], strict_slashes=False)
 @jwt_required(locations=["cookies"])
 def carbnr():
-    """ CARBNR is alive! """
-    user_id = get_jwt_identity()
-    if not user_id:
-        return abort(404, description="User not found")
-    # Fetch and sort states by name
-    states = sorted(storage.all(State).values(), key=lambda state: state.name)
-
-    return render_template('select_cars.html',
-                           states=states,
-                           cache_id=uuid.uuid4())
+    try:
+        verify_jwt_in_request(optional=False, locations=["cookies"])
+        states = sorted(storage.all(State).values(), key=lambda state: state.name)
+        return render_template('select_cars.html',
+                               states=states,
+                               cache_id=uuid.uuid4())
+    except Exception:
+        response = redirect("/login.html")
+        response.set_cookie('next', request.url, httponly=True, samesite='Strict')
+        return response
 
 
 if __name__ == "__main__":
