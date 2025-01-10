@@ -52,6 +52,16 @@ server {
         proxy_pass http://127.0.0.1:5000/usa-weather;
     }
 
+    location /booking-page {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5000/booking-page;
+    }
+
+    location /add-location-and-cars {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5000/add-location-and-cars;
+    }
+
     #location /create_cars {
     #    include proxy_params;
     #    proxy_pass http://127.0.0.1:5003/create_cars;
