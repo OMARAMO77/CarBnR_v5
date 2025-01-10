@@ -29,7 +29,7 @@ server {
 
     location /select_cars {
         include proxy_params;
-        proxy_pass http://127.0.0.1:5000/select_cars/;
+        proxy_pass http://127.0.0.1:5000/select_cars;
     }
 
     location /profile {
@@ -40,6 +40,16 @@ server {
     location /chat-interface {
         include proxy_params;
         proxy_pass http://127.0.0.1:5000/chat-interface;
+    }
+
+    location /global-weather {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5000/global-weather;
+    }
+
+    location /usa-weather {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5000/usa-weather;
     }
 
     #location /create_cars {
