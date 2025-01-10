@@ -15,7 +15,7 @@ app.config['JWT_SECRET_KEY'] = getenv('JWT_SECRET_KEY')
 app.config["JWT_COOKIE_CSRF_PROTECT"] = True  # Ensures CSRF tokens are issued and validated
 app.config["JWT_TOKEN_LOCATION"] = ["cookies"]  # Use cookies for tokens
 app.config["JWT_ACCESS_CSRF_HEADER_NAME"] = "X-CSRF-TOKEN"  # CSRF header name
-app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=3)  # 30 days
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=3)  # default: 30 days
 
 jwt = JWTManager(app)
 
@@ -45,8 +45,17 @@ def chat_interface():
     return authenticated_view('chat-interface.html')
 
 
+@app.route('/global-weather', methods=['GET'])
+def global_weather():
+    return authenticated_view('global-weather.html')
+
+
+@app.route('/usa-weather', methods=['GET'])
+def usa_weather():
+    return authenticated_view('usa-weather.html')
+
+
 @app.route('/select_cars', methods=['GET'], strict_slashes=False)
-@jwt_required(locations=["cookies"])
 def carbnr():
     try:
         verify_jwt_in_request(optional=False, locations=["cookies"])
