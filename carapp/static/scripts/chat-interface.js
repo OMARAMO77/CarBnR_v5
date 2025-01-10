@@ -1,12 +1,19 @@
-const HOST = 'https://omar.eromo.tech';
-const userId = getParameterByName('userId');
+let userId;
 let ciphertext, iv, encryptedKey;
 const limit = 10;
+// Extract CSRF token from cookies
+const csrfToken = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('csrf_access_token='))
+    ?.split('=')[1];
+
+if (!csrfToken) throw new Error("CSRF token is missing");
 
 async function generateKeys(user_id) {
     try {
-        const response = await fetch(`${HOST}/api/v1/generate-keys/${user_id}`, {
-            method: 'GET'
+        const response = await fetch(`/api/v1/generate-keys/${user_id}`, {
+            method: 'GET',
+            credentials: 'include',
         });
 
         if (!response.ok) {
@@ -27,12 +34,15 @@ async function generateKeys(user_id) {
 
 async function sendMessage(sender, recipient, message) {
     try {
-        const exchangeResponse = await fetch(`${HOST}/api/v1/exchange-key`, {
+        const exchangeResponse = await fetch('/api/v1/exchange-key', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
             body: JSON.stringify({ sender, recipient })
         });
-
         if (!exchangeResponse.ok) {
             const errorText = await exchangeResponse.text();
             console.error('Exchange key failed:', errorText);
@@ -44,9 +54,13 @@ async function sendMessage(sender, recipient, message) {
         console.log('Encrypted Key:', encrypted_key);
 
         // Step 2: Encrypt the message
-        const encryptionResponse = await fetch(`${HOST}/api/v1/send-message`, {
+        const encryptionResponse = await fetch('/api/v1/send-message', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
             body: JSON.stringify({ sender, recipient, message })
         });
 
@@ -72,9 +86,13 @@ async function sendMessage(sender, recipient, message) {
 }
 async function sendMessageToServer(sender, recipient, ciphertext, iv, encryptedKey) {
     try {
-        const response = await fetch(`${HOST}/api/v1/store-message`, {
+        const response = await fetch('/api/v1/store-message', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
             body: JSON.stringify({
                 sender,
                 recipient,
@@ -99,11 +117,14 @@ async function sendMessageToServer(sender, recipient, ciphertext, iv, encryptedK
 async function fetchMessageData(user1, user2, offset) {
     try {
         // Construct the API URL with query parameters
-        const url = `${HOST}/api/v1/get-message-data?user1=${user1}&user2=${user2}&limit=${limit}&offset=${offset}`;
+        const url = `/api/v1/get-message-data?user1=${user1}&user2=${user2}&limit=${limit}&offset=${offset}`;
         
         // Fetch data from the API
-        const response = await fetch(url);
-        
+        const response = await fetch(url, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
         if (!response.ok) {
             // Handle non-OK responses
             const errorData = await response.json();
@@ -210,7 +231,10 @@ async function fetchContacts(user_id) {
     if (loadingPlaceholder) loadingPlaceholder.style.display = "block";
     let fragment;
     try {
-        const response = await fetch(`${HOST}/api/v1/get-contacts?user_id=${user_id}`);
+        const response = await fetch(`/api/v1/get-contacts?user_id=${user_id}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.error || 'Failed to fetch contacts');
@@ -282,10 +306,12 @@ async function getUserId(email) {
 
     try {
         // Send a POST request to the server
-        const response = await fetch(`${HOST}/api/v1/get-user-id`, {
-            method: "POST",
+        const response = await fetch('/api/v1/get-user-id', {
+            method: 'POST',
+            credentials: 'include',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
             },
             body: JSON.stringify({ email: email }),
         });
@@ -326,20 +352,10 @@ window.onload = async () => {
         mainContent.classList.toggle("shifted");
         toggleSidebarBtn.textContent = isVisible ? "Hide Contacts" : "Show Contacts";
     });
+    userId = await fetchUser();
     const sender = userId;
     toggleButtons(true);
     await fetchContacts(userId);
-    // Validate user on load
-    try {
-        if (!userId) throw new Error('User ID not found in URL.');
-        const userResponse = await fetch(`${HOST}/api/v1/is-valid/${userId}`);
-        if (!userResponse.ok) throw new Error('Unable to validate user ID.');
-        const userData = await userResponse.json();
-        if (userData.isValid !== "yes") throw new Error('Invalid user ID.');
-    } catch (error) {
-        alert(`Validation Error: ${error.message}`);
-        return;
-    }
     toggleButtons(false);
     refreshBtn.addEventListener("click", async () => {
         const recipient = document.getElementById("recipient").value.trim();
