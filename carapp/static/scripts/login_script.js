@@ -31,23 +31,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const USERS_URL = '/api/v1/login';
 
         try {
-            updateStatus('In progress...', 'info');
+            updateStatus('Logging in...', 'info');
 
             const response = await fetch(USERS_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             });
-
             if (!response.ok) {
                 throw new Error('Invalid credentials. Please try again.');
             }
-
+            const data = await response.json();
             updateStatus('Logged in successfully!', 'success');
-            const redirectUrl = carId
-                ? `/booking-page.html?carId=${carId}`
-                : `/select_cars`;
-            window.location.href = redirectUrl;
+
+            window.location.href = decodeURIComponent(data.next);
 
         } catch (error) {
             updateStatus(error.message, 'danger');
