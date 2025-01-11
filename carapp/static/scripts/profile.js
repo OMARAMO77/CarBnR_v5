@@ -235,12 +235,12 @@ async function fetchUserDetails() {
 
                     <div class="action-buttons mt-4">
                         <button class="btn btn-danger btn-custom" id="log-out"><i class="fas fa-sign-out-alt"></i> Log Out</button>
-                        <button class="btn btn-success btn-custom" onclick="window.location.href='./add-location-and-cars.html'">
+                        <a class="btn btn-success btn-custom" href="./add-location-and-cars">
                             <i class="fas fa-map-marker-alt"></i> Add Location
-                        </button>
-                        <button class="btn btn-warning btn-custom" onclick="window.location.href='./select_cars.html'">
+                        </a>
+                        <a class="btn btn-warning btn-custom" href="./select_cars">
                             <i class="fas fa-car"></i> Book New Car
-                        </button>
+                        </a>
 
                         <button class="btn btn-primary btn-custom" id="switchButton" >Switch</button>
                     </div>
