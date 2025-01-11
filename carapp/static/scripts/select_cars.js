@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     checkbox.addEventListener('change', () => {
                       searchBtn.disabled = false;
-                      carHeadingText.textContent = 'Choose your state, city, and at least one location to explore available cars.';
+                      carHeadingText.textContent = 'Choose at least one location to explore available cars.';
                       carsSection.innerHTML = '';
                       if (!window.locationObj) window.locationObj = {};
                       if (checkbox.checked) {
