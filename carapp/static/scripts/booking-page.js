@@ -1,4 +1,3 @@
-const carId = getParameterByName('carId');
 const csrfToken = document.cookie
     .split('; ')
     .find(row => row.startsWith('csrf_access_token='))
@@ -6,6 +5,7 @@ const csrfToken = document.cookie
 
 if (!csrfToken) throw new Error("CSRF token is missing");
 let userId;
+const carId = localStorage.getItem('carId1');
 
 function isValidDate(dateString) {
     const date = new Date(dateString);
@@ -121,7 +121,7 @@ async function bookCar(locationId) {
         if (!bookingResponse.ok) throw new Error("Error booking the car");
 
         updateStatus('Booking confirmed!', 'success');
-        window.location.href = `/profile.html`;
+        window.location.href = `/profile`;
     } catch (error) {
         updateStatus(error.message, 'danger');
         setTimeout(hideStatus, 3000);
