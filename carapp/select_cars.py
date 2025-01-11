@@ -3,9 +3,18 @@
 from models import storage
 from models.state import State
 from flask import Flask, render_template, redirect, request, make_response
-from flask_jwt_extended import get_jwt_identity, jwt_required, JWTManager, verify_jwt_in_request
 from os import getenv
 from datetime import timedelta
+from flask_jwt_extended import (
+    create_access_token,
+    set_access_cookies,
+    create_refresh_token,
+    set_refresh_cookies,
+    jwt_required,
+    get_jwt_identity,
+    JWTManager,
+    verify_jwt_in_request,
+)
 
 import uuid
 app = Flask(__name__)
