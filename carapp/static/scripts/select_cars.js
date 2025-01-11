@@ -192,7 +192,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         button.addEventListener('click', async (event) => {
           event.preventDefault();
           const carId = button.closest('article').dataset.carId;
-
+          localStorage.setItem('carId1', carId);
+          //const carId1 = localStorage.getItem('carId1');
           button.disabled = true;
           try {
             const carResponse = await fetch(`/api/v1/cars/${carId}`, {
@@ -211,10 +212,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               return;
             }
 
-            const redirectUrl = userId
-              ? `/booking-page.html?carId=${carId}`
-              : `/signup.html?carId=${carId}`;
-            window.location.href = redirectUrl;
+            window.location.href = '/booking-page';
           } catch (error) {
             console.error(error);
             searchBtn.disabled = false;
