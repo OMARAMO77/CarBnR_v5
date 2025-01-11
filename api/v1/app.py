@@ -31,7 +31,7 @@ jwt = JWTManager(app)
 
 @app.before_request
 def authenticate_all_requests():
-    if request.endpoint in ['app_views.login', 'app_views.post_user']:
+    if request.endpoint in ['app_views.login', 'app_views.post_user', 'app_views.refresh']:
         return
     try:
         verify_jwt_in_request(locations=["cookies"])
