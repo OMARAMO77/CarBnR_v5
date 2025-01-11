@@ -19,6 +19,7 @@ async function apiStatus() {
   }
 }
 document.addEventListener("DOMContentLoaded", async () => {
+  const refreshBtn = document.getElementById("refresh-link");
   const profileLink = document.querySelector(".profile-link");
   const loginLink = document.querySelector(".login-link");
   const signupLink = document.querySelector(".signup-link");
@@ -43,6 +44,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     loginLink.style.display = "block";
     signupLink.style.display = "block";
   }
+
+  refreshBtn.addEventListener("click", async () => {
+    try {
+      await refreshToken();
+      console.log("Token refreshed successfully.");
+    } catch (error) {
+      console.error("Failed to refresh token:", error.message);
+    }
+  });
+
+
 
   const stateInputs = document.querySelectorAll('.state_input');
   stateInputs.forEach((stateInput) => {
