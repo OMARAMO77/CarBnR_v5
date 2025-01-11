@@ -1,4 +1,23 @@
 let userId;
+
+async function apiStatus() {
+  try {
+    const response = await fetch('/api/v1/status/', {
+      method: 'GET',
+      credentials: 'include', // Include cookies
+    });
+    const data = await response.json();
+
+    const apiStatusElement = document.getElementById('api_status');
+    if (data.status === 'OK') {
+      apiStatusElement.classList.add('available');
+    } else {
+      apiStatusElement.classList.remove('available');
+    }
+  } catch (error) {
+    console.error('Failed to check API status:', error);
+  }
+}
 document.addEventListener("DOMContentLoaded", async () => {
   const profileLink = document.querySelector(".profile-link");
   const loginLink = document.querySelector(".login-link");
@@ -25,7 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     signupLink.style.display = "block";
   }
 
-  document.querySelectorAll('.state_input').forEach((stateInput) => {
+  const stateInputs = document.querySelectorAll('.state_input');
+  stateInputs.forEach((stateInput) => {
     stateInput.addEventListener('change', async function () {
       if (this.checked) {
         const stateId = this.dataset.id;
@@ -98,6 +118,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     checkbox.addEventListener('change', () => {
                       searchBtn.disabled = false;
+                      carHeadingText.textContent = 'Choose your state, city, and at least one location to explore available cars.';
+                      carsSection.innerHTML = '';
                       if (!window.locationObj) window.locationObj = {};
                       if (checkbox.checked) {
                         window.locationObj[checkbox.dataset.name] = checkbox.dataset.id;
@@ -106,7 +128,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                       }
                       const selectedLocations = Object.keys(window.locationObj).sort();
                       locationsText.textContent = selectedLocations.join(', ');
-                      if (selectedLocations.length === 0) locationsText.textContent = 'select a location';
+                      if (selectedLocations.length === 0) {
+                        locationsText.textContent = 'select a location';
+                      }
                     });
                   });
                 } catch (error) {
@@ -177,7 +201,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <p class="card-text text-muted">Experience luxury and performance with the ${car.brand} ${car.model} ${car.year}.</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <p class="card-text mt-2">${availabilityText}</p>
-                  <a href="#" class="btn btn-primary btn-sm book-now-btn">Book Now</a>
+                  <button class="btn btn-primary btn-sm book-now-btn">Book Now</button>
                 </div>
               </div>
               <div class="card-footer text-muted">
@@ -188,23 +212,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         carsSection.insertAdjacentHTML('beforeend', article);
       });
 
-      document.querySelectorAll('.book-now-btn').forEach(button => {
+      const bookNowBtns = document.querySelectorAll('.book-now-btn');
+      bookNowBtns.forEach(button => {
         button.addEventListener('click', async (event) => {
           event.preventDefault();
           const carId = button.closest('article').dataset.carId;
           localStorage.setItem('carId1', carId);
-          //const carId1 = localStorage.getItem('carId1');
+
           button.disabled = true;
           try {
             const carResponse = await fetch(`/api/v1/cars/${carId}`, {
               method: 'GET',
-              credentials: 'include', // Include cookies
+              credentials: 'include',
             });
+            if (!carResponse.ok) throw new Error('Failed to fetch car details.');
             const car = await carResponse.json();
             const locationResponse = await fetch(`/api/v1/locations/${car.location_id}`, {
               method: 'GET',
-              credentials: 'include', // Include cookies
+              credentials: 'include',
             });
+            if (!locationResponse.ok) throw new Error('Failed to fetch location details.');
             const location = await locationResponse.json();
 
             if (userId === location.user_id) {
@@ -227,25 +254,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       searchBtn.disabled = false;
     }
   };
-
-  async function apiStatus() {
-    try {
-      const response = await fetch('/api/v1/status/', {
-        method: 'GET',
-        credentials: 'include', // Include cookies
-      });
-      const data = await response.json();
-
-      const apiStatusElement = document.getElementById('api_status');
-      if (data.status === 'OK') {
-        apiStatusElement.classList.add('available');
-      } else {
-        apiStatusElement.classList.remove('available');
-      }
-    } catch (error) {
-      console.error('Failed to check API status:', error);
-    }
-  }
 
   apiStatus();
 });
