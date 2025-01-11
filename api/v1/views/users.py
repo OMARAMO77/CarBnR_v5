@@ -161,14 +161,29 @@ def logout():
     unset_jwt_cookies(response)
     return response
 
+
+
 @app_views.route('/refresh', methods=['POST'], strict_slashes=False)
-@jwt_required(refresh=True)  # Require a valid refresh token
 def refresh():
-    user_id = get_jwt_identity()
-    new_access_token = create_access_token(identity=user_id, expires_delta=timedelta(minutes=15))
-    response = jsonify({"message": "Token refreshed"})
-    set_access_cookies(response, new_access_token)
+    verify_jwt_in_request(optional=False, refresh=True)
+
+    identity = get_jwt_identity()
+
+    # Create a new access token
+    access_token = create_access_token(identity=identity, expires_delta=timedelta(minutes=15))
+
+    # Create a new refresh token
+    refresh_token = create_refresh_token(identity=identity)
+
+    # Build the response with new tokens
+    response = jsonify({"message": "Tokens refreshed"})
+    
+    # Attach the tokens as cookies
+    set_access_cookies(response, access_token)  # Sets access token cookie and CSRF token
+    set_refresh_cookies(response, refresh_token)  # Sets refresh token cookie and CSRF token
+
     return response
+
 
 @app_views.route('/login', methods=['POST'], strict_slashes=False)
 def login():
