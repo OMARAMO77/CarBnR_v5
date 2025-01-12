@@ -1,10 +1,3 @@
-function isValidEmail(email) {
-    // Define a regular expression for validating email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // Test the email against the regex
-    return emailRegex.test(email);
-}
 document.addEventListener('DOMContentLoaded', () => {
     const createAccountForm = document.getElementById('createAccountForm');
     const submitBtn = document.getElementById('submitBtn');
