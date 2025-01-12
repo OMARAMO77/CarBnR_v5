@@ -1,10 +1,3 @@
-// Extract CSRF token from cookies
-const csrfToken = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('csrf_access_token='))
-    ?.split('=')[1];
-
-if (!csrfToken) throw new Error("CSRF token is missing");
 let userId;
 
 async function saveState() {
@@ -15,6 +8,12 @@ async function saveState() {
             alert('State name cannot be empty.');
             return;
         }
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
 
         const response = await fetch('/api/v1/states', {
             method: 'POST',
@@ -59,6 +58,12 @@ async function saveCity() {
             alert("Please select a state first.");
             return;
         }
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
 
         const response = await fetch(`/api/v1/states/${stateId}/cities`, {
             method: 'POST',
@@ -111,6 +116,12 @@ async function saveLocation() {
             phone_number: document.getElementById('phoneNumber').value,
             user_id: userId,
         };
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
 
         const response = await fetch(`/api/v1/cities/${cityId}/locations`, {
             method: 'POST',
@@ -330,6 +341,12 @@ async function handleFormSubmit(event) {
             submitButton.disabled = false;
             return;
         }
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
 
         // Submit car details
         const carResponse = await fetch(`/api/v1/locations/${locationId}/cars`, {
