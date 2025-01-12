@@ -45,16 +45,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     signupLink.style.display = "block";
   }
 
-  refreshBtn.addEventListener("click", async () => {
-    try {
-      await refreshToken();
-      console.log("Token refreshed successfully.");
-    } catch (error) {
-      console.error("Failed to refresh token:", error.message);
-    }
-  });
-
-
 
   const stateInputs = document.querySelectorAll('.state_input');
   stateInputs.forEach((stateInput) => {
