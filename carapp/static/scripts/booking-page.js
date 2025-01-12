@@ -1,9 +1,3 @@
-const csrfToken = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('csrf_access_token='))
-    ?.split('=')[1];
-
-if (!csrfToken) throw new Error("CSRF token is missing");
 let userId;
 const carId = localStorage.getItem('carId1');
 
@@ -109,6 +103,13 @@ async function bookCar(locationId) {
     updateStatus('Booking car in progress...', 'info');
 
     try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
+
         const bookingResponse = await fetch(`/api/v1/cars/${carId}/bookings`, {
             method: 'POST',
             credentials: 'include',
