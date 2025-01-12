@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CarBnR: Book Your Dream Car</title>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="icon" href="../static/images/thumb.png">
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="../static/styles/select_cars.css?{{ cache_id }}">
-  <link rel="stylesheet" href="../static/styles/navbar.css?{{ cache_id }}"></head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap">
+  <link rel="stylesheet" type="text/css" href="../static/styles/select_cars.css">
+  <link rel="stylesheet" href="../static/styles/navbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+</head>
+  
 <body>
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
@@ -45,10 +48,8 @@
       <div class="navbar-nav">
         <a class="nav-link btn profile-link" id="profile-link" href="/profile"  style="display: none;"><i class="fas fa-user"></i> Profile</a>
       </div>
-      <div class="navbar-nav">
-        <button class="nav-link btn" id="refresh-link"> Refresh</button>
-      </div>
     </nav>
+
     <div class="bg-dark text-white text-center py-3">
       <h1>CarBnR - Where the ease of Car Booking meets the joy of Renting</h1>
     <div id="api_status" class="available"></div>
@@ -120,7 +121,10 @@
       <p style="font-family: 'Pacifico', cursive;">&copy; 2024 CarBnR. All rights reserved.</p>
     </div>
   </footer>
-  <script src="../static/scripts/status-parameters.js?{{ cache_id }}"></script>
-  <script src="../static/scripts/select_cars.js?{{ cache_id }}"></script>
+  <script src="../static/scripts/status-parameters.js"></script>
+  <script src="../static/scripts/select_cars.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
 </body>
 </html>
