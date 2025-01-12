@@ -2,12 +2,6 @@ let userId;
 let ciphertext, iv, encryptedKey;
 const limit = 10;
 // Extract CSRF token from cookies
-const csrfToken = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('csrf_access_token='))
-    ?.split('=')[1];
-
-if (!csrfToken) throw new Error("CSRF token is missing");
 
 async function generateKeys(user_id) {
     try {
@@ -34,6 +28,13 @@ async function generateKeys(user_id) {
 
 async function sendMessage(sender, recipient, message) {
     try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
+
         const exchangeResponse = await fetch('/api/v1/exchange-key', {
             method: 'POST',
             credentials: 'include',
@@ -52,6 +53,12 @@ async function sendMessage(sender, recipient, message) {
         const exchangeData = await exchangeResponse.json();
         const { encrypted_key } = exchangeData;
         console.log('Encrypted Key:', encrypted_key);
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
 
         // Step 2: Encrypt the message
         const encryptionResponse = await fetch('/api/v1/send-message', {
@@ -86,6 +93,13 @@ async function sendMessage(sender, recipient, message) {
 }
 async function sendMessageToServer(sender, recipient, ciphertext, iv, encryptedKey) {
     try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
+
         const response = await fetch('/api/v1/store-message', {
             method: 'POST',
             credentials: 'include',
@@ -305,6 +319,13 @@ async function getUserId(email) {
     }
 
     try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
+
         // Send a POST request to the server
         const response = await fetch('/api/v1/get-user-id', {
             method: 'POST',
