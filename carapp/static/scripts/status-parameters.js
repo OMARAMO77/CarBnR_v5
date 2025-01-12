@@ -28,7 +28,6 @@ function getStateAbbreviation(stateName) {
 function isValidEmail(email) {
     // Define a regular expression for validating email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     // Test the email against the regex
     return emailRegex.test(email);
 }
@@ -72,45 +71,13 @@ async function isValidBooking(bookingId) {
 }
 
 
-const TOKEN_LIFESPAN = 15 * 60 * 1000; // 15 minutes in milliseconds
-const REFRESH_BEFORE_EXPIRY = 60 * 1000; // Refresh 1 minute before expiry
-
-
-async function refreshToken() {
-    try {
-        const response = await fetch('/api/v1/refresh', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
-            },
-        });
-
-        if (!response.ok) throw new Error('Failed to refresh token');
-
-        const data = await response.json();
-        console.log("Tokens refreshed successfully", data.message);
-    } catch (error) {
-        console.error("Error refreshing token:", error);
-        alert("Session expired. Please log in again.");
-    }
-}
-//setTimeout(refreshToken, TOKEN_LIFESPAN - REFRESH_BEFORE_EXPIRY);
-
-
-async function refreshToken() {
+async function refreshTokenBeforeExpiry() {
     const csrf_refresh_token = document.cookie
         .split('; ')
         .find(row => row.startsWith('csrf_refresh_token='))
         ?.split('=')[1];
-    console.log("csrf_refresh_token:", csrf_refresh_token);
 
-
-    if (!csrf_refresh_token) {
-        console.error("CSRF token is missing");
-        return;
-    }
+    if (!csrf_refresh_token) throw new Error("CSRF token is missing");
 
     try {
         const response = await fetch('/api/v1/refresh', {
@@ -127,34 +94,12 @@ async function refreshToken() {
         }
 
         const data = await response.json();
-        console.log("Token refreshed:", data);
+        console.log(data.message);
+        const expiresIn = 900 * 1000;
+        setTimeout(refreshTokenBeforeExpiry, expiresIn - 60000);
     } catch (error) {
         console.error("Error refreshing token:", error);
     }
 }
 
-
-function refreshTokenBeforeExpiry() {
-    fetch('/refresh', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' }
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Failed to refresh token');
-        return response.json();
-    })
-    .then(data => {
-        console.log("Token refreshed:", data);
-        // Assuming the backend provides the new token expiry time
-        const expiresIn = 3600 * 1000; // 1 hour (adjust based on actual expiry)
-        setTimeout(refreshTokenBeforeExpiry, expiresIn - 60000); // Refresh 1 min before expiry
-    })
-    .catch(error => {
-        console.error("Error refreshing token:", error);
-        // Optional: Redirect to login
-    });
-}
-
-// Call this once when the app starts
-//refreshTokenBeforeExpiry();
+refreshTokenBeforeExpiry();
