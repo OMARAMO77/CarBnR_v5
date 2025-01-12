@@ -1,10 +1,3 @@
-// Extract CSRF token from cookies
-const csrfToken = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('csrf_access_token='))
-    ?.split('=')[1];
-
-if (!csrfToken) throw new Error("CSRF token is missing");
 const limit = 10;
 // Offsets for pagination in each booking type
 let upcomingOffset = 0;
@@ -152,7 +145,10 @@ async function fetchUserLocationsBookings(type, offset) {
             console.log(`You have no locations yet.`);
             return;
         }
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!response.ok) throw new Error('Failed to fetch user bookings');
         const data = await response.json();
         console.log(data);
@@ -287,6 +283,13 @@ async function confirmBooking(bookingId) {
     }
 
     try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
+
         const response = await fetch(`/api/v1/bookings/${bookingId}`, {
             method: 'PUT',
             credentials: 'include',
@@ -314,6 +317,13 @@ async function confirmBooking(bookingId) {
 // Function to handle booking removal
 async function removeBooking(bookingId) {
     try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
+
         const response = await fetch(`/api/v1/bookings/${bookingId}`, {
             method: "DELETE",
             credentials: 'include',
@@ -408,6 +418,12 @@ async function modifyBooking(bookingId) {
             if (status === "Confirmed") {
                 updatedData.status = "Pending";
             }
+            const csrfToken = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('csrf_access_token='))
+                ?.split('=')[1];
+
+            if (!csrfToken) throw new Error("CSRF token is missing");
 
             // Send PUT request to update booking
             const updateResponse = await fetch(`/api/v1/bookings/${bookingId}`, {
@@ -452,6 +468,13 @@ async function modifyBooking(bookingId) {
 // Function to handle booking removal
 async function removeCar(carId) {
     try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
+
         const response = await fetch(`/api/v1/cars/${carId}`, {
             method: "DELETE",
             credentials: 'include',
@@ -509,6 +532,12 @@ async function openUpdateCarModal(carId) {
                     year: updatedYear,
                     price_by_day: updatedPriceByDay
                 };
+                const csrfToken = document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('csrf_access_token='))
+                    ?.split('=')[1];
+
+                if (!csrfToken) throw new Error("CSRF token is missing");
 
                 // Update car details
                 const updateCarResponse = await fetch(`/api/v1/cars/${carId}`, {
@@ -584,6 +613,12 @@ async function openUpdateUserModal() {
                 alert("Please fill at least one field to update.");
                 return;
             }
+            const csrfToken = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('csrf_access_token='))
+                ?.split('=')[1];
+
+            if (!csrfToken) throw new Error("CSRF token is missing");
 
             const updateResponse = await fetch(`/api/v1/user`, {
                 method: 'PUT',
@@ -648,6 +683,12 @@ async function openUpdateLocationModal(locationId) {
                     address: updatedAddress,
                     phone_number: updatedPhone
                 };
+                const csrfToken = document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('csrf_access_token='))
+                    ?.split('=')[1];
+
+                if (!csrfToken) throw new Error("CSRF token is missing");
 
                 // Update location details
                 const updateLocationResponse = await fetch(`/api/v1/locations/${locationId}`, {
@@ -684,6 +725,13 @@ async function openUpdateLocationModal(locationId) {
 
 async function deleteUser() {
     try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
+
         const response = await fetch('/api/v1/user', {
             method: "DELETE",
             credentials: 'include',
@@ -712,6 +760,13 @@ async function deleteUser() {
 
 async function removeLocation(locationId) {
     try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
+
         const response = await fetch(`/api/v1/locations/${locationId}`, {
             method: "DELETE",
             credentials: 'include',
@@ -859,6 +914,12 @@ async function fetchLocations() {
 
 async function logout() {
     try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
         const response = await fetch('/api/v1/logout', {
             method: 'POST',
             credentials: 'include', // Ensures cookies are sent with the request
@@ -903,7 +964,6 @@ $(document).ready(async function() {
             document.getElementById("switchButton").innerText = "Owner";
         }
     });
-
     $(document).on("click", "[id^='confirmBooking-']", async function() {
         // Extract bookingId from the button's ID
         const bookingId = $(this).attr('id').replace('confirmBooking-', '');
