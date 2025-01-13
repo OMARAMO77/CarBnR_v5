@@ -20,9 +20,6 @@ async function apiStatus() {
 }
 document.addEventListener("DOMContentLoaded", async () => {
   const refreshBtn = document.getElementById("refresh-link");
-  const profileLink = document.querySelector(".profile-link");
-  const loginLink = document.querySelector(".login-link");
-  const signupLink = document.querySelector(".signup-link");
   const citiesDropdownContainer = document.getElementById('citiesDropdownContainer');
   const citiesList = document.getElementById('citiesList');
   const locationsList = document.getElementById('locationsList');
@@ -33,18 +30,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const carsSection = document.querySelector('SECTION.cars');
   const searchBtn = document.getElementById('searchBtn');
   userId = await fetchUser();
-
-  if (userId) {
-    profileLink.style.display = "block";
-    profileLink.addEventListener("click", (event) => {
-      event.preventDefault();
-      window.location.href = `/profile`;
-    });
-  } else {
-    loginLink.style.display = "block";
-    signupLink.style.display = "block";
-  }
-
 
   const stateInputs = document.querySelectorAll('.state_input');
   stateInputs.forEach((stateInput) => {
