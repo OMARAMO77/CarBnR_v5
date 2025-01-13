@@ -9,47 +9,40 @@
   <link rel="stylesheet" type="text/css" href="../static/styles/select_cars.css">
   <link rel="stylesheet" href="../static/styles/navbar.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 
 </head>
   
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
-      <a class="navbar-brand text-white" href="./#" style="font-family: 'Pacifico', cursive;">CarBnR</a>
-      <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="./" style="font-family: 'Pacifico', cursive;">CarBnR</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="./#"><i class="fas fa-home"></i> Home</a>
+            <a class="nav-link" href="/profile" data-bs-toggle="tab">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./#features"><i class="fas fa-star"></i> Features</a>
+            <a class="nav-link" href="/add-location-and-cars" data-bs-toggle="tab">Add Location & Cars</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./#about"><i class="fas fa-info-circle"></i> About</a>
+            <a class="nav-link" href="/chat-interface" data-bs-toggle="tab">Chat Interface</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./#services"><i class="fas fa-concierge-bell"></i> Services</a>
+            <a class="nav-link" href="/global-weather" data-bs-toggle="tab">Global Weather</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./#contact"><i class="fas fa-envelope"></i> Contact</a>
+            <a class="nav-link text-danger" id="log-out">Log Out</a>
           </li>
         </ul>
       </div>
-      <div class="navbar-nav ml-auto" style="padding-left: 1px;">
-        <a class="nav-link btn signup-link" id="signup-link" href="./signup.html" style="display: none;"><i class="fas fa-user-plus"></i> Sign up</a>
-      </div>
-      <div class="navbar-nav">
-        <a class="nav-link btn login-link" id="login-link" href="./login.html" style="display: none;"><i class="fas fa-sign-in-alt"></i> Log in</a>
-      </div>
-      <div class="navbar-nav">
-        <a class="nav-link btn profile-link" id="profile-link" href="/profile"  style="display: none; padding-right: 0.5rem; padding-left: 0.5rem;"><i class="fas fa-user"></i> Profile</a>
-      </div>
-    </nav>
-
+    </div>
+  </nav>
     <div class="bg-dark text-white text-center py-3">
       <h1>CarBnR - Where the ease of Car Booking meets the joy of Renting</h1>
     <div id="api_status" class="available"></div>
@@ -123,8 +116,6 @@
   </footer>
   <script src="../static/scripts/status-parameters.js"></script>
   <script src="../static/scripts/select_cars.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
