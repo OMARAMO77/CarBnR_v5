@@ -4,13 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CarBnR - Profile</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="icon" href="../static/images/thumb.png">
+  <link rel="stylesheet" href="../static/styles/navbar.css">
   <link rel="stylesheet" href="../static/styles/profile.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="./" style="font-family: 'Pacifico', cursive;">CarBnR</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/select_cars" data-bs-toggle="tab">Book New Car</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/add-location-and-cars" data-bs-toggle="tab">Add Location & Cars</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/chat-interface" data-bs-toggle="tab">Chat Interface</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/global-weather" data-bs-toggle="tab">Global Weather</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger" id="log-out">Log Out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Switch Role Button -->
+  <button class="btn btn-primary switch-role-btn" id="switchButton">Switch Role: Customer</button>
+
 <div class="container my-5 p-4 rounded shadow-lg" style="background: #f8f9fa; border: 1px solid #dee2e6;">
 <div class="row align-items-center mb-3 profile-section">
     <!-- Profile Picture & Basic Info -->
@@ -70,7 +103,7 @@
       <div class="tab-pane fade" id="upcoming-bookings">
         <div class="upcoming-bookingMessage">
         <h3>Upcoming Bookings</h3>
-        <p>Here's a list of your location upcoming bookings. Manage or cancel them if needed.</p>
+        <p>Here's a list of your upcoming bookings. Manage or cancel them if needed.</p>
         </div>
         <div class="upcoming-bookings-spinner"></div>
         <div class="upcoming-bookings card mb-4 shadow-lg">
@@ -326,6 +359,7 @@
   <script src="../static/scripts/getBookingDetails.js"></script>
   <script src="../static/scripts/profile.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
