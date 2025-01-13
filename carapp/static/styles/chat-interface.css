@@ -8,7 +8,7 @@ body {
 
 /* Chat Container Styling */
 .chat-container {
-    max-height: calc(100vh - 140px);
+    max-height: calc(100vh - 190px);
     overflow-y: auto;
     background-color: #343a40;
     border: 1px solid #495057;
@@ -57,6 +57,8 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
+    max-height: 635px;
+    border-radius: 5px;
 }
 
 .sidebar h4 {
@@ -78,7 +80,7 @@ body {
 }
 
 #contactsList {
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 215px);
     overflow-y: auto;
 }
 
