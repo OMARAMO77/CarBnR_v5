@@ -1,4 +1,5 @@
-const userId = getParameterByName('userId');
+let userId;
+
 document.getElementById('location-form').addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -18,10 +19,8 @@ document.getElementById('location-form').addEventListener('submit', async functi
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum,windspeed_10m_max&hourly=temperature_2m,precipitation,windspeed_10m&timezone=auto`;
 
     try {
-        const userResponse = await fetch(`https://omar.eromo.tech/api/v1/is-valid/${userId}`);
-        if (!userResponse.ok) throw new Error('Unable to check user Id');
-        const userData = await userResponse.json();
-        if (userData.isValid !== "yes") return;
+        userId = await fetchUser();
+        if (!userId) return;
 
         const forecastResponse = await fetch(url);
         if (!forecastResponse.ok) throw new Error('Unable to fetch data. Please check your inputs.');
