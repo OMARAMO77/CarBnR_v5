@@ -53,12 +53,6 @@ async function sendMessage(sender, recipient, message) {
         const exchangeData = await exchangeResponse.json();
         const { encrypted_key } = exchangeData;
         console.log('Encrypted Key:', encrypted_key);
-        const csrfToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrf_access_token='))
-            ?.split('=')[1];
-
-        if (!csrfToken) throw new Error("CSRF token is missing");
 
         // Step 2: Encrypt the message
         const encryptionResponse = await fetch('/api/v1/send-message', {
