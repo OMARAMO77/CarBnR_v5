@@ -4,11 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Weather Forecast</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/styles/navbar.css">
     <link rel="stylesheet" href="../static/styles/global-weather.css">
     <link rel="icon" href="../static/images/thumb.png">
 </head>
 <body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="./" style="font-family: 'Pacifico', cursive;">CarBnR</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/profile" data-bs-toggle="tab">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/select_cars" data-bs-toggle="tab">Book New Car</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/add-location-and-cars" data-bs-toggle="tab">Add Location & Cars</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/chat-interface" data-bs-toggle="tab">Chat Interface</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger" id="log-out">Log Out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
     <div class="container">
         <h1 class="text-center mb-4">Global Weather Forecast</h1>
         <form id="location-form" class="d-flex justify-content-center gap-2 mb-4">
@@ -43,8 +74,7 @@
     <div class="footer">
         <p>Powered by <a href="https://www.open-meteo.com" target="_blank">Open-Meteo API</a></p>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../static/scripts/status-parameters.js"></script>
     <script src="../static/scripts/global-weather.js"></script>
     <script src="../static/scripts/fetchCoordinates.js"></script>
