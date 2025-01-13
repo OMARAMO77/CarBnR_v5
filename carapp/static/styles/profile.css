@@ -88,6 +88,12 @@
 #load-more-location-past:hover {
     background-color: #0056b3;
 }
+/*switch btn*/
+.switch-role-btn {
+    position: fixed;
+    top: 61px;
+    right: 20px;
+}
 
 /* Spinner */
 /* Spinner Container */
