@@ -228,18 +228,6 @@ async function fetchUserDetails() {
                     <div class="detail-item"><strong>Member Since:</strong> ${formattedDate}</div>
                     <div class="detail-item"><strong>Your Total Bookings:</strong> ${total_bookings}</div>
                     <div class="detail-item"><strong>Bookings at Your Locations:</strong> ${user_total_location_bookings}</div>
-
-                    <div class="action-buttons mt-4">
-                        <button class="btn btn-danger btn-custom" id="log-out"><i class="fas fa-sign-out-alt"></i> Log Out</button>
-                        <a class="btn btn-success btn-custom" href="./add-location-and-cars">
-                            <i class="fas fa-map-marker-alt"></i> Add Location
-                        </a>
-                        <a class="btn btn-warning btn-custom" href="./select_cars">
-                            <i class="fas fa-car"></i> Book New Car
-                        </a>
-
-                        <button class="btn btn-primary btn-custom" id="switchButton" >Switch</button>
-                    </div>
                 </div>
             </div>
         `;
@@ -957,11 +945,11 @@ $(document).ready(async function() {
         if (categoryOne.style.display === "none") {
             categoryOne.style.display = "flex";
             categoryTwo.style.display = "none";
-            document.getElementById("switchButton").innerText = "Customer";
+            document.getElementById("switchButton").innerText = "Switch Role: Customer";
         } else {
             categoryOne.style.display = "none";
             categoryTwo.style.display = "flex";
-            document.getElementById("switchButton").innerText = "Owner";
+            document.getElementById("switchButton").innerText = "Switch Role: Owner";
         }
     });
     $(document).on("click", "[id^='confirmBooking-']", async function() {
