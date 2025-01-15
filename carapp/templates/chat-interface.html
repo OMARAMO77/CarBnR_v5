@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interface</title>
+    <link rel="icon" href="../static/images/thumb.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap">
     <link rel="stylesheet" href="../static/styles/navbar.css">
     <link rel="stylesheet" href="../static/styles/chat-interface.css">
-    <link rel="icon" href="../static/images/thumb.png">
-    <title>Chat Interface</title>
 </head>
 <body>
   <!-- Navigation Bar -->
@@ -22,19 +22,19 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/profile" data-bs-toggle="tab">Profile</a>
+            <a class="nav-link" href="/profile">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/select_cars" data-bs-toggle="tab">Book New Car</a>
+            <a class="nav-link" href="/select_cars">Book New Car</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/add-location-and-cars" data-bs-toggle="tab">Add Location & Cars</a>
+            <a class="nav-link" href="/add-location-and-cars">Add Location & Cars</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/global-weather" data-bs-toggle="tab">Global Weather</a>
+            <a class="nav-link" href="/global-weather">Global Weather</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-danger" id="log-out">Log Out</a>
+            <a class="nav-link text-danger" href="#" id="log-out">Log Out</a>
           </li>
         </ul>
       </div>
@@ -96,9 +96,8 @@
         </div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../static/scripts/status-parameters.js"></script>
 <script src="../static/scripts/chat-interface.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
