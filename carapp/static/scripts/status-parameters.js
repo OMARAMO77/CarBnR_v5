@@ -70,6 +70,37 @@ async function isValidBooking(bookingId) {
     }
 }
 
+async function logout() {
+    try {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
+        const response = await fetch('/api/v1/logout', {
+            method: 'POST',
+            credentials: 'include', // Ensures cookies are sent with the request
+            headers: {
+                'Content-Type': 'application/json',
+                ...(csrfToken && { 'X-CSRF-TOKEN': csrfToken }) // Add CSRF header only if csrfToken exists
+            }
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({})); // Handle non-JSON errors gracefully
+            const errorMessage = errorData.error || "Failed to log out. Please try again.";
+            throw new Error(errorMessage);
+        }
+
+        // Show success message and redirect
+        alert("Logged out successfully.");
+        window.location.href = "/login.html";
+    } catch (error) {
+        console.error("Error during logout:", error);
+        alert(error.message || "An error occurred while trying to log out. Please try again.");
+    }
+}
 
 async function refreshTokenBeforeExpiry() {
     const csrf_refresh_token = document.cookie
@@ -103,3 +134,10 @@ async function refreshTokenBeforeExpiry() {
 }
 
 refreshTokenBeforeExpiry();
+document.addEventListener("click", function (event) {
+    if (event.target && event.target.id === "log-out") {
+        if (confirm("Are you sure you want to log out?")) {
+            logout();
+        }
+    }
+});
