@@ -311,6 +311,12 @@ async function handleFormSubmit(event) {
         const compressedBlob = await compressImage(imageFile);
         const formData = new FormData();
         formData.append('file', compressedBlob, imageFile.name);
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrf_access_token='))
+            ?.split('=')[1];
+
+        if (!csrfToken) throw new Error("CSRF token is missing");
 
         // Upload the image
         const uploadResponse = await fetchWithProgress('/api/v1/upload_image', formData, csrfToken);
@@ -341,12 +347,6 @@ async function handleFormSubmit(event) {
             submitButton.disabled = false;
             return;
         }
-        const csrfToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrf_access_token='))
-            ?.split('=')[1];
-
-        if (!csrfToken) throw new Error("CSRF token is missing");
 
         // Submit car details
         const carResponse = await fetch(`/api/v1/locations/${locationId}/cars`, {
@@ -364,7 +364,7 @@ async function handleFormSubmit(event) {
         }
 
         updateStatus('Car details submitted successfully!', 'success');
-        window.location.href = '/profile.html';
+        window.location.href = '/profile';
     } catch (error) {
         console.error('Error handling form submission:', error);
         updateStatus('Error submitting car details. Please try again.', 'danger');
@@ -429,6 +429,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('saveLocation').addEventListener('click', async () => {
     saveLocation();
   });
+
   // Initial load
   await loadStates();
   userId = await fetchUser();
