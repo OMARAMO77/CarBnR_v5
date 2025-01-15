@@ -6,7 +6,6 @@
 .navbar-nav .nav-item .nav-link {
   color: #f8f9fa !important;
   font-weight: 500;
-  padding: 10px 15px;
   transition: background-color 0.3s, color 0.3s;
 }
 
