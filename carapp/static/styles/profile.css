@@ -90,7 +90,7 @@
 }
 /*switch btn*/
 .switch-role-btn {
-    position: fixed;
+    position: absolute;
     top: 61px;
     right: 20px;
 }
@@ -173,7 +173,7 @@
 
 /* User Information */
 .user-name {
-    font-family: 'Pacifico', cursive;
+    /*font-family: 'Pacifico', cursive;*/
     color: #333;
     font-size: 1.4em;
 }
