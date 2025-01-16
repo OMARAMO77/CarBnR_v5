@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Sign Up for CarBnR</title>
+    <link rel="icon" href="../static/images/thumb.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../static/styles/signup_form.css">
     <link rel="stylesheet" type="text/css" href="../static/styles/status.css">
-    <link rel="icon" href="../static/images/thumb.png">
-    <title>Sign Up for CarBnR</title>
 </head>
 <body>
     <div id="status" class="alert" role="alert" style="display: none;"></div>
@@ -43,18 +43,5 @@
     </div>
   <script src="../static/scripts/status-parameters.js"></script>
   <script src="../static/scripts/signup_script.js"></script>
-  <script>
-      function updateLoginLink() {
-          const loginLink = document.getElementById("loginLink");
-          const carId = getParameterByName("carId");
-
-          if (carId) {
-              loginLink.href = `login.html?carId=${carId}`;
-          }
-      }
-
-      // Call the function when the page loads
-      window.onload = updateLoginLink;
-  </script>
 </body>
 </html>
