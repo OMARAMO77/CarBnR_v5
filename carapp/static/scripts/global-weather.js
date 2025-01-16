@@ -61,9 +61,10 @@ document.getElementById('location-form').addEventListener('submit', async functi
 });
 
 function showHourlyForecast(date, hourlyData) {
+    const day = new Date(date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
     const hourlyContent = document.getElementById('hourly-content');
     const hourlyModalLabel = document.getElementById('hourlyModalLabel');
-    hourlyModalLabel.innerHTML = `<span>Hourly Forecast for ${date}</span> `;
+    hourlyModalLabel.innerHTML = `<span>Hourly Forecast for ${day}</span> `;
     hourlyContent.innerHTML = '';
 
     hourlyData.time.forEach((hour, index) => {
