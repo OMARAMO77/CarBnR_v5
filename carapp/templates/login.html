@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Sign In to CarBnR</title>
+    <link rel="icon" href="../static/images/thumb.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../static/styles/login_form.css">
     <link rel="stylesheet" type="text/css" href="../static/styles/status.css">
-    <link rel="icon" href="../static/images/thumb.png">
-    <title>Sign In to CarBnR</title>
   </head>
   <body class="d-flex justify-content-center align-items-center vh-100">
     <div id="status" class="justify-content-center w-50 text-center pl-3 bg-light text-dark"></div>
@@ -32,19 +32,5 @@
     </div>
     <script src="../static/scripts/status-parameters.js"></script>
     <script src="../static/scripts/login_script.js"></script>
-    <script>
-      // Function to append parameters to the signup page URL
-      function updateSignupLink() {
-          const signupLink = document.getElementById("signupLink");
-          const carId = getParameterByName("carId");
-
-          if (carId) {
-              signupLink.href = `signup.html?carId=${carId}`;
-          }
-      }
-
-      // Call the function when the page loads
-      window.onload = updateSignupLink;
-    </script>
   </body>
 </html>
