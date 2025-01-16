@@ -258,6 +258,7 @@ const updateStatusDot = () => {
 };
 
 async function confirmBooking(bookingId) {
+    const confirmBtn = document.querySelector(`#confirmBooking-${bookingId}`);
     const bookingStatusText = document.querySelector(`#status-${bookingId}`);
     if (!bookingStatusText) {
         console.error("Booking status element not found.");
@@ -269,7 +270,7 @@ async function confirmBooking(bookingId) {
         alert("Booking already confirmed");
         return;
     }
-
+    confirmBtn.disabled = true;
     try {
         const csrfToken = document.cookie
             .split('; ')
@@ -292,13 +293,14 @@ async function confirmBooking(bookingId) {
 
         const result = await response.json();
 
-        const confirmBtn = document.querySelector(`#confirmBooking-${bookingId}`);
+
         if (confirmBtn) confirmBtn.remove();
 
-        bookingStatusText.innerHTML = "<strong>Booking Status:</strong> Confirmed";
+        bookingStatusText.innerHTML = '<strong>Booking Status:<span class="text-success"> Confirmed</span></strong>';
         alert("Booking confirmed successfully");
     } catch (error) {
         console.error("Error confirming booking:", error);
+        confirmBtn.disabled = false;
     }
 }
 
