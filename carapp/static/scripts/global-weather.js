@@ -2,7 +2,8 @@ let userId;
 
 document.getElementById('location-form').addEventListener('submit', async function (event) {
     event.preventDefault();
-
+    const forecastBtn = document.getElementById('forecastBtn');
+    forecastBtn.disabled = true;
     const coordinates = await fetchCoordinates();
     if (!coordinates) return;
     const latitude = coordinates.latitude;
@@ -10,7 +11,6 @@ document.getElementById('location-form').addEventListener('submit', async functi
     console.log('Latitude:', latitude);
     console.log('Longitude:', longitude);
     const forecastContainer = document.getElementById('forecast-container');
-
     // Clear previous results
     forecastContainer.innerHTML = '';
     forecastContainer.classList.add('hidden');
@@ -55,8 +55,11 @@ document.getElementById('location-form').addEventListener('submit', async functi
         });
 
         forecastContainer.classList.remove('hidden');
+        forecastContainer.classList.remove('hidden');
     } catch (error) {
         alert(error.message);
+    } finally {
+        forecastBtn.disabled = false;
     }
 });
 
