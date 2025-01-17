@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
-        const carId = getParameterByName('carId');
 
         // Basic form validation
         if (!email || !password) {
@@ -33,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (!response.ok) {
                 throw new Error('Invalid credentials. Please try again.');
+                loginButton.disabled = false;
             }
             const data = await response.json();
             updateStatus('Logged in successfully!', 'success');
