@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const confirmPassword = document.getElementById('confirmPassword').value.trim();
         const firstName = document.getElementById('firstName').value.trim();
         const lastName = document.getElementById('lastName').value.trim();
-        const carId = getParameterByName('carId');
 
         // Basic validation
         if (!email || !password || !confirmPassword || !firstName || !lastName) {
@@ -57,10 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             updateStatus('Account created successfully!', 'success');
-            const redirectUrl = carId
-                ? `/login.html?carId=${carId}`
-                : `/login.html`;
-            window.location.href = redirectUrl;
+            window.location.href = '/login.html';
         } catch (error) {
             updateStatus('An unexpected error occurred. Please try again.', 'danger');
             setTimeout(hideStatus, 5000);
