@@ -125,7 +125,6 @@ async function refreshTokenBeforeExpiry() {
         }
 
         const data = await response.json();
-        console.log(data.message);
         const expiresIn = 900 * 1000;
         setTimeout(refreshTokenBeforeExpiry, expiresIn - 60000);
     } catch (error) {
@@ -133,7 +132,14 @@ async function refreshTokenBeforeExpiry() {
     }
 }
 
-refreshTokenBeforeExpiry();
+function refresh() {
+    const loginButton = document.getElementById('LoginButton');
+    const submitBtn = document.getElementById('submitBtn');
+    if (!loginButton && !submitBtn) {
+        refreshTokenBeforeExpiry();
+    }
+}
+refresh();
 document.addEventListener("click", function (event) {
     if (event.target && event.target.id === "log-out") {
         if (confirm("Are you sure you want to log out?")) {
@@ -141,3 +147,4 @@ document.addEventListener("click", function (event) {
         }
     }
 });
+
