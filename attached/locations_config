@@ -4,10 +4,10 @@
 # Set up NGINX
 server {
     listen 443 ssl;
-    server_name omar.eromo.tech;
+    server_name omar.carbnr.me;
 
-    ssl_certificate /etc/letsencrypt/live/omar.eromo.tech/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/omar.eromo.tech/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/omar.carbnr.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/omar.carbnr.me/privkey.pem;
 
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;
@@ -99,7 +99,7 @@ server {
 }
 server {
     listen 80;
-    server_name omar.eromo.tech;
+    server_name omar.carbnr.me;
 
     # Redirect HTTP to HTTPS
     return 301 https://$host$request_uri;
