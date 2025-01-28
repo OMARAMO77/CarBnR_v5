@@ -431,6 +431,7 @@ window.onload = async () => {
             alert("Please enter a valid email address.");
             return;
         }
+        hideEmptyChatState()
         const messagesList = document.getElementById("messagesList");
         recipientId = await getUserId(emailInputField);
         if (recipientId === "User not found") return;
@@ -468,7 +469,7 @@ window.onload = async () => {
         //const timestamp = new Date().toLocaleString();
 
     }
-    //messageInput.addEventListener("keydown", handleAction);
+    //messageInput.addEventListener("keydown", handleAction); //emptyChatState
     sendButton.addEventListener("click", handleAction);
 
     messageInput.addEventListener("keydown", function(event) {
