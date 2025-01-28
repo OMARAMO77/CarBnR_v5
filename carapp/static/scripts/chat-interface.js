@@ -286,7 +286,8 @@ async function fetchContacts(user_id) {
                 if (refreshBtn) refreshBtn.style.display = "flex";
                 lastRecipientEmail = contact.recipient_email
                 console.log("lastRecipientEmail:", lastRecipientEmail);
-                return lastRecipientEmail;
+                //return lastRecipientEmail;
+                return true;
             };
             contactsList.appendChild(contactLink);
         });
@@ -352,6 +353,7 @@ window.onload = async () => {
     const refreshBtn = document.getElementById('refreshBtn');
     const loadMoreButton = document.getElementById('loadMoreButton');
     const addContactBtn = document.getElementById('addContactBtn');
+    const reloadContactBtn = document.getElementById('reloadContactBtn');
     const messageInput = document.getElementById("messageInput");
 
     const toggleButtons = (disabled) => {
@@ -370,7 +372,8 @@ window.onload = async () => {
     userId = await fetchUser();
     const sender = userId;
     toggleButtons(true);
-    await fetchContacts(userId);
+    ret = await fetchContacts(userId);
+    if (!ret) reloadContactBtn.style.display = "block";
     toggleButtons(false);
     refreshBtn.addEventListener("click", async () => {
         const recipient = document.getElementById("recipient").value.trim();
@@ -381,6 +384,26 @@ window.onload = async () => {
             return;
         }
     });
+
+    reloadContactBtn.addEventListener("click", async () => {
+        try {
+            reloadContactBtn.disabled = true;
+            reloadContactBtn.textContent = "Loading...";
+
+            ret = await fetchContacts(userId);
+            if (ret) {
+                console.log("Contacts reloaded successfully!");
+            } else {
+                reloadContactBtn.textContent = "Error";
+            }
+        } catch (error) {
+            console.error("Failed to reload contacts:", error);
+            alert("An error occurred while reloading contacts. Please try again.");
+            reloadContactBtn.disabled = false;
+            reloadContactBtn.textContent = "Reload Contacts";
+        }
+    });
+
     addContactBtn.addEventListener("click", async () => {
         const emailInputField = document.getElementById("recipientEmail");
         const recipientInputField = document.getElementById("recipient");
