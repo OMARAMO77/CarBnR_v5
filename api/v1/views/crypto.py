@@ -334,27 +334,39 @@ def get_contacts():
         if not user:
             return jsonify({'error': 'User not found'}), 404
 
-        # Fetch related contacts (users they've messaged or received messages from)
-        sent_contacts = {msg.recipient_id for msg in user.messages_sent}
-        received_contacts = {msg.sender_id for msg in user.messages_received}
-        all_contacts = sent_contacts.union(received_contacts)
+        # Fetch related contacts and track the latest message timestamp
+        contact_timestamps = {}
+
+        # Check sent messages
+        for msg in user.messages_sent:
+            if msg.recipient_id not in contact_timestamps or msg.created_at > contact_timestamps[msg.recipient_id]:
+                contact_timestamps[msg.recipient_id] = msg.created_at
+
+        # Check received messages
+        for msg in user.messages_received:
+            if msg.sender_id not in contact_timestamps or msg.created_at > contact_timestamps[msg.sender_id]:
+                contact_timestamps[msg.sender_id] = msg.created_at
+
+        # Sort contacts by the latest message timestamp (most recent first)
+        sorted_contacts = sorted(contact_timestamps.keys(), key=lambda x: contact_timestamps[x], reverse=True)
 
         # Structure the response with contact details
         contacts = []
-        for contact_id in all_contacts:
+        for contact_id in sorted_contacts:
             contact_user = validate_user(contact_id, "User")
             if contact_user:
                 contacts.append({
                     'recipient_id': contact_user.id,
                     'recipient_email': contact_user.email,
                     'recipient_first_name': contact_user.first_name,
-                    'recipient_last_name': contact_user.last_name
+                    'recipient_last_name': contact_user.last_name,
+                    'last_message_timestamp': contact_timestamps[contact_id].isoformat()  # Include the timestamp
                 })
+
         return jsonify({'contacts': contacts}), 200
 
     except Exception as e:
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
-
 @app_views.route('/get-user-id', methods=['POST'], strict_slashes=False)
 def get_user_id():
     data = request.get_json()
