@@ -14,10 +14,12 @@ import base64
 
 
 # Utility functions
-def validate_user(user_id, role="User"):
+def validate_user(user_id):
     user = storage.get(User, user_id)
+    print(user)
+
     if not user:
-        abort(404, description=f"{role} not found")
+        abort(404, description=f"User not found")
     return user
 
 def get_existing_user_keys(user_id):
@@ -285,8 +287,8 @@ def get_message_data():
 
     try:
         # Validate users
-        user1 = validate_user(user1_id, "User1")
-        user2 = validate_user(user2_id, "User2")
+        user1 = validate_user(user1_id)
+        user2 = validate_user(user2_id)
 
         # Fetch messages
         received_messages = [
@@ -327,46 +329,40 @@ def get_contacts():
 
     if not user_id:
         return jsonify({'error': 'User ID is required'}), 400
-
     try:
         # Validate the user
-        user = validate_user(user_id, "User")
-        if not user:
-            return jsonify({'error': 'User not found'}), 404
+        user = validate_user(user_id)
+        #if not user:
+        #    return jsonify({'error': 'User not found'}), 404
 
-        # Fetch related contacts and track the latest message timestamp
-        contact_timestamps = {}
+        # Fetch related messages
+        all_messages = list(user.messages_sent) + list(user.messages_received)
 
-        # Check sent messages
-        for msg in user.messages_sent:
-            if msg.recipient_id not in contact_timestamps or msg.created_at > contact_timestamps[msg.recipient_id]:
-                contact_timestamps[msg.recipient_id] = msg.created_at
+        # Sort messages by created_at
+        all_messages.sort(key=lambda msg: msg.created_at, reverse=True)
 
-        # Check received messages
-        for msg in user.messages_received:
-            if msg.sender_id not in contact_timestamps or msg.created_at > contact_timestamps[msg.sender_id]:
-                contact_timestamps[msg.sender_id] = msg.created_at
-
-        # Sort contacts by the latest message timestamp (most recent first)
-        sorted_contacts = sorted(contact_timestamps.keys(), key=lambda x: contact_timestamps[x], reverse=True)
-
-        # Structure the response with contact details
+        # Collect unique contacts in sorted order
         contacts = []
-        for contact_id in sorted_contacts:
-            contact_user = validate_user(contact_id, "User")
-            if contact_user:
-                contacts.append({
-                    'recipient_id': contact_user.id,
-                    'recipient_email': contact_user.email,
-                    'recipient_first_name': contact_user.first_name,
-                    'recipient_last_name': contact_user.last_name,
-                    'last_message_timestamp': contact_timestamps[contact_id].isoformat()  # Include the timestamp
-                })
+        seen_contact_ids = set()
+
+        for msg in all_messages:
+            contact_id = msg.recipient_id if msg.sender_id == user_id else msg.sender_id
+            if contact_id not in seen_contact_ids:
+                contact_user = validate_user(contact_id)
+                if contact_user:
+                    contacts.append({
+                        'recipient_id': contact_user.id,
+                        'recipient_email': contact_user.email,
+                        'recipient_first_name': contact_user.first_name,
+                        'recipient_last_name': contact_user.last_name
+                    })
+                    seen_contact_ids.add(contact_id)
 
         return jsonify({'contacts': contacts}), 200
 
     except Exception as e:
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
+
 @app_views.route('/get-user-id', methods=['POST'], strict_slashes=False)
 def get_user_id():
     data = request.get_json()
