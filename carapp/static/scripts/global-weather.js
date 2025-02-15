@@ -5,7 +5,10 @@ document.getElementById('location-form').addEventListener('submit', async functi
     const forecastBtn = document.getElementById('forecastBtn');
     forecastBtn.disabled = true;
     const coordinates = await fetchCoordinates();
-    if (!coordinates) return;
+    if (!coordinates) {
+        forecastBtn.disabled = false;
+        return;
+    }
     const latitude = coordinates.latitude;
     const longitude = coordinates.longitude;
     console.log('Latitude:', latitude);
