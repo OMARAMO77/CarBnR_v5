@@ -18,6 +18,25 @@ async function apiStatus() {
     console.error('Failed to check API status:', error);
   }
 }
+
+function getRandomTimeFormatted() {
+    const minTime = 60; // 1 minute in seconds
+    const maxTime = 24 * 60 * 60; // 2 hours in seconds
+    const randomTime = Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
+
+    const hours = Math.floor(randomTime / 3600);
+    const minutes = Math.floor((randomTime % 3600) / 60);
+
+    if (hours > 0 && minutes > 0) {
+        return `${hours} h ${minutes} min`;
+    } else if (hours > 0) {
+        return `${hours} h`;
+    } else {
+        return `${minutes} min`;
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", async () => {
   const refreshBtn = document.getElementById("refresh-link");
   const citiesDropdownContainer = document.getElementById('citiesDropdownContainer');
@@ -192,7 +211,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               </div>
               <div class="card-footer text-muted">
-                <small>Last updated 3 mins ago</small>
+                <small>Last updated ${getRandomTimeFormatted()} ago</small>
               </div>
             </div>
           </article>`;
