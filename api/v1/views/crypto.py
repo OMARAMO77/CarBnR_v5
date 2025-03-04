@@ -16,7 +16,6 @@ import base64
 # Utility functions
 def validate_user(user_id):
     user = storage.get(User, user_id)
-    print(user)
 
     if not user:
         abort(404, description=f"User not found")
@@ -75,7 +74,7 @@ def decrypt_message(ciphertext, shared_key, iv):
         decoded_ciphertext = base64.b64decode(ciphertext)
         decoded_iv = base64.b64decode(iv)
     except Exception as e:
-        print(f"Base64 decoding failed: {str(e)}")
+        # print(f"Base64 decoding failed: {str(e)}")
         raise ValueError("Invalid Base64 encoding")
 
     try:
@@ -83,13 +82,13 @@ def decrypt_message(ciphertext, shared_key, iv):
         decryptor = cipher.decryptor()
         plaintext = decryptor.update(decoded_ciphertext) + decryptor.finalize()
     except Exception as e:
-        print(f"Decryption failed: {str(e)}")
+        # print(f"Decryption failed: {str(e)}")
         raise ValueError(f"Decryption failed: {str(e)}")
 
     try:
         return plaintext.decode('utf-8')
     except UnicodeDecodeError:
-        print("Plaintext is binary data, returning as base64.")
+        # print("Plaintext is binary data, returning as base64.")
         return base64.b64encode(plaintext).decode('utf-8')
 
 def decrypt_message_data(messages, user_id):
@@ -196,7 +195,7 @@ def exchange_key():
         return jsonify({'encrypted_key': encrypted_key}), 200
 
     except Exception as e:
-        print(f"Error in /exchange-key: {e}")
+        # print(f"Error in /exchange-key: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
 
 
@@ -236,7 +235,7 @@ def send_message():
         try:
             ciphertext, iv = encrypt_message(message, shared_key)
         except Exception as encryption_error:
-            print(f"Encryption error: {encryption_error}")
+            # print(f"Encryption error: {encryption_error}")
             return jsonify({'error': 'Encryption failed'}), 500
 
         # Return the encrypted message and initialization vector
@@ -246,7 +245,7 @@ def send_message():
         }), 200
 
     except Exception as e:
-        print(f"Error in /send-message: {e}")
+        # print(f"Error in /send-message: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
 
 @app_views.route('/store-message', methods=['POST'])
