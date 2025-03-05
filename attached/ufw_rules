@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# ANSI color codes for output messages
+GREEN='\033[0;32m'  # Green for success
+RED='\033[0;31m'    # Red for error
+YELLOW='\033[0;33m' # Yellow for prompts
+NC='\033[0m'        # No color
+
+# Function to print colored messages
+print_message() {
+    local msg="$1"
+    local color="$2"
+    echo -e "${color}${msg}${NC}"
+}
+
+# Update the system packages
+print_message "Updating package lists..." "$GREEN"
+if ! sudo apt update; then
+    print_message "Failed to update package lists." "$RED"
+    exit 1
+fi
+
+# Install UFW if not already installed
+print_message "Installing UFW (Uncomplicated Firewall)..." "$GREEN"
+if ! sudo apt-get -y install ufw; then
+    print_message "Failed to install UFW." "$RED"
+    exit 1
+fi
+
+# Set UFW rules
+print_message "Configuring UFW rules..." "$GREEN"
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22/tcp  # Allow SSH
+sudo ufw allow 443/tcp # Allow HTTPS
+sudo ufw allow 80/tcp  # Allow HTTP
+
+# Enable UFW with confirmation
+read -p "Do you want to enable UFW now? (y/n): " -r
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if sudo ufw enable; then
+        print_message "UFW has been enabled." "$GREEN"
+    else
+        print_message "Failed to enable UFW." "$RED"
+        exit 1
+    fi
+else
+    print_message "UFW was not enabled. You can enable it later with 'sudo ufw enable'." "$YELLOW"
+fi
+
+print_message "Firewall setup completed." "$GREEN"
