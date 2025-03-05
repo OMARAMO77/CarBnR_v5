@@ -1,9 +1,9 @@
 # Navigate to the root directory
 cd /
+# Install some packages if not already installed
+/CarBnR_v5/attached/install_packages.sh
+
 # Clone the repository
-sudo apt update
-sudo apt install git -y
-sudo apt install nano
 git clone https://github.com/OMARAMO77/CarBnR_v5.git
 
 # Re_install MySQL, Set up MySQL, Uncompress and load backup file
@@ -16,7 +16,7 @@ git clone https://github.com/OMARAMO77/CarBnR_v5.git
 
 # Log in to your domain registrar and configure an A record that points to your server’s public IP address
 "test:" # check DNS propagation
-/CarBnR_v5/attached/check_dns <domain> # omar.carbnr.me
+/CarBnR_v5/attached/check_dns <domain>
 "test:" # (curl  http://domain)  (curl  http://domain/123)  (curl  http://domain/redirect_me)
 
 # Install Certbot, NGINX plugin, Obtain SSL certificate using Certbot with NGINX
@@ -35,7 +35,7 @@ git clone https://github.com/OMARAMO77/CarBnR_v5.git
 
 # Install UFW if not already installed and set UFW rules
 /CarBnR_v5/attached/ufw_rules
-"test:" # (curl -sI http://n.omar.carbnr.me:3000/users)
+"test:" # (curl -sI http://domain:3000/users)
 
 
 
@@ -47,9 +47,6 @@ sudo apt-get install pkg-config libmysqlclient-dev libcairo2-dev redis
 /CarBnR_v5/attached/freeze 2
 
 # add /CarBnR_v5/.env
-# Install tmux and lsof if not already installed
-sudo apt install tmux
-sudo apt install lsof
 
 /CarBnR_v5/attached/set_app
 "test:" # (curl -sI https://domain/select_cars) or in the browser 
