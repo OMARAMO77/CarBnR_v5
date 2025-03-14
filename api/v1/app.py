@@ -3,7 +3,7 @@
 """ Flask Application """
 from models import storage
 from api.v1.views import app_views
-from api.v1.views.extensions import limiter
+#from api.v1.views.extensions import limiter
 from datetime import timedelta
 from os import getenv
 from flask import Flask, render_template, make_response, jsonify, request
@@ -17,7 +17,7 @@ env_path = Path('/CarBnR_v4/.env')  # Update the path accordingly
 load_dotenv(dotenv_path=env_path)
 
 app = Flask(__name__)
-limiter.init_app(app)
+#limiter.init_app(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.register_blueprint(app_views)
 cors = CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
