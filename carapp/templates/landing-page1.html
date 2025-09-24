@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarBnR - Car Booking & Renting Portfolio Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../static/styles/landing-page.css">
+    <link rel="icon" href="../static/images/my-logo2.png">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="../static/images/my-logo.png" alt="CarBnR Logo" class="logo-img">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#project-overview">Project</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#screenshots">Screenshots</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tech-stack">Tech Stack</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#video-demo">Video Demo</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button id="darkModeToggle" class="btn btn-dark-mode me-2">
+                        <i class="fas fa-moon"></i> Dark Mode
+                    </button>
+                    <a href="https://omar.carbnr.me/select_cars" class="btn btn-primary me-2">Live App</a>
+                    <a href="https://github.com/OMARAMO77/CarBnR_v5" class="btn btn-outline-primary">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-4">CarBnR - Portfolio Project</h1>
+            <p class="lead mb-5">A full-stack car booking and rental web application built with Flask, MySQL, and modern web technologies</p>
+            <a href="https://omar.carbnr.me/select_cars" class="btn btn-primary btn-lg me-3">View Live App</a>
+            <a href="https://github.com/OMARAMO77/CarBnR_v5" class="btn btn-outline-light btn-lg me-3">Source Code</a>
+            <a href="#project-overview" class="btn btn-danger btn-lg">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Project Overview Section -->
+    <section id="project-overview" class="py-5 bg-light-custom">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>Project Overview</h2>
+                <p class="lead">A comprehensive car rental platform connecting car owners with renters</p>
+            </div>
+            
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-6">
+                    <div class="project-info-card p-4 rounded h-100">
+                        <h3 class="mb-3">About CarBnR</h3>
+                        <p class="mb-3">CarBnR is a full-stack web application that allows users to rent cars from private owners or list their own vehicles for rent. The platform includes user authentication, car search and filtering, booking management, and comprehensive dashboard functionality.</p>
+                        <p class="mb-3">This project was built as a portfolio piece to demonstrate proficiency in modern web development technologies and practices using Python Flask and MySQL.</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-primary">Full-Stack</span>
+                            <span class="badge bg-success">Responsive</span>
+                            <span class="badge bg-info">REST API</span>
+                            <span class="badge bg-warning">Database Design</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-4 mt-lg-0">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CarBnR App Interface" class="img-fluid rounded shadow">
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4>User Management</h4>
+                        <p>Secure registration and login system with role-based access (owners and renters)</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h4>Car Listings</h4>
+                        <p>Owners can easily list their cars with detailed information and availability calendar</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h4>Booking System</h4>
+                        <p>Seamless booking process with date selection and confirmation system</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>Key Features</h2>
+                <p class="lead">Comprehensive functionality for both car owners and renters</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <h3>Advanced Search Engine</h3>
+                            <p>Effortlessly find available rental cars with our powerful search engine. Filter by state, city, and location to quickly pinpoint your ideal vehicle. Features real-time availability, advanced filters (car type, price range, features), and an intuitive interface for fast, enjoyable searching.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h3>Simplified Booking Process</h3>
+                            <p>Secure your chosen car with our streamlined booking form. Simply enter your pickup and return dates, we handle the rest. Enjoy instant booking confirmation and the flexibility to easily adjust dates as needed. Hassle-free booking has never been easier.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <h3>Smart Dashboard & Profile Management</h3>
+                            <p>Access a personalized dashboard that adapts to your role. Switch between renter and owner views. Owners can add unlimited locations (with name, address details) and vehicles (brand, model, daily price) at each location. Full CRUD operations allow editing or removing any location or vehicle.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <h3>Role-Based Access Control</h3>
+                            <p>Secure authentication system with distinct permissions for renters and owners. Owners exclusively confirm bookings for their vehicles, while renters can update or cancel their reservations within a 48-hour window. This ensures proper control and security for all users.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <h3>Comprehensive Vehicle Management</h3>
+                            <p>Owners can easily list their vehicles with detailed information, photos, and availability calendars. Add unlimited vehicles across multiple locations with full details including brand, model, daily price, and specifications. Comprehensive management tools allow for quick updates and viewing of booking history.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h3>Location Management System</h3>
+                            <p>Owners can create and manage multiple rental locations with complete address details. Each location can host multiple vehicles, and owners have full control to add, edit, or remove locations as needed. This flexible system accommodates businesses of all sizes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Screenshots Section -->
+    <section id="screenshots" class="py-5 bg-light-custom">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>App Screenshots</h2>
+                <p class="lead">See how CarBnR works through these interface screenshots</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="screenshot-card shadow-sm">
+                        <div class="screenshot-container">
+                            <img src="https://images.unsplash.com/photo-1558655146-364adaf1fcc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CarBnR Homepage" class="img-fluid">
+                            <div class="screenshot-overlay">
+                                <h4 class="text-white">Homepage</h4>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <h5>Homepage & Search</h5>
+                            <p>Clean, intuitive interface with search functionality and featured cars.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="screenshot-card shadow-sm">
+                        <div class="screenshot-container">
+                            <img src="https://images.unsplash.com/photo-1565688534245-05d6b5be184a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CarBnR Search Results" class="img-fluid">
+                            <div class="screenshot-overlay">
+                                <h4 class="text-white">Search Results</h4>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <h5>Search Results</h5>
+                            <p>Filterable grid of available cars with detailed information and pricing.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="screenshot-card shadow-sm">
+                        <div class="screenshot-container">
+                            <img src="https://images.unsplash.com/photo-1565688446-c5069773de5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CarBnR Car Details" class="img-fluid">
+                            <div class="screenshot-overlay">
+                                <h4 class="text-white">Car Details</h4>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <h5>Car Details Page</h5>
+                            <p>Comprehensive car information with photos, specifications, and owner details.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="screenshot-card shadow-sm">
+                        <div class="screenshot-container">
+                            <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CarBnR Booking Process" class="img-fluid">
+                            <div class="screenshot-overlay">
+                                <h4 class="text-white">Booking Process</h4>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <h5>Booking & Confirmation</h5>
+                            <p>Step-by-step booking process with instant confirmation.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="screenshot-card shadow-sm">
+                        <div class="screenshot-container">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CarBnR Dashboard" class="img-fluid">
+                            <div class="screenshot-overlay">
+                                <h4 class="text-white">User Dashboard</h4>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <h5>User Dashboard</h5>
+                            <p>Personalized dashboard for managing bookings, listings, and account settings.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="screenshot-card shadow-sm">
+                        <div class="screenshot-container">
+                            <img src="https://images.unsplash.com/photo-1556655848-f3a79cb5fdc4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CarBnR Mobile View" class="img-fluid">
+                            <div class="screenshot-overlay">
+                                <h4 class="text-white">Mobile Responsive</h4>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <h5>Mobile Experience</h5>
+                            <p>Fully responsive design optimized for mobile devices.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Demo Section -->
+    <section id="video-demo" class="py-5">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>Video Demonstration</h2>
+                <p class="lead">Watch how CarBnR works in action</p>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="video-container mb-4">
+                        <!-- Replace with your actual YouTube video embed code -->
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                                title="CarBnR Demo Video" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="text-center">
+                        <a href="MY_YOUTUBE_URL_HERE" class="btn btn-primary" target="_blank">
+                            <i class="fab fa-youtube me-2"></i> Watch on YouTube
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Implementation Section -->
+    <section id="tech-stack" class="py-5 bg-light-custom">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>Technical Implementation</h2>
+                <p class="lead">Modern technologies and development practices</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-5">
+                    <h3 class="mb-4">Tech Stack</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Backend</h5>
+                            <div class="tech-stack">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">Flask</span>
+                                <span class="tech-badge">MySQL</span>
+                                <span class="tech-badge">REST API</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Frontend</h5>
+                            <div class="tech-stack">
+                                <span class="tech-badge">JavaScript</span>
+                                <span class="tech-badge">Bootstrap 5</span>
+                                <span class="tech-badge">HTML5</span>
+                                <span class="tech-badge">CSS3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h5>Infrastructure & Deployment</h5>
+                            <div class="tech-stack">
+                                <span class="tech-badge">Nginx</span>
+                                <span class="tech-badge">Gunicorn</span>
+                                <span class="tech-badge">Linux Server</span>
+                                <span class="tech-badge">Git & GitHub</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <h3 class="mb-4">Development Highlights</h3>
+                    <div class="accordion" id="devAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                    Database Design
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#devAccordion">
+                                <div class="accordion-body">
+                                    Designed and implemented a normalized MySQL database with tables for users, locations, cars, bookings, and reviews. Established proper relationships between locations and vehicles for efficient data management.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                    Flask REST API
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#devAccordion">
+                                <div class="accordion-body">
+                                    Built a comprehensive REST API with Flask for user authentication, location management, car management, booking operations, and dashboard functionality. Implemented proper error handling and validation.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                    Dashboard & Role Management
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#devAccordion">
+                                <div class="accordion-body">
+                                    Implemented a dynamic dashboard that adapts based on user role (renter/owner). Owners can manage multiple locations and vehicles with full CRUD operations, while renters can track their bookings across different status categories.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h2 class="mb-4">Ready to Explore CarBnR?</h2>
+            <p class="lead mb-4">Check out the live application or browse the source code to see the implementation details.</p>
+            <a href="https://omar.carbnr.me/select_cars" class="btn btn-light btn-lg me-3">View Live App</a>
+            <a href="https://github.com/OMARAMO77/CarBnR_v5" class="btn btn-outline-light btn-lg">Source Code</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h3>CarBnR Portfolio</h3>
+                    <p class="mb-4">A full-stack car rental web application demonstrating modern development practices and technologies.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/OMARAMO77"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://twitter.com/OmarKnight123"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <h3>Project Links</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="https://omar.carbnr.me/select_cars" class="text-decoration-none text-light">Live Application</a></li>
+                        <li class="mb-2"><a href="https://github.com/OMARAMO77/CarBnR_v5" class="text-decoration-none text-light">GitHub Repository</a></li>
+                        <li class="mb-2"><a href="#project-overview" class="text-decoration-none text-light">Project Overview</a></li>
+                        <li class="mb-2"><a href="#video-demo" class="text-decoration-none text-light">Video Demo</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4">
+                    <h3>Contact</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> omar0642624692@gmail.com</li>
+                        <li class="mb-2"><i class="fas fa-globe me-2"></i> https://omar.carbnr.me</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+            
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 CarBnR Portfolio Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/scripts/landing-page.js"></script>
+    <script>
+    </script>
+</body>
+</html>
