@@ -62,22 +62,29 @@ body {
   color: white;
 }
 
-/* Car Cards */
-.cars .card {
-  transition: transform 0.3s, box-shadow 0.3s;
-  border: none;
-  margin-bottom: 20px;
-  background-color: var(--card-bg);
+/* Dropdown list items - FIX FOR DARK MODE */
+.dropdown-menu .list-unstyled li {
+  color: var(--text-color);
+  transition: background-color 0.3s;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.cars .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+.dropdown-menu .list-unstyled li:hover {
+  background-color: var(--primary);
+  color: white;
 }
 
-.car-image {
-  height: 200px;
-  object-fit: cover;
+/* Ensure radio buttons and their labels are properly styled in dark mode */
+.dropdown-menu .list-unstyled li input[type="radio"] {
+  margin-right: 8px;
+}
+
+.dropdown-menu .list-unstyled li label {
+  cursor: pointer;
+  margin-bottom: 0;
+  color: inherit;
 }
 
 /* Dark Mode Styles */
@@ -90,6 +97,7 @@ body {
 .dark-mode .dropdown-menu {
   background-color: var(--card-bg);
   border: 1px solid #444;
+  color: var(--text-color);
 }
 
 .dark-mode .dropdown-item {
@@ -103,6 +111,21 @@ body {
 
 .dark-mode .text-muted {
   color: var(--text-light) !important;
+}
+
+/* Specific fix for dropdown list text in dark mode */
+.dark-mode .dropdown-menu .list-unstyled,
+.dark-mode .dropdown-menu .list-unstyled li {
+  color: var(--text-color) !important;
+}
+
+.dark-mode .dropdown-menu .list-unstyled li:hover {
+  color: white !important;
+}
+
+/* Ensure the dropdown toggle text is visible in dark mode */
+.dark-mode .dropdown-toggle {
+  color: var(--text-color) !important;
 }
 
 /* API Status Indicator */
@@ -174,4 +197,3 @@ footer {
   padding-top: 3rem !important;
   padding-bottom: 3rem !important;
 }
-
