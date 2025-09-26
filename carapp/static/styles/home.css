@@ -1,0 +1,177 @@
+/* Custom Styles for CarBnR Home Page */
+
+:root {
+  --primary: #3498db;
+  --secondary: #2c3e50;
+  --accent: #e74c3c;
+  --light: #f8f9fa;
+  --dark: #343a40;
+  --text-light: #6c757d;
+  --bg-color: #ffffff;
+  --card-bg: #ffffff;
+  --text-color: #333333;
+}
+
+.dark-mode {
+  --bg-color: #1a1a1a;
+  --text-color: #f0f0f0;
+  --card-bg: #2d2d2d;
+  --light: #2d2d2d;
+  --dark: #f0f0f0;
+  --text-light: #b0b0b0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+  padding-top: 76px; /* Account for fixed navbar */
+}
+
+/* Navbar Styles */
+.navbar-brand {
+  font-size: 1.8rem;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), 
+              url('https://images.unsplash.com/photo-1486496572940-2bb2341fdbdf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+  background-size: cover;
+  background-position: center;
+  padding: 80px 0;
+}
+
+/* Filter Section */
+.filter-title {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.filter-title:hover {
+  color: var(--primary);
+}
+
+.dropdown-menu {
+  min-width: 200px;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* Car Cards */
+.cars .card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: none;
+  margin-bottom: 20px;
+  background-color: var(--card-bg);
+}
+
+.cars .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.car-image {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Dark Mode Styles */
+.dark-mode .card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid #444;
+}
+
+.dark-mode .dropdown-menu {
+  background-color: var(--card-bg);
+  border: 1px solid #444;
+}
+
+.dark-mode .dropdown-item {
+  color: var(--text-color);
+}
+
+.dark-mode .dropdown-item:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+.dark-mode .text-muted {
+  color: var(--text-light) !important;
+}
+
+/* API Status Indicator */
+#api_status {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ffcccc;
+}
+
+#api_status.available {
+  background-color: #00cc66;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 60px 0;
+  }
+  
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+  
+  .filter-title {
+    font-size: 1.2rem;
+  }
+  
+  .dropdown-menu {
+    min-width: 100%;
+  }
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+}
+
+/* Footer Styles */
+footer {
+  margin-top: auto;
+}
+
+.social-links .btn {
+  transition: all 0.3s;
+}
+
+.social-links .btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Custom spacing */
+.mt-5 {
+  margin-top: 3rem !important;
+}
+
+.mb-5 {
+  margin-bottom: 3rem !important;
+}
+
+.py-5 {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
+
