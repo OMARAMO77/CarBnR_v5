@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select a Car</title>
+  <link rel="icon" href="../static/images/thumb.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/styles/select_cars.css">
+  <link rel="stylesheet" href="../static/styles/navbar.css">
+</head>
+  
+<body>
+  <header>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="./" style="font-family: 'Pacifico', cursive;">CarBnR</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/add-location-and-cars">Add Location & Cars</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/chat-interface">Chat Interface</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/global-weather">Global Weather</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger" href="#" id="log-out">Log Out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+    <div class="bg-dark text-white text-center py-3">
+      <h1>CarBnR - Where the ease of Car Booking meets the joy of Renting</h1>
+    <div id="api_status" class="available"></div>
+    </div>
+  </header>
+  <div class="container my-5 bg-white">
+    <section class="filters mb-5">
+      <div class="row border p-3 text-center d-flex align-items-center">
+        <div class="col-sm-4">
+          <div class="dropdown">
+            <h3 class="dropdown-toggle" id="statesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">States</h3>
+            <small class="states text-muted">select a state</small>
+            <div class="dropdown-menu col p-3" style="max-height: 200px; overflow-y: auto;" aria-labelledby="statesDropdown">
+              <ul class="list-unstyled ml-2">
+                {% for state in states %}
+                <li>
+                  <input type="radio" name="state" data-id="{{ state.id }}" data-name="{{ state.name }}" class="state_input">
+                  {{ state.name }}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="dropdown" id="citiesDropdownContainer">
+            <h3 class="dropdown-toggle" id="citiesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cities</h3>
+            <small class="cities text-muted">select a city</small>
+            <div class="dropdown-menu col p-3" style="max-height: 200px; overflow-y: auto;" aria-labelledby="citiesDropdown">
+              <ul class="list-unstyled ml-2" id="citiesList">
+                <!-- Cities will be loaded here -->
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="dropdown">
+            <h3 class="dropdown-toggle" id="locationsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Locations</h3>
+            <small class="companies text-muted">select a location</small>
+            <div class="dropdown-menu col p-3" style="max-height: 200px; overflow-y: auto;" aria-labelledby="locationsDropdown">
+              <ul class="list-unstyled ml-3">
+              <ul class="list-unstyled ml-2" id="locationsList">
+                <!-- Locations will be loaded here -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <button class="btn btn-primary" id="searchBtn" type="button" onclick="searchCars()">
+           <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+    </section>
+    <div class="text-center mb-4">
+      <h2 class="carHeading" id="carHeading">Choose your state, city, and at least one location to explore available cars.</h2>
+    </div>
+    <section class="cars row justify-content-center">
+
+    </section>
+  </div>
+  <footer class="bg-dark text-white py-1">
+    <div class="container text-center">
+      <div class="social_links mb-3">
+        <a href="https://www.LinkedIn.com" target="_blank" class="btn btn-link text-white"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="https://github.com/OMARAMO77/CarBnR_v5/" target="_blank" class="btn btn-link text-white"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://x.com/OmarKnight123" target="_blank" class="btn btn-link text-white"><i class="fab fa-twitter"></i> Twitter</a>
+      </div>
+      <p style="font-family: 'Pacifico', cursive;">&copy; 2024 CarBnR. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="../static/scripts/status-parameters.js"></script>
+  <script src="../static/scripts/select_cars.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
