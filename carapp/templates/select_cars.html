@@ -72,9 +72,9 @@
                 <div class="dropdown-menu p-3" style="max-height: 200px; overflow-y: auto;" aria-labelledby="statesDropdown">
                   <ul class="list-unstyled">
                     {% for state in states %}
-                    <li class="py-1">
+                    <li class="py-1 dropdown-item">
                       <input type="radio" name="state" data-id="{{ state.id }}" data-name="{{ state.name }}" class="state_input me-2">
-                      {{ state.name }}
+                      <span class="dropdown-text">{{ state.name }}</span>
                     </li>
                     {% endfor %}
                   </ul>
