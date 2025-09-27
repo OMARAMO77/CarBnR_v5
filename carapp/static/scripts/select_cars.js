@@ -61,6 +61,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (carHeadingText) carHeadingText.textContent = 'Choose your state, city, and at least one location to explore available cars.';
         carsSection.innerHTML = '';
         statesText.textContent = stateName;
+        statesText.classList.remove('text-muted');
+        statesText.classList.add('text-primary', 'fw-bold');
         citiesText.textContent = 'select a city';
         locationsText.textContent = 'select a location';
 
@@ -95,6 +97,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
               if (this.checked) {
                 citiesText.textContent = city.name;
+                citiesText.classList.remove('text-muted');
+                citiesText.classList.add('text-primary', 'fw-bold');
 
                 //locationsDropdownContainer.style.display = 'block';
                 const cityId = this.dataset.id;
