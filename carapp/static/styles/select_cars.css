@@ -57,15 +57,53 @@ body {
   min-width: 200px;
 }
 
-/* Make dropdown items clickable and properly styled */
-.dropdown-menu .list-unstyled li {
-  cursor: pointer;
-  transition: all 0.2s;
-  border-radius: 4px;
-  margin-bottom: 2px;
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* Step Indicators */
+.step-indicator {
+  padding: 10px;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.step-indicator.active {
+  background-color: rgba(52, 152, 219, 0.1);
+  border: 1px solid var(--primary);
+}
+
+.step-number {
+  width: 30px;
+  height: 30px;
+  background-color: var(--text-light);
+  color: white;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  padding: 8px 12px;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin: 0 auto 5px;
+}
+
+.step-indicator.active .step-number {
+  background-color: var(--primary);
+}
+
+.step-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Dropdown list items - FIX FOR DARK MODE */
+.dropdown-menu .list-unstyled li {
+  color: var(--text-color);
+  transition: background-color 0.3s;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .dropdown-menu .list-unstyled li:hover {
@@ -73,16 +111,19 @@ body {
   color: white;
 }
 
-/* Style for the radio button */
+/* Ensure radio buttons and their labels are properly styled in dark mode */
 .dropdown-menu .list-unstyled li input[type="radio"] {
-  margin-right: 10px;
-  cursor: pointer;
+  margin-right: 8px;
 }
 
-/* Style for the text next to radio button */
-.dropdown-menu .list-unstyled li .dropdown-text {
-  flex: 1;
+.dropdown-menu .list-unstyled li input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.dropdown-menu .list-unstyled li label {
   cursor: pointer;
+  margin-bottom: 0;
+  color: inherit;
 }
 
 /* Dark Mode Styles */
@@ -113,13 +154,11 @@ body {
 
 /* Specific fix for dropdown list text in dark mode */
 .dark-mode .dropdown-menu .list-unstyled,
-.dark-mode .dropdown-menu .list-unstyled li,
-.dark-mode .dropdown-menu .list-unstyled li .dropdown-text {
+.dark-mode .dropdown-menu .list-unstyled li {
   color: var(--text-color) !important;
 }
 
-.dark-mode .dropdown-menu .list-unstyled li:hover,
-.dark-mode .dropdown-menu .list-unstyled li:hover .dropdown-text {
+.dark-mode .dropdown-menu .list-unstyled li:hover {
   color: white !important;
 }
 
@@ -141,6 +180,32 @@ body {
   background-color: #00cc66;
 }
 
+/* Results Header */
+#resultsHeader {
+  padding: 20px;
+  background-color: rgba(52, 152, 219, 0.05);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+}
+
+/* Car Cards */
+.cars .card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: none;
+  margin-bottom: 20px;
+  background-color: var(--card-bg);
+}
+
+.cars .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.car-image {
+  height: 200px;
+  object-fit: cover;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .hero-section {
@@ -157,6 +222,10 @@ body {
   
   .dropdown-menu {
     min-width: 100%;
+  }
+  
+  .step-indicator {
+    margin-bottom: 15px;
   }
 }
 
