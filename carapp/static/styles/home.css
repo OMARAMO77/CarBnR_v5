@@ -57,18 +57,15 @@ body {
   min-width: 200px;
 }
 
-.dropdown-item:hover, .dropdown-item:focus {
-  background-color: var(--primary);
-  color: white;
-}
-
-/* Dropdown list items - FIX FOR DARK MODE */
+/* Make dropdown items clickable and properly styled */
 .dropdown-menu .list-unstyled li {
-  color: var(--text-color);
-  transition: background-color 0.3s;
-  padding: 5px 10px;
-  border-radius: 4px;
   cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
 }
 
 .dropdown-menu .list-unstyled li:hover {
@@ -76,15 +73,16 @@ body {
   color: white;
 }
 
-/* Ensure radio buttons and their labels are properly styled in dark mode */
+/* Style for the radio button */
 .dropdown-menu .list-unstyled li input[type="radio"] {
-  margin-right: 8px;
+  margin-right: 10px;
+  cursor: pointer;
 }
 
-.dropdown-menu .list-unstyled li label {
+/* Style for the text next to radio button */
+.dropdown-menu .list-unstyled li .dropdown-text {
+  flex: 1;
   cursor: pointer;
-  margin-bottom: 0;
-  color: inherit;
 }
 
 /* Dark Mode Styles */
@@ -115,11 +113,13 @@ body {
 
 /* Specific fix for dropdown list text in dark mode */
 .dark-mode .dropdown-menu .list-unstyled,
-.dark-mode .dropdown-menu .list-unstyled li {
+.dark-mode .dropdown-menu .list-unstyled li,
+.dark-mode .dropdown-menu .list-unstyled li .dropdown-text {
   color: var(--text-color) !important;
 }
 
-.dark-mode .dropdown-menu .list-unstyled li:hover {
+.dark-mode .dropdown-menu .list-unstyled li:hover,
+.dark-mode .dropdown-menu .list-unstyled li:hover .dropdown-text {
   color: white !important;
 }
 
