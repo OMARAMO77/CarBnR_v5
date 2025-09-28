@@ -36,6 +36,94 @@ function getRandomTimeFormatted() {
     }
 }
 
+// Make dropdown list items clickable
+function setupDropdownClickHandlers() {
+    // Add click handlers to all dropdown list items
+    document.addEventListener('click', function(e) {
+        // Check if the clicked element is a dropdown list item or its text
+        const listItem = e.target.closest('.dropdown-menu .list-unstyled li');
+        if (listItem) {
+            const radioInput = listItem.querySelector('input[type="radio"], input[type="checkbox"]');
+            if (radioInput) {
+                // Toggle the radio/checkbox button
+                if (radioInput.type === 'radio') {
+                    radioInput.checked = true;
+                } else if (radioInput.type === 'checkbox') {
+                    radioInput.checked = !radioInput.checked;
+                }
+                
+                // Trigger the change event to update the UI
+                radioInput.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                // Close the dropdown after selection (optional)
+                const dropdown = listItem.closest('.dropdown-menu');
+                if (dropdown) {
+                    const dropdownToggle = document.querySelector('[aria-labelledby="' + dropdown.getAttribute('aria-labelledby') + '"]');
+                    if (dropdownToggle) {
+                        bootstrap.Dropdown.getInstance(dropdownToggle)?.hide();
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Update dropdown toggle indicators based on selection
+function updateDropdownIndicators() {
+    const dropdowns = document.querySelectorAll('.dropdown');
+    
+    dropdowns.forEach(dropdown => {
+        const toggle = dropdown.querySelector('.dropdown-toggle');
+        const smallText = dropdown.querySelector('small');
+        const inputs = dropdown.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+        
+        // Check if any option is selected
+        let selected = false;
+        let selectedValues = [];
+        
+        inputs.forEach(input => {
+            if (input.checked) {
+                selected = true;
+                const textElement = input.nextElementSibling;
+                if (textElement && textElement.classList.contains('dropdown-text')) {
+                    selectedValues.push(textElement.textContent.trim());
+                } else {
+                    // Fallback if the structure is different
+                    selectedValues.push(input.parentElement.textContent.trim());
+                }
+            }
+        });
+        
+        if (selected) {
+            // Update the small text to show selected value(s)
+            smallText.textContent = selectedValues.join(', ');
+            smallText.classList.remove('text-muted');
+            smallText.classList.add('text-primary', 'fw-bold');
+        } else {
+            // Reset to default text
+            if (dropdown.id === 'citiesDropdownContainer' || toggle.id === 'statesDropdown') {
+                smallText.textContent = 'select a state';
+            } else if (toggle.id === 'citiesDropdown') {
+                smallText.textContent = 'select a city';
+            } else if (toggle.id === 'locationsDropdown') {
+                smallText.textContent = 'select a location';
+            }
+            smallText.classList.remove('text-primary', 'fw-bold');
+            smallText.classList.add('text-muted');
+        }
+    });
+}
+
+// Force refresh dropdown styles after updates
+function refreshDropdownStyles() {
+    const dropdownItems = document.querySelectorAll('.dropdown-menu .list-unstyled li');
+    dropdownItems.forEach(item => {
+        // Trigger reflow to ensure styles are applied
+        item.style.display = 'none';
+        item.offsetHeight; // Trigger reflow
+        item.style.display = 'flex';
+    });
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
   const refreshBtn = document.getElementById("refresh-link");
@@ -49,6 +137,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const carsSection = document.querySelector('SECTION.cars');
   const searchBtn = document.getElementById('searchBtn');
   userId = await fetchUser();
+
+  // Initialize dropdown functionality
+  setupDropdownClickHandlers();
+  updateDropdownIndicators();
 
   const stateInputs = document.querySelectorAll('.state_input');
   stateInputs.forEach((stateInput) => {
@@ -80,15 +172,21 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (cities.length === 0) citiesList.innerHTML = 'No cities available';
           cities.forEach(city => {
             const li = document.createElement('li');
+            li.className = 'py-1 dropdown-item';
+            
             const radio = document.createElement('input');
             radio.type = 'radio';
             radio.name = 'city';
             radio.dataset.id = city.id;
             radio.dataset.name = city.name;
-            radio.classList.add('city_input');
+            radio.classList.add('city_input', 'me-2');
+
+            const textSpan = document.createElement('span');
+            textSpan.className = 'dropdown-text';
+            textSpan.textContent = city.name;
 
             li.appendChild(radio);
-            li.append(` ${city.name}`);
+            li.appendChild(textSpan);
             citiesList.appendChild(li);
 
             radio.addEventListener('change', async function () {
@@ -116,14 +214,20 @@ document.addEventListener("DOMContentLoaded", async () => {
                   if (locations.length === 0) locationsList.innerHTML = 'No locations available';
                   locations.forEach(location => {
                     const li = document.createElement('li');
+                    li.className = 'py-1 dropdown-item';
+                    
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.dataset.id = location.id;
                     checkbox.dataset.name = location.name;
-                    checkbox.classList.add('location_input');
+                    checkbox.classList.add('location_input', 'me-2');
+
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'dropdown-text';
+                    textSpan.textContent = location.name;
 
                     li.appendChild(checkbox);
-                    li.append(` ${location.name}`);
+                    li.appendChild(textSpan);
                     locationsList.appendChild(li);
 
                     checkbox.addEventListener('change', () => {
@@ -141,21 +245,43 @@ document.addEventListener("DOMContentLoaded", async () => {
                       if (selectedLocations.length === 0) {
                         locationsText.textContent = 'select a location';
                       }
+                      
+                      // Update dropdown indicators
+                      updateDropdownIndicators();
                     });
                   });
+                  
+                  // Refresh dropdown styles after adding new items
+                  refreshDropdownStyles();
                 } catch (error) {
                   alert('Failed to load locations.');
                   console.error(error);
                 }
               }
+              
+              // Update dropdown indicators
+              updateDropdownIndicators();
             });
           });
+          
+          // Refresh dropdown styles after adding new items
+          refreshDropdownStyles();
         } catch (error) {
           alert('Failed to load cities.');
           console.error(error);
         }
       }
+      
+      // Update dropdown indicators
+      updateDropdownIndicators();
     });
+  });
+
+  // Add event listeners to all radio inputs for dropdown indicators
+  document.addEventListener('change', function(e) {
+    if (e.target.matches('input[type="radio"], input[type="checkbox"]')) {
+      updateDropdownIndicators();
+    }
   });
 
   window.searchCars = async function () {
