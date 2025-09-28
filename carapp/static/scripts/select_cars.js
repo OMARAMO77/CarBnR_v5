@@ -132,17 +132,17 @@ function updateCarHeading() {
     if (hasState && hasCity && hasLocation) {
         carHeading.textContent = 'Ready to find your perfect car?';
         carSubHeading.textContent = 'Click "Search Cars" to view available vehicles in your selected locations';
-        carSubHeading.classList.remove('text-muted');
+        carSubHeading.classList.remove('text-muted', 'text-info', 'text-warning');
         carSubHeading.classList.add('text-success');
     } else if (hasState && hasCity) {
         carHeading.textContent = 'Almost there!';
         carSubHeading.textContent = 'Now select one or more rental locations to see available cars';
-        carSubHeading.classList.remove('text-success', 'text-muted');
+        carSubHeading.classList.remove('text-success', 'text-muted', 'text-warning');
         carSubHeading.classList.add('text-info');
     } else if (hasState) {
         carHeading.textContent = 'Great start!';
         carSubHeading.textContent = 'Now choose a city to continue your search';
-        carSubHeading.classList.remove('text-success', 'text-info');
+        carSubHeading.classList.remove('text-success', 'text-info', 'text-muted');
         carSubHeading.classList.add('text-warning');
     } else {
         carHeading.textContent = 'Find Your Perfect Car';
@@ -163,6 +163,18 @@ function refreshDropdownStyles() {
     });
 }
 
+// Prevent dropdown from closing when clicking inside locations dropdown
+function preventLocationsDropdownClose() {
+    const locationsDropdown = document.getElementById('locationsDropdown');
+    const locationsMenu = document.querySelector('[aria-labelledby="locationsDropdown"]');
+    
+    if (locationsMenu) {
+        locationsMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const refreshBtn = document.getElementById("refresh-link");
   const citiesDropdownContainer = document.getElementById('citiesDropdownContainer');
@@ -181,6 +193,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupDropdownClickHandlers();
   updateDropdownIndicators();
   updateCarHeading();
+  preventLocationsDropdownClose();
 
   const stateInputs = document.querySelectorAll('.state_input');
   stateInputs.forEach((stateInput) => {
@@ -306,6 +319,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     
                     // Refresh dropdown styles after adding new items
                     refreshDropdownStyles();
+                    // Re-apply the click prevention for the new dropdown
+                    preventLocationsDropdownClose();
                   } catch (error) {
                     alert('Failed to load locations.');
                     console.error(error);
