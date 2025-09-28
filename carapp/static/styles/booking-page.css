@@ -9,6 +9,7 @@
   --text-light: #6c757d;
   --bg-color: #ffffff;
   --card-bg: #ffffff;
+  --calendar-bg: #ffffff;
   --text-color: #333333;
   --border-color: #dee2e6;
   --success-color: #28a745;
@@ -20,6 +21,7 @@
   --bg-color: #1a1a1a;
   --text-color: #f0f0f0;
   --card-bg: #2d2d2d;
+  --calendar-bg: #3d3d3d;
   --light: #3d3d3d;
   --dark: #e0e0e0;
   --text-light: #b0b0b0;
@@ -98,7 +100,7 @@ body {
 
 /* Form Styles */
 .form-control {
-  background-color: var(--bg-color);
+  background-color: var(--calendar-bg);
   color: var(--text-color);
   border: 1px solid var(--border-color);
   transition: var(--transition);
