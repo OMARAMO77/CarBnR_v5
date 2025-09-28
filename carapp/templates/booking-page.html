@@ -3,72 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Page</title>
+    <title>Book Your Car - CarBnR</title>
     <link rel="icon" href="../static/images/thumb.png">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../static/styles/booking-page.css">
-    <link rel="stylesheet" href="../static/styles/status.css">
 </head>
 <body>
-    <div id="status"></div>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/" style="font-family: 'Pacifico', cursive;">
+                <i class="fas fa-car me-2"></i>CarBnR
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile"><i class="fas fa-user me-1"></i>Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/add-location-and-cars"><i class="fas fa-plus me-1"></i>Add Location & Cars</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-search me-1"></i>Find Cars</a>
+                    </li>
+                    <li class="nav-item">
+                        <button id="darkModeToggle" class="btn btn-outline-light btn-sm ms-2">
+                            <i class="fas fa-moon"></i> Dark Mode
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="#" id="log-out"><i class="fas fa-sign-out-alt me-1"></i>Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <div class="container">
-        <h1 class="text-center">Booking Form</h1>
-        <form id="bookingForm" action="#" method="post" class="card p-4">
-            <div class="row">
-                <div class="form-left col-md-7 mb-3">
-                    <div class="card">
-                        <img id="carImage" src="" alt="Car Image" class="card-img-top">
-                        <div class="card-body">
-                            <div class="form-group d-flex">
-                                <label for="car_type" style="width: -webkit-fill-available;">Car Type:</label>
-                                <input type="text" class="form-control" style="width: 200%;" id="car_type" name="car_type" readonly>
-                            </div>
-                            <div class="form-group d-flex">
-                                <label for="price_by_day" style="width: -webkit-fill-available;">Price By Day:</label>
-                                <input type="text" class="form-control" style="width: 200%;" id="price_by_day" name="price_by_day" readonly>
-                            </div>
-                            <div class="form-group d-flex">
-                                <label for="locationName" style="width: -webkit-fill-available;">Location:</label>
-                                <input type="text" class="form-control" style="width: 200%;" id="locationName" name="locationName" readonly>
-                            </div>
-                            <div class="form-group d-flex">
-                                <label for="locationAddress" style="width: -webkit-fill-available;">Address:</label>
-                                <input type="text" class="form-control" style="width: 200%;" id="locationAddress" name="locationAddress" readonly>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Status Alert -->
+    <div id="status" class="container mt-5 pt-5"></div>
 
-                <div class="right-side col-md-5">
-                    <p>Select your pickup and return dates to reserve your car:</p>
-                    <div class="form-group">
-                        <label for="pickup_date">Pickup Date:</label>
-                        <input type="date" class="form-control" id="pickup_date" name="pickup_date" min="" required>
+    <!-- Main Content -->
+    <div class="container mt-4 pt-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h1 class="h3 mb-0"><i class="fas fa-calendar-check me-2"></i>Complete Your Booking</h1>
                     </div>
-                    <div class="form-group">
-                        <label for="dateTime">Pickup Time:</label>
-                        <input type="time" class="form-control" id="dateTime" name="dateTime" min="" required>
+                    <div class="card-body p-4">
+                        <form id="bookingForm" action="#" method="post">
+                            <div class="row">
+                                <!-- Car Details Section -->
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header bg-light">
+                                            <h5 class="mb-0"><i class="fas fa-car me-2"></i>Vehicle Details</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="text-center mb-4">
+                                                <img id="carImage" src="" alt="Car Image" class="img-fluid rounded shadow" style="max-height: 200px; width: auto;">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 mb-3">
+                                                    <label class="form-label fw-bold">Car Type:</label>
+                                                    <input type="text" class="form-control bg-light" id="car_type" name="car_type" readonly>
+                                                </div>
+                                                <div class="col-12 mb-3">
+                                                    <label class="form-label fw-bold">Daily Rate:</label>
+                                                    <input type="text" class="form-control bg-light" id="price_by_day" name="price_by_day" readonly>
+                                                </div>
+                                                <div class="col-12 mb-3">
+                                                    <label class="form-label fw-bold">Location:</label>
+                                                    <input type="text" class="form-control bg-light" id="locationName" name="locationName" readonly>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label fw-bold">Address:</label>
+                                                    <input type="text" class="form-control bg-light" id="locationAddress" name="locationAddress" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Booking Details Section -->
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header bg-light">
+                                            <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Booking Details</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="text-muted mb-4">Select your pickup and return dates to reserve your car:</p>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="pickup_date" class="form-label fw-bold">Pickup Date:</label>
+                                                    <input type="date" class="form-control" id="pickup_date" name="pickup_date" min="" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="dateTime" class="form-label fw-bold">Pickup Time:</label>
+                                                    <input type="time" class="form-control" id="dateTime" name="dateTime" min="" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="return_date" class="form-label fw-bold">Return Date:</label>
+                                                    <input type="date" class="form-control" id="return_date" name="return_date" min="" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="daysNumber" class="form-label fw-bold">Rental Days:</label>
+                                                    <input type="text" class="form-control bg-light" id="daysNumber" name="daysNumber" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-12 mb-4">
+                                                    <label for="total_cost" class="form-label fw-bold">Total Cost:</label>
+                                                    <input type="text" class="form-control bg-success text-white fw-bold fs-5" id="total_cost" name="total_cost" readonly style="font-size: 1.2rem !important;">
+                                                </div>
+                                            </div>
+
+                                            <button type="button" class="btn btn-primary btn-lg w-100 py-3" id="confirmBookingBtn">
+                                                <i class="fas fa-check-circle me-2"></i>Confirm Booking
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="return_date">Return Date:</label>
-                        <input type="date" class="form-control" id="return_date" name="return_date" min="" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="daysNumber">Number of Days:</label>
-                        <input type="text" class="form-control" id="daysNumber" name="daysNumber" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="total_cost">Total Cost:</label>
-                        <input type="text" class="form-control" id="total_cost" name="total_cost" readonly>
-                    </div>
-                    <button type="button" class="btn btn-primary btn-block" id="confirmBookingBtn">Confirm Booking</button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
+
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../static/scripts/status-parameters.js"></script>
     <script src="../static/scripts/booking-page.js"></script>
+    <script src="../static/scripts/dark-mode.js"></script>
 </body>
 </html>
