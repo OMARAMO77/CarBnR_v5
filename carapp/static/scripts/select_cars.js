@@ -132,17 +132,17 @@ function updateCarHeading() {
     if (hasState && hasCity && hasLocation) {
         carHeading.textContent = 'Ready to find your perfect car?';
         carSubHeading.textContent = 'Click "Search Cars" to view available vehicles in your selected locations';
-        carSubHeading.classList.remove('text-muted', 'text-info', 'text-warning');
+        carSubHeading.classList.remove('text-muted');
         carSubHeading.classList.add('text-success');
     } else if (hasState && hasCity) {
         carHeading.textContent = 'Almost there!';
         carSubHeading.textContent = 'Now select one or more rental locations to see available cars';
-        carSubHeading.classList.remove('text-success', 'text-muted', 'text-warning');
+        carSubHeading.classList.remove('text-success', 'text-muted');
         carSubHeading.classList.add('text-info');
     } else if (hasState) {
         carHeading.textContent = 'Great start!';
         carSubHeading.textContent = 'Now choose a city to continue your search';
-        carSubHeading.classList.remove('text-success', 'text-info', 'text-muted');
+        carSubHeading.classList.remove('text-success', 'text-info');
         carSubHeading.classList.add('text-warning');
     } else {
         carHeading.textContent = 'Find Your Perfect Car';
@@ -163,16 +163,16 @@ function refreshDropdownStyles() {
     });
 }
 
-// Prevent dropdown from closing when clicking inside locations dropdown
-function preventLocationsDropdownClose() {
-    const locationsDropdown = document.getElementById('locationsDropdown');
-    const locationsMenu = document.querySelector('[aria-labelledby="locationsDropdown"]');
-    
-    if (locationsMenu) {
-        locationsMenu.addEventListener('click', function(e) {
+// Prevent dropdown from closing when clicking on checkboxes
+function preventDropdownClose() {
+    document.addEventListener('click', function(e) {
+        // If the click is inside the locations dropdown menu
+        if (e.target.closest('#locationsDropdown') || 
+            e.target.closest('.location_input') || 
+            e.target.closest('#locationsList')) {
             e.stopPropagation();
-        });
-    }
+        }
+    });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -187,13 +187,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   const carSubHeadingText = document.getElementById('carSubHeading');
   const carsSection = document.querySelector('SECTION.cars');
   const searchBtn = document.getElementById('searchBtn');
+  const locationsDropdown = document.querySelector('#locationsDropdown').closest('.dropdown');
+  
   userId = await fetchUser();
 
   // Initialize dropdown functionality
   setupDropdownClickHandlers();
   updateDropdownIndicators();
   updateCarHeading();
-  preventLocationsDropdownClose();
+  preventDropdownClose();
+
+  // Add keep-open class to locations dropdown
+  if (locationsDropdown) {
+    locationsDropdown.classList.add('keep-open');
+  }
 
   const stateInputs = document.querySelectorAll('.state_input');
   stateInputs.forEach((stateInput) => {
@@ -319,8 +326,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     
                     // Refresh dropdown styles after adding new items
                     refreshDropdownStyles();
-                    // Re-apply the click prevention for the new dropdown
-                    preventLocationsDropdownClose();
                   } catch (error) {
                     alert('Failed to load locations.');
                     console.error(error);
