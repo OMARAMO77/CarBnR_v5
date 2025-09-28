@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Select a Car - CarBnR</title>
+  <title>Find Your Perfect Car - CarBnR</title>
   <link rel="icon" href="../static/images/thumb.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -52,7 +52,7 @@
   <header class="hero-section bg-dark text-white text-center py-5 mt-5">
     <div class="container">
       <h1 class="display-4 mb-3">Find Your Perfect Ride</h1>
-      <p class="lead">CarBnR - Where the ease of Car Booking meets the joy of Renting</p>
+      <p class="lead">Book the perfect car for your journey with CarBnR</p>
       <div id="api_status" class="available mt-3"></div>
     </div>
   </header>
@@ -62,36 +62,12 @@
     <section class="filters mb-5">
       <div class="card shadow-sm">
         <div class="card-header bg-light">
-          <h3 class="card-title mb-0 text-center">
-            <i class="fas fa-search me-2"></i>Find Available Cars
-          </h3>
-          <p class="text-muted text-center mb-0 mt-2">
-            Follow these steps to find your perfect car:
-          </p>
+          <h4 class="mb-0 text-center">
+            <i class="fas fa-filter me-2 text-primary"></i>Filter Cars by Location
+          </h4>
+          <p class="text-center text-muted mb-0 mt-2">Select your preferred state, city, and locations to find available vehicles</p>
         </div>
         <div class="card-body p-4">
-          <!-- Step Indicators -->
-          <div class="row mb-4">
-            <div class="col-md-4 text-center">
-              <div class="step-indicator active" id="step1">
-                <div class="step-number">1</div>
-                <div class="step-label">Select State</div>
-              </div>
-            </div>
-            <div class="col-md-4 text-center">
-              <div class="step-indicator" id="step2">
-                <div class="step-number">2</div>
-                <div class="step-label">Select City</div>
-              </div>
-            </div>
-            <div class="col-md-4 text-center">
-              <div class="step-indicator" id="step3">
-                <div class="step-number">3</div>
-                <div class="step-label">Select Location(s)</div>
-              </div>
-            </div>
-          </div>
-          
           <div class="row text-center d-flex align-items-center">
             <div class="col-md-4 mb-3">
               <div class="dropdown">
@@ -129,7 +105,7 @@
                 <h4 class="dropdown-toggle filter-title" id="locationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fas fa-map-marker-alt me-2"></i>Locations
                 </h4>
-                <small class="companies text-muted d-block">select one or more locations</small>
+                <small class="companies text-muted d-block">select a location</small>
                 <div class="dropdown-menu p-3" style="max-height: 200px; overflow-y: auto;" aria-labelledby="locationsDropdown">
                   <ul class="list-unstyled" id="locationsList">
                     <!-- Locations will be loaded here -->
@@ -149,11 +125,8 @@
 
     <!-- Results Section -->
     <div class="text-center mb-4" id="resultsHeader">
-      <h2 class="carHeading" id="carHeading">
-        <i class="fas fa-info-circle me-2"></i>
-        Please select a state, city, and at least one location to explore available cars.
-      </h2>
-      <p class="text-muted">You can select multiple locations by checking multiple boxes</p>
+      <h2 class="carHeading" id="carHeading">Complete your location selection to view available cars</h2>
+      <p class="text-muted mt-2" id="carSubHeading">Choose a state, city, and one or more rental locations</p>
     </div>
     <section class="cars row justify-content-center">
       <!-- Cars will be loaded here -->
