@@ -36,33 +36,6 @@ function getRandomTimeFormatted() {
     }
 }
 
-// Update step indicators based on user progress
-function updateStepIndicators() {
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-    const step3 = document.getElementById('step3');
-    
-    const stateSelected = document.querySelector('.state_input:checked');
-    const citySelected = document.querySelector('.city_input:checked');
-    const locationsSelected = document.querySelectorAll('.location_input:checked').length > 0;
-    
-    // Reset all steps
-    step1.classList.remove('active');
-    step2.classList.remove('active');
-    step3.classList.remove('active');
-    
-    // Activate steps based on selections
-    if (stateSelected) {
-        step1.classList.add('active');
-        if (citySelected) {
-            step2.classList.add('active');
-            if (locationsSelected) {
-                step3.classList.add('active');
-            }
-        }
-    }
-}
-
 // Make dropdown list items clickable
 function setupDropdownClickHandlers() {
     // Add click handlers to all dropdown list items
@@ -144,6 +117,41 @@ function updateDropdownIndicators() {
     });
 }
 
+// Update the car heading and subheading based on selection state
+function updateCarHeading() {
+    const carHeading = document.getElementById('carHeading');
+    const carSubHeading = document.getElementById('carSubHeading');
+    const statesText = document.querySelector('.states');
+    const citiesText = document.querySelector('.cities');
+    const locationsText = document.querySelector('.companies');
+    
+    const hasState = statesText.classList.contains('text-primary');
+    const hasCity = citiesText.classList.contains('text-primary');
+    const hasLocation = locationsText.classList.contains('text-primary');
+    
+    if (hasState && hasCity && hasLocation) {
+        carHeading.textContent = 'Ready to find your perfect car?';
+        carSubHeading.textContent = 'Click "Search Cars" to view available vehicles in your selected locations';
+        carSubHeading.classList.remove('text-muted');
+        carSubHeading.classList.add('text-success');
+    } else if (hasState && hasCity) {
+        carHeading.textContent = 'Almost there!';
+        carSubHeading.textContent = 'Now select one or more rental locations to see available cars';
+        carSubHeading.classList.remove('text-success', 'text-muted');
+        carSubHeading.classList.add('text-info');
+    } else if (hasState) {
+        carHeading.textContent = 'Great start!';
+        carSubHeading.textContent = 'Now choose a city to continue your search';
+        carSubHeading.classList.remove('text-success', 'text-info');
+        carSubHeading.classList.add('text-warning');
+    } else {
+        carHeading.textContent = 'Find Your Perfect Car';
+        carSubHeading.textContent = 'Start by selecting a state, then a city, and finally one or more rental locations';
+        carSubHeading.classList.remove('text-success', 'text-info', 'text-warning');
+        carSubHeading.classList.add('text-muted');
+    }
+}
+
 // Force refresh dropdown styles after updates
 function refreshDropdownStyles() {
     const dropdownItems = document.querySelectorAll('.dropdown-menu .list-unstyled li');
@@ -164,6 +172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const citiesText = document.querySelector('.cities');
   const locationsText = document.querySelector('.companies');
   const carHeadingText = document.getElementById('carHeading');
+  const carSubHeadingText = document.getElementById('carSubHeading');
   const carsSection = document.querySelector('SECTION.cars');
   const searchBtn = document.getElementById('searchBtn');
   userId = await fetchUser();
@@ -171,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Initialize dropdown functionality
   setupDropdownClickHandlers();
   updateDropdownIndicators();
-  updateStepIndicators();
+  updateCarHeading();
 
   const stateInputs = document.querySelectorAll('.state_input');
   stateInputs.forEach((stateInput) => {
@@ -181,13 +190,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         const stateName = this.dataset.name;        
 
         if (window.locationObj) window.locationObj = {};
-        if (carHeadingText) carHeadingText.textContent = 'Please select a state, city, and at least one location to explore available cars.';
         carsSection.innerHTML = '';
         statesText.textContent = stateName;
         statesText.classList.remove('text-muted');
         statesText.classList.add('text-primary', 'fw-bold');
         citiesText.textContent = 'select a city';
+        citiesText.classList.remove('text-primary', 'fw-bold');
+        citiesText.classList.add('text-muted');
         locationsText.textContent = 'select a location';
+        locationsText.classList.remove('text-primary', 'fw-bold');
+        locationsText.classList.add('text-muted');
 
         citiesList.innerHTML = '';
         locationsList.innerHTML = '';
@@ -224,6 +236,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
               radio.addEventListener('change', async function () {
                 locationsText.textContent = 'select a location';
+                locationsText.classList.remove('text-primary', 'fw-bold');
+                locationsText.classList.add('text-muted');
                 locationsList.innerHTML = '';
 
                 if (this.checked) {
@@ -232,7 +246,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                   citiesText.classList.add('text-primary', 'fw-bold');
 
                   const cityId = this.dataset.id;
-                  if (carHeadingText) carHeadingText.textContent = 'Please select a state, city, and at least one location to explore available cars.';
                   carsSection.innerHTML = '';
                   if (window.locationObj) window.locationObj = {};
 
@@ -266,7 +279,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                         checkbox.addEventListener('change', () => {
                           searchBtn.disabled = false;
-                          carHeadingText.textContent = 'Please select a state, city, and at least one location to explore available cars.';
                           carsSection.innerHTML = '';
                           if (!window.locationObj) window.locationObj = {};
                           if (checkbox.checked) {
@@ -285,9 +297,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                             locationsText.classList.add('text-primary', 'fw-bold');
                           }
                           
-                          // Update dropdown indicators and step indicators
+                          // Update dropdown indicators and car heading
                           updateDropdownIndicators();
-                          updateStepIndicators();
+                          updateCarHeading();
                         });
                       });
                     }
@@ -300,9 +312,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                   }
                 }
                 
-                // Update dropdown indicators and step indicators
+                // Update dropdown indicators and car heading
                 updateDropdownIndicators();
-                updateStepIndicators();
+                updateCarHeading();
               });
             });
           }
@@ -315,9 +327,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
       
-      // Update dropdown indicators and step indicators
+      // Update dropdown indicators and car heading
       updateDropdownIndicators();
-      updateStepIndicators();
+      updateCarHeading();
     });
   });
 
@@ -325,7 +337,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener('change', function(e) {
     if (e.target.matches('input[type="radio"], input[type="checkbox"]')) {
       updateDropdownIndicators();
-      updateStepIndicators();
+      updateCarHeading();
     }
   });
 
@@ -356,13 +368,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
       const cars = await response.json();
       if (cars.length === 0) {
-        if (carHeadingText) carHeadingText.textContent = 'No cars available for your selected locations.';
+        carHeadingText.textContent = 'No cars available';
+        carSubHeadingText.textContent = 'Try selecting different locations or check back later';
+        carSubHeadingText.classList.remove('text-success', 'text-info', 'text-warning');
+        carSubHeadingText.classList.add('text-muted');
         carsSection.innerHTML = '';
         searchBtn.disabled = false;
         return;
       }
       carsSection.innerHTML = '';
-      if (carHeadingText) carHeadingText.textContent = 'Here are the cars available for your selection:';
+      carHeadingText.textContent = `Found ${cars.length} Car${cars.length !== 1 ? 's' : ''} Available`;
+      carSubHeadingText.textContent = 'Browse our selection of vehicles available at your chosen locations';
+      carSubHeadingText.classList.remove('text-muted', 'text-info', 'text-warning');
+      carSubHeadingText.classList.add('text-success');
 
       cars.forEach(car => {
         const availabilityText = car.available
