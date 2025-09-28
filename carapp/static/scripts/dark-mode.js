@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.add('dark-mode');
         darkModeIcon.classList.remove('fa-moon');
         darkModeIcon.classList.add('fa-sun');
+        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+    } else {
+        darkModeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
     }
     
     // Toggle dark mode
@@ -18,10 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('darkMode', 'enabled');
             darkModeIcon.classList.remove('fa-moon');
             darkModeIcon.classList.add('fa-sun');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
         } else {
             localStorage.setItem('darkMode', 'disabled');
             darkModeIcon.classList.remove('fa-sun');
             darkModeIcon.classList.add('fa-moon');
+            darkModeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
         }
     });
 });
