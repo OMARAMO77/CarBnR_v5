@@ -10,6 +10,8 @@
   --bg-color: #ffffff;
   --card-bg: #ffffff;
   --text-color: #333333;
+  --dropdown-bg: #ffffff;
+  --dropdown-text: #333333;
 }
 
 .dark-mode {
@@ -19,6 +21,8 @@
   --light: #2d2d2d;
   --dark: #f0f0f0;
   --text-light: #b0b0b0;
+  --dropdown-bg: #3d3d3d;
+  --dropdown-text: #f0f0f0;
 }
 
 body {
@@ -55,6 +59,8 @@ body {
 
 .dropdown-menu {
   min-width: 200px;
+  background-color: var(--dropdown-bg);
+  border: 1px solid rgba(0,0,0,0.15);
 }
 
 /* Make dropdown items clickable and properly styled */
@@ -66,6 +72,7 @@ body {
   display: flex;
   align-items: center;
   padding: 8px 12px;
+  color: var(--dropdown-text);
 }
 
 .dropdown-menu .list-unstyled li:hover {
@@ -74,7 +81,8 @@ body {
 }
 
 /* Style for the radio button */
-.dropdown-menu .list-unstyled li input[type="radio"] {
+.dropdown-menu .list-unstyled li input[type="radio"],
+.dropdown-menu .list-unstyled li input[type="checkbox"] {
   margin-right: 10px;
   cursor: pointer;
 }
@@ -93,13 +101,13 @@ body {
 }
 
 .dark-mode .dropdown-menu {
-  background-color: var(--card-bg);
-  border: 1px solid #444;
-  color: var(--text-color);
+  background-color: var(--dropdown-bg);
+  border: 1px solid #555;
+  color: var(--dropdown-text);
 }
 
 .dark-mode .dropdown-item {
-  color: var(--text-color);
+  color: var(--dropdown-text);
 }
 
 .dark-mode .dropdown-item:hover {
@@ -115,7 +123,7 @@ body {
 .dark-mode .dropdown-menu .list-unstyled,
 .dark-mode .dropdown-menu .list-unstyled li,
 .dark-mode .dropdown-menu .list-unstyled li .dropdown-text {
-  color: var(--text-color) !important;
+  color: var(--dropdown-text) !important;
 }
 
 .dark-mode .dropdown-menu .list-unstyled li:hover,
@@ -126,6 +134,17 @@ body {
 /* Ensure the dropdown toggle text is visible in dark mode */
 .dark-mode .dropdown-toggle {
   color: var(--text-color) !important;
+}
+
+/* Card Header Styles */
+.card-header.bg-light {
+  background-color: var(--light) !important;
+  color: var(--text-color);
+}
+
+.dark-mode .card-header.bg-light {
+  background-color: #3d3d3d !important;
+  color: var(--text-color);
 }
 
 /* API Status Indicator */
@@ -139,6 +158,11 @@ body {
 
 #api_status.available {
   background-color: #00cc66;
+}
+
+/* Results Section Styles */
+#resultsHeader {
+  transition: all 0.3s ease;
 }
 
 /* Responsive Adjustments */
@@ -196,4 +220,21 @@ footer {
 .py-5 {
   padding-top: 3rem !important;
   padding-bottom: 3rem !important;
+}
+
+/* Text color utilities for dynamic states */
+.text-success {
+  color: #28a745 !important;
+}
+
+.text-info {
+  color: #17a2b8 !important;
+}
+
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.dark-mode .text-warning {
+  color: #ffd54f !important;
 }
