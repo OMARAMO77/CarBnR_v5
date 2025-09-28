@@ -36,6 +36,33 @@ function getRandomTimeFormatted() {
     }
 }
 
+// Update step indicators based on user progress
+function updateStepIndicators() {
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    
+    const stateSelected = document.querySelector('.state_input:checked');
+    const citySelected = document.querySelector('.city_input:checked');
+    const locationsSelected = document.querySelectorAll('.location_input:checked').length > 0;
+    
+    // Reset all steps
+    step1.classList.remove('active');
+    step2.classList.remove('active');
+    step3.classList.remove('active');
+    
+    // Activate steps based on selections
+    if (stateSelected) {
+        step1.classList.add('active');
+        if (citySelected) {
+            step2.classList.add('active');
+            if (locationsSelected) {
+                step3.classList.add('active');
+            }
+        }
+    }
+}
+
 // Make dropdown list items clickable
 function setupDropdownClickHandlers() {
     // Add click handlers to all dropdown list items
@@ -55,12 +82,15 @@ function setupDropdownClickHandlers() {
                 // Trigger the change event to update the UI
                 radioInput.dispatchEvent(new Event('change', { bubbles: true }));
                 
-                // Close the dropdown after selection (optional)
-                const dropdown = listItem.closest('.dropdown-menu');
-                if (dropdown) {
-                    const dropdownToggle = document.querySelector('[aria-labelledby="' + dropdown.getAttribute('aria-labelledby') + '"]');
-                    if (dropdownToggle) {
-                        bootstrap.Dropdown.getInstance(dropdownToggle)?.hide();
+                // For radio buttons, close the dropdown after selection
+                // For checkboxes, keep the dropdown open for multiple selections
+                if (radioInput.type === 'radio') {
+                    const dropdown = listItem.closest('.dropdown-menu');
+                    if (dropdown) {
+                        const dropdownToggle = document.querySelector('[aria-labelledby="' + dropdown.getAttribute('aria-labelledby') + '"]');
+                        if (dropdownToggle) {
+                            bootstrap.Dropdown.getInstance(dropdownToggle)?.hide();
+                        }
                     }
                 }
             }
@@ -141,6 +171,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Initialize dropdown functionality
   setupDropdownClickHandlers();
   updateDropdownIndicators();
+  updateStepIndicators();
 
   const stateInputs = document.querySelectorAll('.state_input');
   stateInputs.forEach((stateInput) => {
@@ -150,7 +181,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const stateName = this.dataset.name;        
 
         if (window.locationObj) window.locationObj = {};
-        if (carHeadingText) carHeadingText.textContent = 'Choose your state, city, and at least one location to explore available cars.';
+        if (carHeadingText) carHeadingText.textContent = 'Please select a state, city, and at least one location to explore available cars.';
         carsSection.innerHTML = '';
         statesText.textContent = stateName;
         statesText.classList.remove('text-muted');
@@ -169,100 +200,112 @@ document.addEventListener("DOMContentLoaded", async () => {
           });
           const cities = await response.json();
 
-          if (cities.length === 0) citiesList.innerHTML = 'No cities available';
-          cities.forEach(city => {
-            const li = document.createElement('li');
-            li.className = 'py-1 dropdown-item';
-            
-            const radio = document.createElement('input');
-            radio.type = 'radio';
-            radio.name = 'city';
-            radio.dataset.id = city.id;
-            radio.dataset.name = city.name;
-            radio.classList.add('city_input', 'me-2');
-
-            const textSpan = document.createElement('span');
-            textSpan.className = 'dropdown-text';
-            textSpan.textContent = city.name;
-
-            li.appendChild(radio);
-            li.appendChild(textSpan);
-            citiesList.appendChild(li);
-
-            radio.addEventListener('change', async function () {
-              locationsText.textContent = 'select a location';
-              locationsList.innerHTML = '';
-
-              if (this.checked) {
-                citiesText.textContent = city.name;
-                citiesText.classList.remove('text-muted');
-                citiesText.classList.add('text-primary', 'fw-bold');
-
-                //locationsDropdownContainer.style.display = 'block';
-                const cityId = this.dataset.id;
-                if (carHeadingText) carHeadingText.textContent = 'Choose your state, city, and at least one location to explore available cars.';
-                carsSection.innerHTML = '';
-                if (window.locationObj) window.locationObj = {};
-
-                try {
-                  const response = await fetch(`/api/v1/cities/${cityId}/locations`, {
-                    method: 'GET',
-                    credentials: 'include',
-                  });
-                  const locations = await response.json();
-
-                  if (locations.length === 0) locationsList.innerHTML = 'No locations available';
-                  locations.forEach(location => {
-                    const li = document.createElement('li');
-                    li.className = 'py-1 dropdown-item';
-                    
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.dataset.id = location.id;
-                    checkbox.dataset.name = location.name;
-                    checkbox.classList.add('location_input', 'me-2');
-
-                    const textSpan = document.createElement('span');
-                    textSpan.className = 'dropdown-text';
-                    textSpan.textContent = location.name;
-
-                    li.appendChild(checkbox);
-                    li.appendChild(textSpan);
-                    locationsList.appendChild(li);
-
-                    checkbox.addEventListener('change', () => {
-                      searchBtn.disabled = false;
-                      carHeadingText.textContent = 'Choose your state, city, and at least one location to explore available cars.';
-                      carsSection.innerHTML = '';
-                      if (!window.locationObj) window.locationObj = {};
-                      if (checkbox.checked) {
-                        window.locationObj[checkbox.dataset.name] = checkbox.dataset.id;
-                      } else {
-                        delete window.locationObj[checkbox.dataset.name];
-                      }
-                      const selectedLocations = Object.keys(window.locationObj).sort();
-                      locationsText.textContent = selectedLocations.join(', ');
-                      if (selectedLocations.length === 0) {
-                        locationsText.textContent = 'select a location';
-                      }
-                      
-                      // Update dropdown indicators
-                      updateDropdownIndicators();
-                    });
-                  });
-                  
-                  // Refresh dropdown styles after adding new items
-                  refreshDropdownStyles();
-                } catch (error) {
-                  alert('Failed to load locations.');
-                  console.error(error);
-                }
-              }
+          if (cities.length === 0) {
+            citiesList.innerHTML = '<li class="py-1 text-muted">No cities available</li>';
+          } else {
+            cities.forEach(city => {
+              const li = document.createElement('li');
+              li.className = 'py-1 dropdown-item';
               
-              // Update dropdown indicators
-              updateDropdownIndicators();
+              const radio = document.createElement('input');
+              radio.type = 'radio';
+              radio.name = 'city';
+              radio.dataset.id = city.id;
+              radio.dataset.name = city.name;
+              radio.classList.add('city_input', 'me-2');
+
+              const textSpan = document.createElement('span');
+              textSpan.className = 'dropdown-text';
+              textSpan.textContent = city.name;
+
+              li.appendChild(radio);
+              li.appendChild(textSpan);
+              citiesList.appendChild(li);
+
+              radio.addEventListener('change', async function () {
+                locationsText.textContent = 'select a location';
+                locationsList.innerHTML = '';
+
+                if (this.checked) {
+                  citiesText.textContent = city.name;
+                  citiesText.classList.remove('text-muted');
+                  citiesText.classList.add('text-primary', 'fw-bold');
+
+                  const cityId = this.dataset.id;
+                  if (carHeadingText) carHeadingText.textContent = 'Please select a state, city, and at least one location to explore available cars.';
+                  carsSection.innerHTML = '';
+                  if (window.locationObj) window.locationObj = {};
+
+                  try {
+                    const response = await fetch(`/api/v1/cities/${cityId}/locations`, {
+                      method: 'GET',
+                      credentials: 'include',
+                    });
+                    const locations = await response.json();
+
+                    if (locations.length === 0) {
+                      locationsList.innerHTML = '<li class="py-1 text-muted">No locations available</li>';
+                    } else {
+                      locations.forEach(location => {
+                        const li = document.createElement('li');
+                        li.className = 'py-1 dropdown-item';
+                        
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.dataset.id = location.id;
+                        checkbox.dataset.name = location.name;
+                        checkbox.classList.add('location_input', 'me-2');
+
+                        const textSpan = document.createElement('span');
+                        textSpan.className = 'dropdown-text';
+                        textSpan.textContent = location.name;
+
+                        li.appendChild(checkbox);
+                        li.appendChild(textSpan);
+                        locationsList.appendChild(li);
+
+                        checkbox.addEventListener('change', () => {
+                          searchBtn.disabled = false;
+                          carHeadingText.textContent = 'Please select a state, city, and at least one location to explore available cars.';
+                          carsSection.innerHTML = '';
+                          if (!window.locationObj) window.locationObj = {};
+                          if (checkbox.checked) {
+                            window.locationObj[checkbox.dataset.name] = checkbox.dataset.id;
+                          } else {
+                            delete window.locationObj[checkbox.dataset.name];
+                          }
+                          const selectedLocations = Object.keys(window.locationObj).sort();
+                          locationsText.textContent = selectedLocations.join(', ');
+                          if (selectedLocations.length === 0) {
+                            locationsText.textContent = 'select a location';
+                            locationsText.classList.remove('text-primary', 'fw-bold');
+                            locationsText.classList.add('text-muted');
+                          } else {
+                            locationsText.classList.remove('text-muted');
+                            locationsText.classList.add('text-primary', 'fw-bold');
+                          }
+                          
+                          // Update dropdown indicators and step indicators
+                          updateDropdownIndicators();
+                          updateStepIndicators();
+                        });
+                      });
+                    }
+                    
+                    // Refresh dropdown styles after adding new items
+                    refreshDropdownStyles();
+                  } catch (error) {
+                    alert('Failed to load locations.');
+                    console.error(error);
+                  }
+                }
+                
+                // Update dropdown indicators and step indicators
+                updateDropdownIndicators();
+                updateStepIndicators();
+              });
             });
-          });
+          }
           
           // Refresh dropdown styles after adding new items
           refreshDropdownStyles();
@@ -272,8 +315,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
       
-      // Update dropdown indicators
+      // Update dropdown indicators and step indicators
       updateDropdownIndicators();
+      updateStepIndicators();
     });
   });
 
@@ -281,6 +325,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener('change', function(e) {
     if (e.target.matches('input[type="radio"], input[type="checkbox"]')) {
       updateDropdownIndicators();
+      updateStepIndicators();
     }
   });
 
@@ -311,7 +356,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
       const cars = await response.json();
       if (cars.length === 0) {
-        if (carHeadingText) carHeadingText.textContent = 'No cars available';
+        if (carHeadingText) carHeadingText.textContent = 'No cars available for your selected locations.';
         carsSection.innerHTML = '';
         searchBtn.disabled = false;
         return;
