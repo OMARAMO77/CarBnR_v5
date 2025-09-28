@@ -10,8 +10,7 @@
   --bg-color: #ffffff;
   --card-bg: #ffffff;
   --text-color: #333333;
-  --dropdown-bg: #ffffff;
-  --dropdown-text: #333333;
+  --border-color: #dee2e6;
 }
 
 .dark-mode {
@@ -21,8 +20,7 @@
   --light: #2d2d2d;
   --dark: #f0f0f0;
   --text-light: #b0b0b0;
-  --dropdown-bg: #3d3d3d;
-  --dropdown-text: #f0f0f0;
+  --border-color: #444;
 }
 
 body {
@@ -59,8 +57,6 @@ body {
 
 .dropdown-menu {
   min-width: 200px;
-  background-color: var(--dropdown-bg);
-  border: 1px solid rgba(0,0,0,0.15);
 }
 
 /* Make dropdown items clickable and properly styled */
@@ -72,7 +68,6 @@ body {
   display: flex;
   align-items: center;
   padding: 8px 12px;
-  color: var(--dropdown-text);
 }
 
 .dropdown-menu .list-unstyled li:hover {
@@ -80,34 +75,39 @@ body {
   color: white;
 }
 
-/* Style for the radio button */
+/* Style for the radio button and checkbox */
 .dropdown-menu .list-unstyled li input[type="radio"],
 .dropdown-menu .list-unstyled li input[type="checkbox"] {
   margin-right: 10px;
   cursor: pointer;
 }
 
-/* Style for the text next to radio button */
+/* Style for the text next to input */
 .dropdown-menu .list-unstyled li .dropdown-text {
   flex: 1;
   cursor: pointer;
+}
+
+/* Prevent dropdown from closing when clicking inside */
+.locations-dropdown .dropdown-menu {
+  pointer-events: auto;
 }
 
 /* Dark Mode Styles */
 .dark-mode .card {
   background-color: var(--card-bg);
   color: var(--text-color);
-  border: 1px solid #444;
+  border: 1px solid var(--border-color);
 }
 
 .dark-mode .dropdown-menu {
-  background-color: var(--dropdown-bg);
-  border: 1px solid #555;
-  color: var(--dropdown-text);
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
 }
 
 .dark-mode .dropdown-item {
-  color: var(--dropdown-text);
+  color: var(--text-color);
 }
 
 .dark-mode .dropdown-item:hover {
@@ -123,7 +123,7 @@ body {
 .dark-mode .dropdown-menu .list-unstyled,
 .dark-mode .dropdown-menu .list-unstyled li,
 .dark-mode .dropdown-menu .list-unstyled li .dropdown-text {
-  color: var(--dropdown-text) !important;
+  color: var(--text-color) !important;
 }
 
 .dark-mode .dropdown-menu .list-unstyled li:hover,
@@ -136,15 +136,14 @@ body {
   color: var(--text-color) !important;
 }
 
-/* Card Header Styles */
+/* Card header styling */
 .card-header.bg-light {
   background-color: var(--light) !important;
-  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .dark-mode .card-header.bg-light {
   background-color: #3d3d3d !important;
-  color: var(--text-color);
 }
 
 /* API Status Indicator */
@@ -160,9 +159,29 @@ body {
   background-color: #00cc66;
 }
 
-/* Results Section Styles */
-#resultsHeader {
-  transition: all 0.3s ease;
+/* Results header styling */
+#resultsHeader .text-success {
+  color: #28a745 !important;
+}
+
+.dark-mode #resultsHeader .text-success {
+  color: #4cd964 !important;
+}
+
+#resultsHeader .text-info {
+  color: #17a2b8 !important;
+}
+
+.dark-mode #resultsHeader .text-info {
+  color: #5ac8fa !important;
+}
+
+#resultsHeader .text-warning {
+  color: #ffc107 !important;
+}
+
+.dark-mode #resultsHeader .text-warning {
+  color: #ffd60a !important;
 }
 
 /* Responsive Adjustments */
@@ -222,19 +241,7 @@ footer {
   padding-bottom: 3rem !important;
 }
 
-/* Text color utilities for dynamic states */
-.text-success {
-  color: #28a745 !important;
-}
-
-.text-info {
-  color: #17a2b8 !important;
-}
-
-.text-warning {
-  color: #ffc107 !important;
-}
-
-.dark-mode .text-warning {
-  color: #ffd54f !important;
+/* Dropdown keep-open class for locations */
+.keep-open .dropdown-menu {
+  pointer-events: auto;
 }
