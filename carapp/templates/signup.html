@@ -5,43 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up for CarBnR</title>
     <link rel="icon" href="../static/images/thumb.png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="../static/styles/signup_form.css">
     <link rel="stylesheet" type="text/css" href="../static/styles/status.css">
 </head>
 <body>
-    <div id="status" class="alert" role="alert" style="display: none;"></div>
+    <!-- Status Alert -->
+    <div id="status" class="position-fixed top-0 start-50 translate-middle-x mt-4 z-3"></div>
+
+    <!-- Main Container -->
     <div class="container d-flex justify-content-center align-items-center vh-100">
-        <form class="bg-dark text-light p-4" style="border-radius: 1.3rem!important;" id="createAccountForm">
-            <h2 class="text-primary mb-4">Sign up</h2>
-            <p class="message mb-4">Sign up now to be able to book a car.</p>
-            <div class="form-row mb-3">
-                <div class="form-group col-md-6">
-                    <label for="firstname">First name</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="First name" autocomplete="given-name" required>
+        <div class="card signup-card shadow-lg border-0 rounded-3">
+            <div class="card-header bg-primary text-white text-center py-4 border-0 rounded-top-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="card-title mb-0 fw-bold fs-3">
+                        <i class="fas fa-car me-2"></i>CarBnR
+                    </h2>
+                    <button id="darkModeToggle" class="btn btn-outline-light btn-sm">
+                        <i class="fas fa-moon"></i>
+                    </button>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="lastname">Last name</label>
-                    <input type="text" class="form-control" id="lastName" placeholder="Last name" autocomplete="family-name" required>
+                <p class="card-text mb-0 opacity-90">Create your account to start booking</p>
+            </div>
+            
+            <div class="card-body p-4 p-md-5">
+                <form id="createAccountForm">
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label for="firstName" class="form-label fw-semibold mb-2">First Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-user text-muted"></i>
+                                </span>
+                                <input type="text" class="form-control border-start-0 ps-2" id="firstName" placeholder="Enter first name" autocomplete="given-name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lastName" class="form-label fw-semibold mb-2">Last Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-user text-muted"></i>
+                                </span>
+                                <input type="text" class="form-control border-start-0 ps-2" id="lastName" placeholder="Enter last name" autocomplete="family-name" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-semibold mb-2">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-envelope text-muted"></i>
+                            </span>
+                            <input type="email" class="form-control border-start-0 ps-2" id="email" placeholder="Enter your email" autocomplete="email" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-semibold mb-2">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-lock text-muted"></i>
+                            </span>
+                            <input type="password" class="form-control border-start-0 ps-2" id="password" placeholder="Create password" autocomplete="new-password" required>
+                            <button type="button" class="btn btn-outline-secondary border-start-0" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="confirmPassword" class="form-label fw-semibold mb-2">Confirm Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-lock text-muted"></i>
+                            </span>
+                            <input type="password" class="form-control border-start-0 ps-2" id="confirmPassword" placeholder="Confirm password" autocomplete="new-password" required>
+                            <button type="button" class="btn btn-outline-secondary border-start-0" id="toggleConfirmPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3 mb-3 fw-semibold" id="submitBtn">
+                        <i class="fas fa-user-plus me-2"></i>Create Account
+                    </button>
+                </form>
+
+                <div class="text-center mt-4 pt-3 border-top">
+                    <p class="mb-3 text-muted">Already have an account?</p>
+                    <a id="loginLink" href="login.html" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In to Existing Account
+                    </a>
                 </div>
             </div>
-            <div class="form-group mb-3">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Email" autocomplete="email" required>
-            </div>
-            <div class="form-group mb-3">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" autocomplete="new-password" required>
-            </div>
-            <div class="form-group mb-3">
-                <label for="confirmPassword">Confirm password</label>
-                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" autocomplete="new-password" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block"id="submitBtn">Submit</button>
-            <p class="text-center mt-3 signin">Already have an account? <a id="loginLink" href="login.html" class="text-primary">Log in</a></p>
-        </form>
+        </div>
     </div>
-  <script src="../static/scripts/status-parameters.js"></script>
-  <script src="../static/scripts/signup_script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/scripts/status-parameters.js"></script>
+    <script src="../static/scripts/signup_script.js"></script>
+    <script src="../static/scripts/dark-mode.js"></script>
 </body>
 </html>
