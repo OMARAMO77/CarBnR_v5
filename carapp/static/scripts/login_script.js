@@ -66,5 +66,5 @@ document.addEventListener('DOMContentLoaded', () => {
             loginButton.disabled = false;
         }
     });
-    initializePasswordToggle()
+    initializePasswordToggle();
 });
