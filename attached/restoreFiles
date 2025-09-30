@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Script to submit restore files from '/nowhere'
+
+# Define color codes
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+if [ "$#" -ge 1 ]; then
+    for file in "$@"; do
+        filename=$(basename "$file")
+        if [ -e "/nowhere/$filename" ]; then
+            if mv "/nowhere/$filename" "$file" 2>/dev/null; then
+                echo -e "${GREEN}File restored: $file${NC}"
+            else
+                echo -e "${RED}File not restored: $file${NC}"
+            fi
+        else
+            echo -e "${YELLOW}File does not exist: /nowhere/$filename${NC}"
+        fi
+    done
+else
+    echo "Usage: $0 PATH1 PATH2 PATH3 ..."
+fi
