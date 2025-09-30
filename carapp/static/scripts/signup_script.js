@@ -1,3 +1,47 @@
+function setupPasswordToggle(toggleButtonId, passwordFieldId) {
+    const toggleButton = document.getElementById(toggleButtonId);
+    const passwordField = document.getElementById(passwordFieldId);
+    
+    if (!toggleButton || !passwordField) {
+        console.warn(`Password toggle elements not found: ${toggleButtonId}, ${passwordFieldId}`);
+        return;
+    }
+    
+    function togglePasswordVisibility() {
+        const isCurrentlyPassword = passwordField.type === 'password';
+        passwordField.type = isCurrentlyPassword ? 'text' : 'password';
+        
+        const icon = toggleButton.querySelector('i');
+        if (icon) {
+            if (isCurrentlyPassword) {
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    }
+    
+    // Click event
+    toggleButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        togglePasswordVisibility();
+    });
+    
+    // Keyboard accessibility
+    toggleButton.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            togglePasswordVisibility();
+        }
+    });
+    
+    // Add ARIA attributes for accessibility
+    toggleButton.setAttribute('aria-label', 'Show password');
+    toggleButton.setAttribute('role', 'button');
+    toggleButton.setAttribute('tabindex', '0');
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const createAccountForm = document.getElementById('createAccountForm');
     const submitBtn = document.getElementById('submitBtn');
@@ -63,4 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.disabled = false;
         }
     });
+    setupPasswordToggle('togglePassword', 'password');
+    setupPasswordToggle('toggleConfirmPassword', 'confirmPassword');
 });
