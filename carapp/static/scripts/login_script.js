@@ -1,3 +1,24 @@
+// Password visibility toggle functionality
+function initializePasswordToggle() {
+    const toggleButton = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+    
+    if (!toggleButton || !passwordField) return;
+    
+    toggleButton.addEventListener('click', function() {
+        const isPassword = passwordField.type === 'password';
+        passwordField.type = isPassword ? 'text' : 'password';
+        
+        const icon = this.querySelector('i');
+        if (isPassword) {
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('LogintoAccountForm');
     const loginButton = document.getElementById('LoginButton');
@@ -45,4 +66,5 @@ document.addEventListener('DOMContentLoaded', () => {
             loginButton.disabled = false;
         }
     });
+    initializePasswordToggle()
 });
