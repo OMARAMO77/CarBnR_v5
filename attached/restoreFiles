@@ -17,6 +17,11 @@ if [ "$#" -ge 1 ]; then
             continue
         fi
         
+        # Check if destination file exists
+        if [ ! -e "$file" ]; then
+            echo -e "${YELLOW}File '$file' does not exist${NC}"
+        fi
+        
         # Check if destination directory exists
         dest_dir=$(dirname "$file")
         if [ ! -d "$dest_dir" ]; then
