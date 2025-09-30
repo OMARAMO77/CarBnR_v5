@@ -1,21 +1,24 @@
+# In local terminal:
+./transfer /CarBnR_v5/attached/install_packages (1|2)
+# In server terminal:
+# Install some packages if not already installed (nano git lsof tmux)
+./install_packages
 # Navigate to the root directory
 cd /
-# Install some packages if not already installed
-/CarBnR_v5/attached/install_packages.sh
-
 # Clone the repository
 git clone https://github.com/OMARAMO77/CarBnR_v5.git
 
 # Re_install MySQL, Set up MySQL, Uncompress and load backup file
 /CarBnR_v5/sql_related/sql_re_install_setup_uncompress.sh <backup.sql.gz>
 "test:" # make sure it shows the databases at the end
+# the password is needed !!
 
 # Install NGINX, Create basic index.html and 404.html files, 
 /CarBnR_v5/attached/ngx_install_redirect_404
 "test:" # (curl 0.0.0.0)  (curl 0.0.0.0/123)  (curl -sI 0.0.0.0/redirect_me)
 
 # Log in to your domain registrar and configure an A record that points to your server’s public IP address
-"test:" # check DNS propagation
+"test:" # check DNS propagation --- 
 /CarBnR_v5/attached/check_dns <domain>
 "test:" # (curl  http://domain)  (curl  http://domain/123)  (curl  http://domain/redirect_me)
 
@@ -35,7 +38,7 @@ git clone https://github.com/OMARAMO77/CarBnR_v5.git
 
 # Install UFW if not already installed and set UFW rules
 /CarBnR_v5/attached/ufw_rules
-"test:" # (curl -sI http://domain:3000/users)
+"test:" # (curl -sI https://domain:3000/users)
 
 
 
@@ -44,12 +47,16 @@ git clone https://github.com/OMARAMO77/CarBnR_v5.git
 sudo apt-get install pkg-config libmysqlclient-dev libcairo2-dev redis
 
 # Install all Python dependencies listed in the requirements.txt file.
-/CarBnR_v5/attached/freeze 2
+/CarBnR_v5/attached/freeze.sh 2
 
 # add /CarBnR_v5/.env
 
 /CarBnR_v5/attached/set_app
 "test:" # (curl -sI https://domain/select_cars) or in the browser 
+
+tmux new-session -d 'gunicorn --bind 0.0.0.0:5002 api.v1.app:app'
+tmux new-session -d 'gunicorn --bind 0.0.0.0:5000 carapp.select_cars:app'
+
 
 # To upgrade or  downgrade the database:
 pip install alembic
