@@ -8,454 +8,358 @@
   <link rel="stylesheet" href="../static/styles/navbar.css">
   <link rel="stylesheet" href="../static/styles/profile.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&amp;display=swap">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
   <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="/" style="font-family: 'Pacifico', cursive;">
-        <i class="fas fa-car me-2"></i>CarBnR
-      </a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="./" style="font-family: 'Pacifico', cursive;">CarBnR</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/add-location-and-cars"><i class="fas fa-plus me-1"></i>Add Location & Cars</a>
+            <a class="nav-link" href="/add-location-and-cars">Add Location & Cars</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/select_cars"><i class="fas fa-search me-1"></i>Book New Car</a>
+            <a class="nav-link" href="/select_cars">Book New Car</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/chat-interface"><i class="fas fa-comments me-1"></i>Chat Interface</a>
+            <a class="nav-link" href="/chat-interface">Chat Interface</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/global-weather"><i class="fas fa-cloud-sun me-1"></i>Global Weather</a>
+            <a class="nav-link" href="/global-weather">Global Weather</a>
           </li>
           <li class="nav-item">
-            <button id="darkModeToggle" class="btn btn-outline-light btn-sm ms-2">
-              <i class="fas fa-moon"></i> Dark Mode
-            </button>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-danger" href="#" id="log-out"><i class="fas fa-sign-out-alt me-1"></i>Log Out</a>
+            <a class="nav-link text-danger" href="#" id="log-out">Log Out</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-
   <!-- Switch Role Button -->
-  <div class="container-fluid mt-5 pt-4">
-    <button class="btn btn-primary switch-role-btn" id="switchButton">
-      <i class="fas fa-sync-alt me-2"></i>Switch Role: Customer
-    </button>
-  </div>
+  <button class="btn btn-primary switch-role-btn" id="switchButton">Switch Role: Customer</button>
 
-  <!-- Main Content -->
-  <div class="container my-4">
-    <div class="row align-items-center mb-4 profile-section">
-      <!-- Profile Picture & Basic Info -->
-      <div class="col-md-3 text-center">
+<div class="container my-5 p-4 rounded shadow-lg" style="background: #f8f9fa; border: 1px solid #dee2e6;">
+<div class="row align-items-center mb-3 profile-section">
+    <!-- Profile Picture & Basic Info -->
+    <div class="col-md-3 text-center">
         <div class="profile-pic-wrapper">
-          <img src="../static/images/profile_pic.jpg" alt="Profile Picture" class="profile-pic img-fluid rounded-circle skeleton">
-          <span class="status-dot skeleton-dot"></span>
+            <img src="../static/images/profile_pic.jpg" alt="Profile Picture" class="profile-pic img-fluid rounded-circle skeleton">
+            <span class="status-dot skeleton-dot"></span>
         </div>
         <h3 class="user-name mt-3 skeleton-text" id="user-name">Loading...</h3>
         <p class="region text-muted skeleton-text" id="region">Loading region...</p>
-      </div>
-
-      <!-- Account Details & Actions -->
-      <div class="col-md-9">
-        <div class="account-details-card shadow" id="account-details">
-          <h4 class="account-title skeleton-text">Account Details</h4>
-          <div class="detail-item skeleton-text"><strong>Email:</strong> Loading...</div>
-          <div class="detail-item skeleton-text"><strong>Phone:</strong> Loading...</div>
-          <div class="detail-item skeleton-text"><strong>Member Since:</strong> Loading...</div>
-          <div class="detail-item skeleton-text"><strong>Total Bookings:</strong> Loading...</div>
-        </div>
-      </div>
     </div>
 
-    <!-- Navigation Tabs -->
-    <ul class="nav nav-tabs profile-nav mb-4" id="categoryOne">
+    <!-- Account Details & Actions -->
+    <div class="col-md-9">
+        <div class="account-details-card shadow" id="account-details">
+            <h4 class="account-title skeleton-text">Account Details</h4>
+            <div class="detail-item skeleton-text"><strong>Email:</strong> Loading...</div>
+            <div class="detail-item skeleton-text"><strong>Phone:</strong> Loading...</div>
+            <div class="detail-item skeleton-text"><strong>Member Since:</strong> Loading...</div>
+            <div class="detail-item skeleton-text"><strong>Total Bookings:</strong> Loading...</div>
+        </div>
+    </div>
+</div>
+<!-- Navigation Tabs -->
+   <ul class="nav nav-tabs profile-nav mb-4" id="categoryOne">
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#upcoming-bookings">
-          <i class="fas fa-calendar-check me-2"></i>My Upcoming Bookings
-        </a>
+         <a class="nav-link" data-toggle="tab" href="#upcoming-bookings">My Upcoming Bookings</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#ongoing-bookings">
-          <i class="fas fa-car me-2"></i>My Ongoing Bookings
-        </a>
+         <a class="nav-link" data-toggle="tab" href="#ongoing-bookings">My Ongoing Bookings</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#past-bookings">
-          <i class="fas fa-history me-2"></i>My Past Booking
-        </a>
+         <a class="nav-link" data-toggle="tab" href="#past-bookings">My Past Booking</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#settings">
-          <i class="fas fa-cog me-2"></i>Account Settings
-        </a>
+         <a class="nav-link" data-toggle="tab" href="#settings">Account Settings</a>
       </li>
-    </ul>
+   </ul>
+   <ul class="nav nav-tabs profile-nav mb-4" id="categoryTwo"  style="display: none;">
+      <li class="nav-item">
+         <a class="nav-link" data-toggle="tab" href="#location-upcoming-bookings">Location Upcoming Bookings</a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" data-toggle="tab" href="#location-ongoing-bookings">Location Ongoing Bookings</a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" data-toggle="tab" href="#location-past-bookings">Location Past Booking</a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" data-toggle="tab" href="#manage-cars">Manage Cars</a>
+      </li>
+   </ul>
 
-    <ul class="nav nav-tabs profile-nav mb-4" id="categoryTwo" style="display: none;">
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#location-upcoming-bookings">
-          <i class="fas fa-calendar-check me-2"></i>Location Upcoming Bookings
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#location-ongoing-bookings">
-          <i class="fas fa-car me-2"></i>Location Ongoing Bookings
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#location-past-bookings">
-          <i class="fas fa-history me-2"></i>Location Past Booking
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#manage-cars">
-          <i class="fas fa-edit me-2"></i>Manage Cars
-        </a>
-      </li>
-    </ul>
-
-    <!-- Tab Content -->
-    <div class="tab-content">
+   <!-- Tab Content -->
+   <div class="tab-content">
       <!-- Upcoming Bookings Tab -->
       <div class="tab-pane fade" id="upcoming-bookings">
-        <div class="upcoming-bookingMessage mb-4">
-          <h3><i class="fas fa-calendar-check me-2"></i>Upcoming Bookings</h3>
-          <p class="text-muted">Here's a list of your upcoming bookings. Manage or cancel them if needed.</p>
+        <div class="upcoming-bookingMessage">
+        <h3>Upcoming Bookings</h3>
+        <p>Here's a list of your upcoming bookings. Manage or cancel them if needed.</p>
         </div>
-        <div class="upcoming-bookings-spinner text-center py-4">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
+        <div class="upcoming-bookings-spinner"></div>
         <div class="upcoming-bookings card mb-4 shadow-lg">
-          <!-- Upcoming Bookings to be loaded here -->
+            <!-- Upcoming Bookings to be loaded here -->
         </div>
         <div class="upcoming-bookings-placeholder"></div>
-        <div class="text-center">
-          <button class="btn btn-outline-primary" id="load-more-upcoming">
-            <i class="fas fa-plus me-2"></i>Load More Upcoming Bookings
-          </button>
-        </div>
+        <button id="load-more-upcoming">Load More Upcoming Bookings</button>
       </div>
+
 
       <!-- Ongoing Bookings Tab -->
       <div class="tab-pane fade" id="ongoing-bookings">
-        <div class="ongoing-bookingMessage mb-4">
-          <h3><i class="fas fa-car me-2"></i>Ongoing Bookings</h3>
-          <p class="text-muted">Here's a list of your ongoing bookings.</p>
+        <div class="ongoing-bookingMessage">
+        <h3>Ongoing Bookings</h3>
+        <p>Here's a list of your ongoing bookings.</p>
         </div>
-        <div class="ongoing-bookings-spinner text-center py-4">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
+        <div class="ongoing-bookings-spinner"></div>
         <div class="ongoing-bookings card mb-4 shadow-lg">
-          <!-- Ongoing Bookings to be loaded here -->
+            <!-- Ongoing Bookings to be loaded here -->
         </div>
         <div class="ongoing-bookings-placeholder"></div>
-        <div class="text-center">
-          <button class="btn btn-outline-primary" id="load-more-ongoing">
-            <i class="fas fa-plus me-2"></i>Load More Ongoing Bookings
-          </button>
-        </div>
+        <button id="load-more-ongoing">Load More Ongoing Bookings</button>
       </div>
 
       <!-- Past Booking Tab -->
       <div class="tab-pane fade" id="past-bookings">
-        <div class="past-bookingMessage mb-4">
-          <h3><i class="fas fa-history me-2"></i>Past Booking</h3>
-          <p class="text-muted">View the details of past bookings.</p>
+        <div class="past-bookingMessage">
+        <h3>Past Booking</h3>
+        <p>View the details of past bookings.</p>
         </div>
-        <div class="past-bookings-spinner text-center py-4">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
+        <div class="past-bookings-spinner"></div>
         <div class="past-bookings card mb-4 shadow-lg">
-          <!-- Past Bookings to be loaded here -->
+            <!-- Past Bookings to be loaded here -->
         </div>
         <div class="past-bookings-placeholder"></div>
-        <div class="text-center">
-          <button class="btn btn-outline-primary" id="load-more-past">
-            <i class="fas fa-plus me-2"></i>Load More Past Bookings
-          </button>
-        </div>
+        <button id="load-more-past">Load More Past Bookings</button>
       </div>
 
       <!-- Manage Cars Tab -->
       <div class="tab-pane fade" id="manage-cars">
-        <div class="manage-cars-message mb-4">
-          <h3><i class="fas fa-edit me-2"></i>Manage Cars</h3>
-          <p class="text-muted">View and edit cars you've added to CarBnR.</p>
-          
-          <!-- Location Dropdown -->
-          <div class="mb-4">
-            <div id="dropdown-container" class="d-flex align-items-center gap-2"></div>
-          </div>
+        <div class="manage-cars-message">
+         <h3>Manage Cars</h3>
+         <p>View and edit cars you’ve added to CarBnR.</p>
+         <!-- Location Dropdown -->
+         <div class="mb-4">
+           <div id="dropdown-container" class="d-flex align-items-center gap-2"></div>
+         </div>
 
-          <!-- Car Cards Section -->
-          <div id="car-list" class="row">
-            <!-- Cars will be dynamically injected here -->
-          </div>
+         <!-- Car Cards Section -->
+         <div id="car-list" class="row">
+           <!-- Cars will be dynamically injected here -->
+         </div>
         </div>
       </div>
 
       <!-- Location Upcoming Bookings Tab -->
       <div class="tab-pane fade" id="location-upcoming-bookings">
-        <div class="location-upcoming-bookingMessage mb-4">
-          <h3><i class="fas fa-calendar-check me-2"></i>Location Upcoming Bookings</h3>
-          <p class="text-muted">Here's a list of your location upcoming bookings.</p>
+        <div class="location-upcoming-bookingMessage">
+        <h3>Location Upcoming Bookings</h3>
+        <p>Here's a list of your location upcoming bookings.</p>
         </div>
-        <div class="location-upcoming-bookings-spinner text-center py-4">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
+        <div class="location-upcoming-bookings-spinner"></div>
         <div class="location-upcoming-bookings card mb-4 shadow-lg">
-          <!-- Location Upcoming Bookings to be loaded here -->
+            <!-- Location Upcoming Bookings to be loaded here -->
         </div>
         <div class="location-upcoming-bookings-placeholder"></div>
-        <div class="text-center">
-          <button class="btn btn-outline-primary" id="load-more-location-upcoming">
-            <i class="fas fa-plus me-2"></i>Load More Location Upcoming Bookings
-          </button>
-        </div>
+        <button id="load-more-location-upcoming">Load More Location Upcoming Bookings</button>
       </div>
 
       <!-- Location Ongoing Bookings Tab -->
       <div class="tab-pane fade" id="location-ongoing-bookings">
-        <div class="location-ongoing-bookingMessage mb-4">
-          <h3><i class="fas fa-car me-2"></i>Location Ongoing Bookings</h3>
-          <p class="text-muted">Here's a list of your location ongoing bookings.</p>
+        <div class="location-ongoing-bookingMessage">
+        <h3>Location Ongoing Bookings</h3>
+        <p>Here's a list of your location ongoing bookings.</p>
         </div>
-        <div class="location-ongoing-bookings-spinner text-center py-4">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
+        <div class="location-ongoing-bookings-spinner"></div>
         <div class="location-ongoing-bookings card mb-4 shadow-lg">
-          <!-- Location Ongoing Bookings to be loaded here -->
+            <!-- Location Ongoing Bookings to be loaded here -->
         </div>
         <div class="location-ongoing-bookings-placeholder"></div>
-        <div class="text-center">
-          <button class="btn btn-outline-primary" id="load-more-location-ongoing">
-            <i class="fas fa-plus me-2"></i>Load More Location Ongoing Bookings
-          </button>
-        </div>
+        <button id="load-more-location-ongoing">Load More Location Ongoing Bookings</button>
       </div>
 
       <!-- Location Past Bookings Tab -->
       <div class="tab-pane fade" id="location-past-bookings">
-        <div class="location-past-bookingMessage mb-4">
-          <h3><i class="fas fa-history me-2"></i>Location Past Bookings</h3>
-          <p class="text-muted">Here's a list of your location past bookings.</p>
+        <div class="location-past-bookingMessage">
+        <h3>Location Past Bookings</h3>
+        <p>Here's a list of your location past bookings.</p>
         </div>
-        <div class="location-past-bookings-spinner text-center py-4">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
+        <div class="location-past-bookings-spinner"></div>
         <div class="location-past-bookings card mb-4 shadow-lg">
-          <!-- Location Past Bookings to be loaded here -->
+            <!-- Location Past Bookings to be loaded here -->
         </div>
         <div class="location-past-bookings-placeholder"></div>
-        <div class="text-center">
-          <button class="btn btn-outline-primary" id="load-more-location-past">
-            <i class="fas fa-plus me-2"></i>Load More Location Past Bookings
-          </button>
-        </div>
+        <button id="load-more-location-past">Load More Location Past Bookings</button>
       </div>
 
       <!-- Account Settings Tab -->
       <div class="tab-pane fade" id="settings">
-        <div class="settings-message mb-4">
-          <h3><i class="fas fa-cog me-2"></i>Account Settings</h3>
-          <p class="text-muted">Update your personal information and preferences.</p>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <button class="btn btn-outline-primary btn-lg w-100 mb-3" id="edit-profile">
-              <i class="fas fa-edit me-2"></i> Edit Profile
-            </button>
+         <h3>Account Settings</h3>
+         <p>Update your personal information and preferences.</p>
+         <button class="btn btn-outline-primary btn-block mb-2" id="edit-profile"><i class="fas fa-edit"></i> Edit Profile</button>
+         <button class="btn btn-outline-danger btn-block" id="delete-account"><i class="fas fa-trash-alt"></i> Delete Account</button>
+      </div>
+   </div>
+</div>
+<!-- Modal for Modifying Booking -->
+<div class="modal fade" id="modifyBookingModal" tabindex="-1" aria-labelledby="modifyBookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modifyBookingModalLabel">Modify Booking</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="modifyBookingForm">
+          <div class="form-group">
+            <label for="pickupDate">Pickup Date</label>
+            <input type="date" id="pickupDate" class="form-control" required>
           </div>
-          <div class="col-md-6">
-            <button class="btn btn-outline-danger btn-lg w-100" id="delete-account">
-              <i class="fas fa-trash-alt me-2"></i> Delete Account
-            </button>
+          <div class="form-group">
+            <label for="dateTime">Pickup Time</label>
+            <input type="time" id="dateTime" class="form-control" required>
           </div>
-        </div>
+          <div class="form-group">
+            <label for="returnDate">Return Date</label>
+            <input type="date" id="returnDate" class="form-control" required>
+          </div>
+          <div id="modificationWarning" class="text-danger d-none">
+            <p>Modification not allowed within 2 day of the pickup date.</p>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveBookingChanges">Save Changes</button>
       </div>
     </div>
   </div>
-
-  <!-- Modals -->
-  <!-- Modify Booking Modal -->
-  <div class="modal fade" id="modifyBookingModal" tabindex="-1" aria-labelledby="modifyBookingModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modifyBookingModalLabel"><i class="fas fa-edit me-2"></i>Modify Booking</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<!-- Update User Modal -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateUserModalLabel">Update User Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateUserForm">
+                    <div class="form-group">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" class="form-control" id="first_name" placeholder="Enter first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" class="form-control" id="last_name" placeholder="Enter last name">
+                    </div>
+                    <div class="form-group">
+                        <label for="region">Region:</label>
+                        <input type="text" class="form-control" id="region" placeholder="Enter region">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number">Phone Number:</label>
+                        <input type="text" class="form-control" id="phone_number" placeholder="Enter phone number">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveUserChanges">Save Changes</button>
+            </div>
         </div>
-        <div class="modal-body">
-          <form id="modifyBookingForm">
-            <div class="mb-3">
-              <label for="pickupDate" class="form-label">Pickup Date</label>
-              <input type="date" id="pickupDate" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="dateTime" class="form-label">Pickup Time</label>
-              <input type="time" id="dateTime" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="returnDate" class="form-label">Return Date</label>
-              <input type="date" id="returnDate" class="form-control" required>
-            </div>
-            <div id="modificationWarning" class="alert alert-warning d-none">
-              <i class="fas fa-exclamation-triangle me-2"></i>Modification not allowed within 2 days of the pickup date.
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="saveBookingChanges">
-            <i class="fas fa-save me-2"></i>Save Changes
-          </button>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <!-- Update User Modal -->
-  <div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="updateUserModalLabel"><i class="fas fa-user-edit me-2"></i>Update User Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<!-- Update Car Modal -->
+<div class="modal fade" id="updateCarModal" tabindex="-1" role="dialog" aria-labelledby="updateCarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateCarModalLabel">Update Car Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateCarForm">
+                    <div class="form-group">
+                        <label for="brand">Brand</label>
+                        <input type="text" id="brand" class="form-control" placeholder="Enter car brand">
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model</label>
+                        <input type="text" id="model" class="form-control" placeholder="Enter car model">
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year</label>
+                        <input type="number" id="year" class="form-control" placeholder="Enter manufacturing year">
+                    </div>
+                    <div class="form-group">
+                        <label for="price_by_day">Price per Day</label>
+                        <input type="number" id="price_by_day" class="form-control" placeholder="Enter price per day">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="saveCarChanges" class="btn btn-primary">Save Changes</button>
+            </div>
         </div>
-        <div class="modal-body">
-          <form id="updateUserForm">
-            <div class="mb-3">
-              <label for="first_name" class="form-label">First Name:</label>
-              <input type="text" class="form-control" id="first_name" placeholder="Enter first name">
-            </div>
-            <div class="mb-3">
-              <label for="last_name" class="form-label">Last Name:</label>
-              <input type="text" class="form-control" id="last_name" placeholder="Enter last name">
-            </div>
-            <div class="mb-3">
-              <label for="region" class="form-label">Region:</label>
-              <input type="text" class="form-control" id="region" placeholder="Enter region">
-            </div>
-            <div class="mb-3">
-              <label for="phone_number" class="form-label">Phone Number:</label>
-              <input type="text" class="form-control" id="phone_number" placeholder="Enter phone number">
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="saveUserChanges">
-            <i class="fas fa-save me-2"></i>Save Changes
-          </button>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <!-- Update Car Modal -->
-  <div class="modal fade" id="updateCarModal" tabindex="-1" aria-labelledby="updateCarModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="updateCarModalLabel"><i class="fas fa-car me-2"></i>Update Car Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<!-- Update Location Modal -->
+<div class="modal fade" id="updateLocationModal" tabindex="-1" role="dialog" aria-labelledby="updateLocationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateLocationModalLabel">Update Location Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateLocationForm">
+                    <div class="form-group">
+                        <label for="locationName">Location Name</label>
+                        <input type="text" id="locationName" class="form-control" placeholder="Enter location name">
+                    </div>
+                    <div class="form-group">
+                        <label for="locationAddress">Location Address</label>
+                        <input type="text" id="locationAddress" class="form-control" placeholder="Enter location address">
+                    </div>
+                    <div class="form-group">
+                        <label for="locationPhone">Phone Number</label>
+                        <input type="tel" id="locationPhone" class="form-control" placeholder="Enter phone number">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="saveLocationChanges" class="btn btn-primary">Save Changes</button>
+            </div>
         </div>
-        <div class="modal-body">
-          <form id="updateCarForm">
-            <div class="mb-3">
-              <label for="brand" class="form-label">Brand</label>
-              <input type="text" id="brand" class="form-control" placeholder="Enter car brand">
-            </div>
-            <div class="mb-3">
-              <label for="model" class="form-label">Model</label>
-              <input type="text" id="model" class="form-control" placeholder="Enter car model">
-            </div>
-            <div class="mb-3">
-              <label for="year" class="form-label">Year</label>
-              <input type="number" id="year" class="form-control" placeholder="Enter manufacturing year">
-            </div>
-            <div class="mb-3">
-              <label for="price_by_day" class="form-label">Price per Day</label>
-              <input type="number" id="price_by_day" class="form-control" placeholder="Enter price per day">
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" id="saveCarChanges" class="btn btn-primary">
-            <i class="fas fa-save me-2"></i>Save Changes
-          </button>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <!-- Update Location Modal -->
-  <div class="modal fade" id="updateLocationModal" tabindex="-1" aria-labelledby="updateLocationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="updateLocationModalLabel"><i class="fas fa-map-marker-alt me-2"></i>Update Location Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="updateLocationForm">
-            <div class="mb-3">
-              <label for="locationName" class="form-label">Location Name</label>
-              <input type="text" id="locationName" class="form-control" placeholder="Enter location name">
-            </div>
-            <div class="mb-3">
-              <label for="locationAddress" class="form-label">Location Address</label>
-              <input type="text" id="locationAddress" class="form-control" placeholder="Enter location address">
-            </div>
-            <div class="mb-3">
-              <label for="locationPhone" class="form-label">Phone Number</label>
-              <input type="tel" id="locationPhone" class="form-control" placeholder="Enter phone number">
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" id="saveLocationChanges" class="btn btn-primary">
-            <i class="fas fa-save me-2"></i>Save Changes
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scripts -->
+</div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../static/scripts/stateAbbreviations.js"></script>
   <script src="../static/scripts/status-parameters.js"></script>
   <script src="../static/scripts/getBookingDetails.js"></script>
   <script src="../static/scripts/profile.js"></script>
-  <script src="../static/scripts/dark-mode.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
